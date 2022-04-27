@@ -86,14 +86,41 @@ class RoomBookingsPage(BasePage):
     # My Bookings
     MY_BOOKING_NAV = (By.XPATH, "//*[@id='sub-nav']/div[2]")
     ROOM_124_CHECK_DIV = (By.XPATH, "//p[text()='124']/parent::*/parent::div")
+    ROOM_124_CHECK_DIV_LAST = (By.XPATH, "(//p[text()='124']/parent::*/parent::div)[last()]")
     ROOM_124_SCHEDULE_CHECK = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[1]")
     ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]")
     ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2]")
+    ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST = (By.XPATH, "(//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2])[last()]")
+    ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/button")
     MAIN_CARDS_CONATINER = (By.XPATH, "//*[@id='mainBookingCardsContainer']")
+    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = (By.XPATH, "//p[text()='124']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/child::*[3]")
+    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (By.XPATH, "//*[text()='Cancel All']")
 
     # Overlapping error
     BK_OVERLAPPING_ERROR_MSG = (By.XPATH, "//*[contains(text(), 'Error in creating Booking: Booking Exists')]")
+    BK_OVERLAPPING_ERROR_MSG_1 = (By.XPATH, "//*[contains(text(), 'Error in extending Booking')]")
 
+    # Recurring
+    ROOM_124_CHECK_RDIV = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]")
+    ROOM_124_RDIV_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]/parent::*/parent::*/parent::*/parent::*/following-sibling::*/div/div/button[2]")
+    REPEAT_DROPDOWN = (By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div[1]/div/div/div/div[1]")
+    REPEAT_DAILY = (By.XPATH, "//*[contains(text(), 'Daily')]")
+    REPEAT_WEEKLY = (By.XPATH, "//*[contains(text(), 'Weekly')]")
+    REPEAT_TILL_DATE = (By.XPATH, "//*[contains(text(), 'Ending (on Date)')]/following-sibling::*/child::*/child::*")
+    REPEAT_FREQUENCY = (By.XPATH, "//*[contains(text(), 'Every')]/child::*")
+    MULTIPLE_DAYS = (By.XPATH, "//*[contains(text(), 'Daily')]")
+    MULTIPLE_DAYS_START_DATE = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[1]/input")
+    MULTIPLE_DAYS_END_DATE = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/input")
+
+    # Extend Booking
+    PRE_EXTEND_TIME = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[1]/div/div")
+    CHECKIN_BOOKING = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[1]")
+    EXTEND_BOOKING = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2]")
+    EXTEND_15_MINS = (By.XPATH, "//p[text()='15 minutes']")
+    EXTEND_30_MINS = (By.XPATH, "//p[text()='30 minutes']")
+    EXTEND_45_MINS = (By.XPATH, "//p[text()='45 minutes']")
+    EXTEND_60_MINS = (By.XPATH, "//p[text()='60 minutes']")
+    EXTEND_BOOKING_TEXT_CONFIRM = (By.XPATH, "//p[text()='124']/parent::*/parent::*/following-sibling::div[2]/div")
     # <===================================== Functions =======================================>
 
     """constructor of the page class"""
@@ -209,3 +236,85 @@ class RoomBookingsPage(BasePage):
         print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
         self.do_click(self.ROOM_124_CHECK_DIV)
         sleep(5)
+
+    def daily_repeat(self):
+        self.do_click(self.REPEAT_DROPDOWN)
+        sleep(3)
+        self.do_click(self.REPEAT_DAILY)
+        sleep(2)
+        # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+        sleep(2)
+        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
+
+    def daily_repeat2(self):
+        self.do_click(self.REPEAT_DROPDOWN)
+        sleep(3)
+        self.do_click(self.REPEAT_DAILY)
+        sleep(2)
+        # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+        sleep(2)
+        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE2, 2)
+
+    def weekly_repeat(self):
+        self.do_click(self.REPEAT_DROPDOWN)
+        sleep(3)
+        self.do_click(self.REPEAT_WEEKLY)
+        sleep(2)
+        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE, 2)
+        sleep(2)
+        self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+
+    
+    def cancel_booking(self):
+        self.scroll_to_element(self.ROOM_124_CHECK_DIV)
+        sleep(3)
+        # Meeting Options
+        meeting_options = self.get_element_text(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+        std_meeting_options = ['Check in', '', 'Cancel Booking']
+        # assert meeting_options == std_meeting_options
+        print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+        self.do_click(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+
+    
+    def cancel_last_booking(self):
+        self.scroll_to_element(self.ROOM_124_CHECK_DIV_LAST)
+        sleep(3)
+        # Meeting Options
+        # meeting_options = self.get_element_text(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+        # std_meeting_options = ['Check in', '', 'Cancel Booking']
+        # assert meeting_options == std_meeting_options
+        print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+        self.do_click(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST)
+
+    
+    def cancel_some_bookings(self, crange):
+        for i in range(crange):
+            print("i: ", i)
+            self.scroll_to_element(self.ROOM_124_CHECK_DIV)
+            sleep(3)
+            # Meeting Options
+            meeting_options = self.get_element_text(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+            std_meeting_options = ['Check in', '', 'Cancel Booking']
+            # assert meeting_options == std_meeting_options
+            print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+            if i == 0:
+                self.do_click(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            else:
+                self.do_click(self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON)
+            sleep(8)
+
+    def extend_booking(self, etime):
+        pre_extend_time = self.get_element_text(self.PRE_EXTEND_TIME)
+        print("pre_extend_time: ", pre_extend_time)
+        self.do_click(self.CHECKIN_BOOKING)
+        sleep(12)
+        self.do_click(self.EXTEND_BOOKING)
+        sleep(5)
+        self.do_click(etime)
+        sleep(12)
+        textend_confirm = self.get_element_text(self.EXTEND_BOOKING_TEXT_CONFIRM)
+        print("text: ", textend_confirm)
+        assert textend_confirm == "In Use, Booking Extended"
+        post_extend_time = self.get_element_text(self.PRE_EXTEND_TIME)
+        print("post_extend_time: ", post_extend_time)
+        assert pre_extend_time != post_extend_time
