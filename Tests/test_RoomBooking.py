@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 class Test_RoomBooking(BaseTest):
 
-    """Desk Booking"""
+    """Room Booking"""
 
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_booking(self):
@@ -462,6 +462,110 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         bookinpage.quit_driver()
+
+    # @pytest.mark.skip(reason="no need of currently testing this")
+    def test_only_host_can_cancel_booking(self):
+        self.loginPage = LoginPage(self.driver)
+        bookinpage = self.loginPage.do_rlogin(
+            TestData.USER_NAME, TestData.PASSWORD)
+        sleep(10)
+        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+        sleep(5)
+        print("Selecting Location")
+        bookinpage.select_location()
+        print("Selecting Floor")
+        bookinpage.select_floor()
+        # Checking available resources
+        bookinpage.select_available_status()
+        # Selecting resource type
+        bookinpage.select_resource_type()
+        # Clicking on list view
+        bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
+
+        # Clicking on room 124 booking modal
+        bookinpage.do_click(RoomBookingsPage.ROOM_124)
+
+        '''Booking Modal'''
+
+        # Attendee Details
+        # New Member
+        bookinpage.new_contact_guest(
+            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+        # bookinpage.new_contact_guest(
+        #     TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+        # Is drafted = False
+        bookinpage.host_selection(
+            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+        # Is Member = True
+        # bookinpage.host_selection(
+        #     RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+        bookinpage.host_selection(
+            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_3_IS_MEMBER)
+
+        # Agenda
+        bookinpage.enter_agenda()
+
+        # # Selecting Host
+        # bookinpage.do_click(RoomBookingsPage.EDIT_DETAILS)
+        # bookinpage.host_selection(
+        #     RoomBookingsPage.EDIT_DETAILS_SEARCH_BOX, TestData.DEFAULT_HOSTNAME)
+
+        # Selecting datetime
+        # bookinpage.enter_datetime()
+
+        # Clicking on booking button
+        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(5)
+        print("Booking should be created successfully: Passed")
+
+        # Checking Booking
+        # At the find resource page, status of booking should be changed from available to booked
+        bookinpage.select_booked_status()
+        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+        bookinpage.resource_page_booking_check()
+        sleep(3)
+
+        # Resource details page
+        bookinpage.do_click(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+        sleep(8)
+        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        bookinpage.resource_details_page_check()
+        sleep(5)
+
+        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+        sleep(5)
+        bookinpage.check_my_booking()
+        print("Create a booking for the desk by selecting a default date and time: Passed")
+
+        # Logging out
+        bookinpage.do_logout()
+        sleep(8)
+
+        # Logging again using attendee details
+        bookinpage = self.loginPage.do_rlogin(
+            TestData.USER_NAME_2, TestData.PASSWORD_2)
+
+        sleep(10)
+        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+
+        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+        sleep(5)
+        bookinpage.check_my_booking()
+        print("Meeting is visible in attendee's my bookings")
+
+        # trying to cancel the booking
+        try:
+            bookinpage.do_click(
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            print("Cancelling meeting succesfull")
+        except Exception as e:
+            print("exception in cancelling: ", e)
+
+        sleep(10)
+        bookinpage.quit_driver()
+
 
     '''Recurring Bookings Daily'''
 
@@ -908,6 +1012,8 @@ class Test_RoomBooking(BaseTest):
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         bookinpage.quit_driver()
 
+
+
     '''Recurring bookings Weekly'''
 
     @pytest.mark.skip(reason="no need of currently testing this")
@@ -1352,6 +1458,8 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         bookinpage.quit_driver()
+
+
 
     '''Recurring + Single'''
 
@@ -1803,6 +1911,8 @@ class Test_RoomBooking(BaseTest):
 
         sleep(10)
         bookinpage.quit_driver()
+
+
 
     '''Recurring+single+Cancelled'''
 
@@ -2768,8 +2878,7 @@ class Test_RoomBooking(BaseTest):
         sleep(8)
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
         bookinpage.quit_driver()
-
-    
+   
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_daily_recurring_cancel_all_booking(self):
         self.loginPage = LoginPage(self.driver)
@@ -2852,7 +2961,6 @@ class Test_RoomBooking(BaseTest):
         print("Create a daily recurring booking for a month and delete all booking: Passed")
         bookinpage.quit_driver()
 
-    
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_weekly_recurring_cancel_single_booking(self):
         self.loginPage = LoginPage(self.driver)
@@ -2932,8 +3040,7 @@ class Test_RoomBooking(BaseTest):
         sleep(8)
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
         bookinpage.quit_driver()
-
-    
+  
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_weekly_recurring_cancel_all_booking(self):
         self.loginPage = LoginPage(self.driver)
@@ -3015,8 +3122,7 @@ class Test_RoomBooking(BaseTest):
         sleep(8)
         print("Create a daily recurring booking for a month and delete all booking: Passed")
         bookinpage.quit_driver()
-
-    
+ 
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_cancel_single_booking(self):
         self.loginPage = LoginPage(self.driver)

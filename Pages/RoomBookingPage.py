@@ -11,116 +11,124 @@ class RoomBookingsPage(BasePage):
     # <======================================== Selectors ========================================>
     # Body Xpath
     BODY = (By.CSS_SELECTOR, "body")
+    # Room No
+    ROOM_NO = 124
     # ------
-    BOOKING_NAV = (By.XPATH, "//h3[text()='Booking']")
-    BOOK_SPACE_NAV = (By.XPATH, "//*[contains(text(), 'Book space')]")
+    BOOKING_NAV = (By.XPATH, f"//h3[text()='Booking']")
+    BOOK_SPACE_NAV = (By.XPATH, f"//*[contains(text(), 'Book space')]")
     LOCATION_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
+        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
     GENPACT_IT_PARK = (
-        By.XPATH, "/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
+        By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
     BUSINESS_TOWER = (
-        By.XPATH, "/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
+        By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
     FREE_CLICK = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
-    FIRST_FLOOR = (By.XPATH, "//*[@id='0-floor']/div/div[1]/div[1]")
+        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
+    FIRST_FLOOR = (By.XPATH, f"//*[@id='0-floor']/div/div[1]/div[1]")
     STATUS_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
-    AVAILABLE_STATUS = (By.XPATH, "//span[text()='Available']")
-    BOOKED_STATUS = (By.XPATH, "//span[text()='Booked']")
-    ASSIGNED_STATUS = (By.XPATH, "//span[text()='Assigned']")
-    INACTIVE_STATUS = (By.XPATH, "//span[text()='Inactive']")
-    ALL_STATUS = (By.XPATH, "//span[text()='All Status']")
+        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
+    AVAILABLE_STATUS = (By.XPATH, f"//span[text()='Available']")
+    BOOKED_STATUS = (By.XPATH, f"//span[text()='Booked']")
+    ASSIGNED_STATUS = (By.XPATH, f"//span[text()='Assigned']")
+    INACTIVE_STATUS = (By.XPATH, f"//span[text()='Inactive']")
+    ALL_STATUS = (By.XPATH, f"//span[text()='All Status']")
     LIST_VIEW_BUTTON = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[2]/div/div[2]")
+        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[2]/div/div[2]")
 
     RESOURCE_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/div/div")
+        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/div/div")
     RESOURCE_ROOM = (
-        By.XPATH, "//*[contains(text(), 'Rooms')]")
+        By.XPATH, f"//*[contains(text(), 'Rooms')]")
     # Room
     ROOM_124 = (
-        By.XPATH, "//*[@title= '124']/parent::*/parent::*/following-sibling::*[5]/button")
+        By.XPATH, f"//*[@title='{ROOM_NO}']/parent::*/parent::*/following-sibling::*[5]/button")
     # Modal selectors
 
     BOOKING_AGENDA = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[2]/div[2]/input")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[2]/div[2]/input")
     ATTENDEE_DETAILS = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[4]/div/div[2]/div/div/div[1]")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[4]/div/div[2]/div/div/div[1]")
     CONFIRM_BOOKING = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[6]/button[2]")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[2]/div/div[6]/button[2]")
     EDIT_DETAILS = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[7]/div[2]/p")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[7]/div[2]/p")
     EDIT_DETAILS_SEARCH_BOX = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[8]/div[1]/div")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[8]/div[1]/div")
     START_DATE = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[1]/div[2]/div/input")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[1]/div[2]/div/input")
     START_DATE_X = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[3]/div[2]/div/span/span")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[3]/div[2]/div/span/span")
     END_DATE = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[3]/div[2]/div/input")
+        By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[1]/div[1]/div[3]/div[2]/div/input")
     CONTACT_EMAIL = (
-        By.XPATH, "//*[contains(text(), 'New Member')]/parent::*/child::*/following-sibling::*/input")
+        By.XPATH, f"//*[contains(text(), 'New Member')]/parent::*/child::*/following-sibling::*/input")
     CONTACT_RIGHT_TICK = (
-        By.XPATH, "//*[contains(text(), 'New Member')]/parent::*/child::*[4]/div")
-    BOOKING_CONFIRM_BUTTON = (By.XPATH, "//*[contains(text(), 'Confirm Booking')]")
+        By.XPATH, f"//*[contains(text(), 'New Member')]/parent::*/child::*[4]/div")
+    BOOKING_CONFIRM_BUTTON = (By.XPATH, f"//*[contains(text(), 'Confirm Booking')]")
 
     # After Booking
-    ROOM_124_AFTER_BOOKING_TITLE = (By.XPATH, "//div[@title='124']")
+    ROOM_124_AFTER_BOOKING_TITLE = (By.XPATH, f"//div[@title='{ROOM_NO}']")
     ROOM_124_RPAGE_STATUS_CHECK = (
-        By.XPATH, "//*[@title='124']/parent::*/parent::td/following-sibling::*[1]/div/div")
+        By.XPATH, f"//*[@title='{ROOM_NO}']/parent::*/parent::td/following-sibling::*[1]/div/div")
     
 
     # Resource Details
-    RD_CALENDER_INPUT = (By.XPATH, "//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[2]/div[1]/div/div[2]/div/div/input")
-    SCHEDULE_LISTING = (By.XPATH, "//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[3]/div/div/div[2]")
-    I_BUTTON = (By.XPATH, "//*[@class='rbc-event-content']/span")
-    I_INFO = (By.XPATH, "//*[@class='ant-popover-content']")
-    I_INFO2 = (By.XPATH, "/html/body/div[7]/div/div/div")
-    RD_TIME_CHECK = (By.XPATH, "*[@class='rbc-event-label']")
-    BOOK_THIS_SPACE = (By.XPATH, "//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[4]/div/button")
-    BOOKING_HOSTNAME = (By.XPATH, "/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[1]")
-    BOOKING_HOSTEMAIL = (By.XPATH, "/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[2]")
-    BOOKING_START = (By.XPATH, "/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[3]")
-    BOOKING_END = (By.XPATH, "/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[4]")
+    RD_CALENDER_INPUT = (By.XPATH, f"//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[2]/div[1]/div/div[2]/div/div/input")
+    SCHEDULE_LISTING = (By.XPATH, f"//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[3]/div/div/div[2]")
+    I_BUTTON = (By.XPATH, f"//*[@class='rbc-event-content']/span")
+    I_INFO = (By.XPATH, f"//*[@class='ant-popover-content']")
+    I_INFO2 = (By.XPATH, f"/html/body/div[7]/div/div/div")
+    RD_TIME_CHECK = (By.XPATH, f"*[@class='rbc-event-label']")
+    BOOK_THIS_SPACE = (By.XPATH, f"//*[@id='resource-details-content']/div[1]/div[1]/div/div/div[5]/div/div/div[4]/div/button")
+    BOOKING_HOSTNAME = (By.XPATH, f"/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[1]")
+    BOOKING_HOSTEMAIL = (By.XPATH, f"/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[2]")
+    BOOKING_START = (By.XPATH, f"/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[3]")
+    BOOKING_END = (By.XPATH, f"/html/body/div[7]/div/div/div/div[2]/div[2]/div[1]/div[4]")
 
     # My Bookings
-    MY_BOOKING_NAV = (By.XPATH, "//*[@id='sub-nav']/div[2]")
-    ROOM_124_CHECK_DIV = (By.XPATH, "//p[text()='124']/parent::*/parent::div")
-    ROOM_124_CHECK_DIV_LAST = (By.XPATH, "(//p[text()='124']/parent::*/parent::div)[last()]")
-    ROOM_124_SCHEDULE_CHECK = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[1]")
-    ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]")
-    ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2]")
-    ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST = (By.XPATH, "(//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2])[last()]")
-    ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/button")
-    MAIN_CARDS_CONATINER = (By.XPATH, "//*[@id='mainBookingCardsContainer']")
-    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = (By.XPATH, "//p[text()='124']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/child::*[3]")
-    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (By.XPATH, "//*[text()='Cancel All']")
+    MY_BOOKING_NAV = (By.XPATH, f"//*[@id='sub-nav']/div[2]")
+    ROOM_124_CHECK_DIV = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/parent::div")
+    ROOM_124_CHECK_DIV_LAST = (By.XPATH, f"(//p[text()='{ROOM_NO}']/parent::*/parent::div)[last()]")
+    ROOM_124_SCHEDULE_CHECK = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[1]")
+    ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]")
+    ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]/div/div/button[2]")
+    ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST = (By.XPATH, f"(//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]/div/div/button[2])[last()]")
+    ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]/div/button")
+    MAIN_CARDS_CONATINER = (By.XPATH, f"//*[@id='mainBookingCardsContainer']")
+    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/child::*[3]")
+    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (By.XPATH, f"//*[text()='Cancel All']")
 
     # Overlapping error
-    BK_OVERLAPPING_ERROR_MSG = (By.XPATH, "//*[contains(text(), 'Error in creating Booking: Booking Exists')]")
-    BK_OVERLAPPING_ERROR_MSG_1 = (By.XPATH, "//*[contains(text(), 'Error in extending Booking')]")
+    BK_OVERLAPPING_ERROR_MSG = (By.XPATH, f"//*[contains(text(), 'Error in creating Booking: Booking Exists')]")
+    BK_OVERLAPPING_ERROR_MSG_1 = (By.XPATH, f"//*[contains(text(), 'Error in extending Booking')]")
+    BK_OVERLAPPING_ERROR_MSG_2 = (By.XPATH, f"//*[contains(text(), 'Error in extending Booking')]")
 
     # Recurring
-    ROOM_124_CHECK_RDIV = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]")
-    ROOM_124_RDIV_CANCEL_BUTTON = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]/parent::*/parent::*/parent::*/parent::*/following-sibling::*/div/div/button[2]")
-    REPEAT_DROPDOWN = (By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div[1]/div/div/div/div[1]")
-    REPEAT_DAILY = (By.XPATH, "//*[contains(text(), 'Daily')]")
-    REPEAT_WEEKLY = (By.XPATH, "//*[contains(text(), 'Weekly')]")
-    REPEAT_TILL_DATE = (By.XPATH, "//*[contains(text(), 'Ending (on Date)')]/following-sibling::*/child::*/child::*")
-    REPEAT_FREQUENCY = (By.XPATH, "//*[contains(text(), 'Every')]/child::*")
-    MULTIPLE_DAYS = (By.XPATH, "//*[contains(text(), 'Daily')]")
-    MULTIPLE_DAYS_START_DATE = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[1]/input")
-    MULTIPLE_DAYS_END_DATE = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/input")
+    ROOM_124_CHECK_RDIV = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]")
+    ROOM_124_RDIV_CANCEL_BUTTON = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]/parent::*/parent::*/parent::*/parent::*/following-sibling::*/div/div/button[2]")
+    REPEAT_DROPDOWN = (By.XPATH, f"//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div[1]/div/div/div/div[1]")
+    REPEAT_DAILY = (By.XPATH, f"//*[contains(text(), 'Daily')]")
+    REPEAT_WEEKLY = (By.XPATH, f"//*[contains(text(), 'Weekly')]")
+    REPEAT_TILL_DATE = (By.XPATH, f"//*[contains(text(), 'Ending (on Date)')]/following-sibling::*/child::*/child::*")
+    REPEAT_FREQUENCY = (By.XPATH, f"//*[contains(text(), 'Every')]/child::*")
+    MULTIPLE_DAYS = (By.XPATH, f"//*[contains(text(), 'Daily')]")
+    MULTIPLE_DAYS_START_DATE = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[1]/input")
+    MULTIPLE_DAYS_END_DATE = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/input")
 
     # Extend Booking
-    PRE_EXTEND_TIME = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[1]/div/div")
-    CHECKIN_BOOKING = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[1]")
-    EXTEND_BOOKING = (By.XPATH, "//p[text()='124']/parent::*/following-sibling::*[2]/div/div/button[2]")
-    EXTEND_15_MINS = (By.XPATH, "//p[text()='15 minutes']")
-    EXTEND_30_MINS = (By.XPATH, "//p[text()='30 minutes']")
-    EXTEND_45_MINS = (By.XPATH, "//p[text()='45 minutes']")
-    EXTEND_60_MINS = (By.XPATH, "//p[text()='60 minutes']")
-    EXTEND_BOOKING_TEXT_CONFIRM = (By.XPATH, "//p[text()='124']/parent::*/parent::*/following-sibling::div[2]/div")
+    PRE_EXTEND_TIME = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[1]/div/div")
+    CHECKIN_BOOKING = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]/div/div/button[1]")
+    EXTEND_BOOKING = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/following-sibling::*[2]/div/div/button[2]")
+    EXTEND_15_MINS = (By.XPATH, f"//p[text()='15 minutes']")
+    EXTEND_30_MINS = (By.XPATH, f"//p[text()='30 minutes']")
+    EXTEND_45_MINS = (By.XPATH, f"//p[text()='45 minutes']")
+    EXTEND_60_MINS = (By.XPATH, f"//p[text()='60 minutes']")
+    EXTEND_BOOKING_TEXT_CONFIRM = (By.XPATH, f"//p[text()='{ROOM_NO}']/parent::*/parent::*/following-sibling::div[2]/div")
+
+
+    # Logout
+    LOGOUT_DROPDOWN = (By.XPATH, f"//*[@id='navigation']/div/div/div/div[3]/div/div[2]/div/div[2]/div")
+    LOGOUT_BUTTON = (By.XPATH, f"//*[text()='Logout']")
     # <===================================== Functions =======================================>
 
     """constructor of the page class"""
@@ -264,7 +272,6 @@ class RoomBookingsPage(BasePage):
         sleep(2)
         self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
 
-    
     def cancel_booking(self):
         self.scroll_to_element(self.ROOM_124_CHECK_DIV)
         sleep(3)
@@ -275,7 +282,6 @@ class RoomBookingsPage(BasePage):
         print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
         self.do_click(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
 
-    
     def cancel_last_booking(self):
         self.scroll_to_element(self.ROOM_124_CHECK_DIV_LAST)
         sleep(3)
@@ -286,7 +292,6 @@ class RoomBookingsPage(BasePage):
         print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
         self.do_click(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST)
 
-    
     def cancel_some_bookings(self, crange):
         for i in range(crange):
             print("i: ", i)
@@ -318,3 +323,8 @@ class RoomBookingsPage(BasePage):
         post_extend_time = self.get_element_text(self.PRE_EXTEND_TIME)
         print("post_extend_time: ", post_extend_time)
         assert pre_extend_time != post_extend_time
+
+    def do_logout(self):
+        self.do_click(self.LOGOUT_DROPDOWN)
+        sleep(2)
+        self.do_click(self.LOGOUT_BUTTON)

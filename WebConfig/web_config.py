@@ -10,6 +10,8 @@ class TestData:
     BASE_URL = "https://ndl.veris.in/login/NewLogin"
     USER_NAME = "neeraj.dhiman@veris.in"
     PASSWORD = "Passw0rd@123"
+    USER_NAME_2 = "shailendra.tiranga@veris.in"
+    PASSWORD_2 = "Ttpl@12345"
 
     LOGIN_PAGE_TITLE = "Veris | Powering Future Workplaces"
 
@@ -36,7 +38,7 @@ class TestData:
     TILL_NEXT_DAY_END_TIME = "27 Apr 2022 01:30"
     REPEAT_TILL_DATE = "20 May 2022 01:00"
     REPEAT_TILL_DATE2 = "2 May 2022 23:00"
-    DESK_NO = 201
+    DESK_NO_1 = None
 
     '''Room booking'''
     ROOM_AGENDA = "Automation testing"
@@ -49,6 +51,7 @@ class TestData:
     CONTACT_1_IS_DRAFTED_FALSE = "test veris"
     CONTACT_1_IS_MEMBER = "Johnathan Gracer"
     CONTACT_2_IS_MEMBER = "Mark Jacob"
+    CONTACT_3_IS_MEMBER = "Shailendra Tiranga"
     ROOM_OVERLAPPING_TIME_START = "20 Apr 2022 19:45"
     ROOM_OVERLAPPING_TIME_END = "20 Apr 2022 20:00"
     ROOM_OVERLAPPING_TIME_END_2 = "27 Apr 2022 01:10"
