@@ -21,10 +21,7 @@ logger = logging.getLogger(__name__)
 
 class Test_Booking(BaseTest):
 
-    """Non-Recurring"""
-
-    @pytest.mark.skip(reason="no need of currently testing this")
-    def test_simple_booking(self):
+    def test_login(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
         sleep(15)
@@ -34,11 +31,19 @@ class Test_Booking(BaseTest):
         bookinpage.select_location()
         print("Selecting Floor")
         bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
         # Clicking on list view
         bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
         bookinpage.select_resource_type_desk()
+
+
+    """Non-Recurring"""
+
+    # @pytest.mark.skip(reason="no need of currently testing this")
+    def test_simple_booking(self):
+        bookinpage = deskBookingsPage(self.driver)
+        
+        # Checking available resources
+        bookinpage.select_available_status()
         # Network logs
         try:
             bookinpage.print_browser_logs()
@@ -114,7 +119,7 @@ class Test_Booking(BaseTest):
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # bookinpage.quit_driver()
 
-    # @pytest.mark.skip(reason="to be edited once tags are alloted")
+    @pytest.mark.skip(reason="to be edited once tags are alloted")
     def test_simple_booking_by_tag(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
@@ -205,26 +210,14 @@ class Test_Booking(BaseTest):
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # bookinpage.quit_driver()
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_host_change_booking(self):
-        # self.loginPage = LoginPage(self.driver)
-        # bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        self.loginPage = deskBookingsPage(self.driver)
-        bookinpage = self.loginPage
-        # sleep(15)
+        bookinpage = deskBookingsPage(self.driver)
         # try:
         #     bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
         # except Exception as e:
         #     print("Exception on Nav: ", e)
-        # sleep(10)
-        # bookinpage.select_location()
-        # bookinpage.select_floor()
-        # sleep(10)
-        # bookinpage.select_available_status()
-
-        # # Clicking on list view
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
+        bookinpage.select_available_status()
         sleep(5)
 
         # Clicking on desk 201 modal
@@ -281,20 +274,11 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking for the desk by changing the default host: Passed")
         
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
-        # sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        # sleep(10)
-        # bookinpage.select_location()
-        # bookinpage.select_floor()
-        # bookinpage.select_available_status()
+        bookinpage.select_available_status()
 
-        # # Clicking on list view
-        # print("Clicking on list view")
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
         sleep(5)
 
         # Clicking on desk 201 modal
@@ -2641,6 +2625,7 @@ class Test_Booking(BaseTest):
 
 
     '''Check and edit amenities'''
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_amenities(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
@@ -2732,3 +2717,5 @@ class Test_Booking(BaseTest):
         send_email()
 
         
+
+# unittest.main()
