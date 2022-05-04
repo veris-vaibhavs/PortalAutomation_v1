@@ -8,7 +8,7 @@ from datetime import timedelta
 
 class TestData:
     
-    CHROME_EXECUTABLE_PATH = "E:\lambda test\chromedriver_win32\chromedriver"
+    CHROME_EXECUTABLE_PATH = "chromedriver.exe"
     FIREFOX_EXECUTABLE_PATH = "C:\WebDrivers\geckodriver-v0.30.0-win64\geckodriver"
 
     BASE_URL = "https://ndl.veris.in/login/NewLogin"
