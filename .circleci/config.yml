@@ -7,16 +7,7 @@ jobs:
       - image: "cimg/python:3.8.4"
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
-      - python/install-packages:
-          pip-dependency-file: requirements.txt
-          pkg-manager: pip
-      - python/install-packages:
-          args: pytest
-          pkg-manager: pip
-          pypi-cache: false
-      - run: pytest -v -s --html=report.html Tests/test_deskBooking.py --self-contained-html --capture=sys -rP -rF
+      - run: pip install -r requirements.txt && pytest -v -s --html=report.html Tests/test_deskBooking.py --self-contained-html --capture=sys -rP -rF
 
 workflows:
   test:
