@@ -210,7 +210,7 @@ class Test_Booking(BaseTest):
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # bookinpage.quit_driver()
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    #@pytest.mark.skip(reason="no need of currently testing this")
     def test_host_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         # try:
