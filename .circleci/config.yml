@@ -1,0 +1,14 @@
+jobs:
+   test:
+    working_directory: ~/circleci-python
+    docker:
+      - image: "cimg/python:3.8.4"
+    steps:
+      - checkout
+      - pip install -r requirements.txt
+      - run: pytest -v -s --html=report.html Tests/test_deskBooking.py --self-contained-html --capture=sys -rP -rF
+
+workflows:
+  build_and_test:
+    jobs:
+      - test
