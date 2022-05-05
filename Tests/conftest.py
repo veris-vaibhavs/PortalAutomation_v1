@@ -11,7 +11,7 @@ from WebConfig.web_config import TestData
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-@pytest.fixture(params=["firefox"], scope='class')
+@pytest.fixture(params=["chrome"], scope='class')
 def init_driver(request):
     caps = DesiredCapabilities.CHROME
     caps['goog:loggingPrefs'] = {'performance': 'ALL'}
