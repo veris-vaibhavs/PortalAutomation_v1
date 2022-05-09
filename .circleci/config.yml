@@ -4,8 +4,11 @@ jobs:
    test:
     working_directory: ~/circleci-python
     docker:
-      - image: "cimg/python:3.9-browsers"
+      - image: "cimg/python:3.9-browsers
     steps:
+      - run:
+          name: Execute ESlint Check
+          command: npm run eslint-checkS
       - checkout
       - run: pip install -r requirements.txt && pytest -v -s --html=report.html Tests/test_deskBookingPage.py --self-contained-html --capture=sys -rP -rF
 
