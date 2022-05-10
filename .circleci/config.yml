@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - run: whereis chromedriver
-      - run: find /usr/bin/google-chrome
+      # - run: find /usr/bin/google-chrome
       # - run: wget https://chromedriver.storage.googleapis.com/102.0.5005.27/chromedriver_linux64.zip && unzip chromedriver_linux64.zip
       # - run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && dpkg -i google-chrome-stable_current_amd64.deb
       - run: pip install -r requirements.txt
