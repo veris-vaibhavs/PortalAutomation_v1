@@ -10,12 +10,12 @@ jobs:
 
     steps:
       - checkout
-      - run:
-            name: browser install
-            command: apt install chromium-browser && apt install wget
       - run: 
             name: dependencies
             command: apt install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+      - run:
+            name: browser install
+            command: apt install chromium-browser && apt install wget
       - run: 
             name: chrome driver
             command: wget https://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip && sudo unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/bin/chromedriver && sudo chown root:root /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver
