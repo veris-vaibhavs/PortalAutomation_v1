@@ -11,7 +11,7 @@ from WebConfig.web_config import TestData
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
-@pytest.fixture(params=["firefox"], scope='class')
+@pytest.fixture(params=["chrome"], scope='class')
 def init_driver(request):
     caps = DesiredCapabilities.CHROME
     caps['goog:loggingPrefs'] = {'performance': 'ALL'}
@@ -20,7 +20,8 @@ def init_driver(request):
     options.add_argument('--headless')
     options.add_argument('--start-maximized')
     if request.param == "chrome":
-        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, desired_capabilities=caps)
+       web_driver = webdriver.Chrome(executable_path="chromedriver", options=options, desired_capabilities=caps)
+       # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, desired_capabilities=caps)
     if request.param == "firefox":
         web_driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
     request.cls.driver = web_driver
