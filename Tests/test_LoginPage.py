@@ -8,7 +8,7 @@ from mail_conf import send_email
 
 class Test_Login(BaseTest):
 
-    def test_tag_booking(self):
+    def test_login_page(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(
                     TestData.USER_NAME, TestData.PASSWORD)
