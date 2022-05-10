@@ -21,7 +21,7 @@ jobs:
             command: sudo apt install -y chromium-browser && sudo apt install -y wget && sudo apt-get install -f
       - run: 
             name: chrome driver
-            command: sudo wget https://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip && sudo unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/bin/chromedriver && sudo chown root:root /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver
+            command: sudo wget https://chromedriver.storage.googleapis.com/102.0.5005.27/chromedriver_linux64.zip && sudo unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/bin/chromedriver && sudo chown root:root /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver
       # - run: sudo chmod u+x install.sh && source install.sh
       # - run:
       #     name: Download Selenium
