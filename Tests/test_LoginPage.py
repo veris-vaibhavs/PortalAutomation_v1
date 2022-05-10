@@ -17,6 +17,6 @@ class Test_Login(BaseTest):
         bookinpage.quit_driver()
 
     '''Send report'''
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
         send_email()
