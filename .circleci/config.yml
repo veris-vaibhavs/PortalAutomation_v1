@@ -4,7 +4,7 @@ jobs:
    test:
     working_directory: ~/circleci-python
     docker:
-      - image: "cimg/python:3.9-browsers"
+      - image: "circleci/python:jessie-node-browsers"
     steps:
       - checkout
       - run: pip install -r requirements.txt && pytest -v -s --html=report.html Tests/test_deskBookingPage.py --self-contained-html --capture=sys -rP -rF
