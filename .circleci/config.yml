@@ -7,8 +7,18 @@ jobs:
     docker:
       # - image: "circleci/python:jessie-node-browsers"
       - image: "cimg/python:3.9-browsers"
+
     steps:
       - checkout
+      - run:
+            name: browser install
+            command: apt install chromium-browser && apt install wget
+      - run: 
+            name: dependencies
+            command: apt install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+      - run: 
+            name: chrome driver
+            command: wget https://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip && sudo unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/bin/chromedriver && sudo chown root:root /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver
       # - run: sudo chmod u+x install.sh && source install.sh
       # - run:
       #     name: Download Selenium
@@ -22,9 +32,7 @@ jobs:
       # - run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && dpkg -i google-chrome-stable_current_amd64.deb
       # - run: apt-get update && apt-get -y install curl gnupg unzip wget
       # - run: sudo apt-get install -y python python-dev python3.9 python3.9-dev python3.9-distutils && curl -sL https://bootstrap.pypa.io/get-pip.py |  python3.9 && pip -V && apt-get update
-      - run: apt install chromium-browser && apt install wget
-      - run: apt install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
-      - run: wget https://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip && sudo unzip chromedriver_linux64.zip && sudo mv chromedriver /usr/bin/chromedriver && sudo chown root:root /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver
+     
       - run: pip install -r requirements.txt
       - run: pytest -v -s --html=report.html Tests/test_LoginPage.py --self-contained-html --capture=sys -rP -rF
 workflows:
