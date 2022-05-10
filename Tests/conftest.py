@@ -12,7 +12,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.utils import ChromeType
 
 
-@pytest.fixture(params=["chrome"], scope='class')
+# @pytest.fixture(params=["chrome"], scope='class')
 def init_driver(request):
     caps = DesiredCapabilities.CHROME
     caps['goog:loggingPrefs'] = {'performance': 'ALL'}
@@ -28,6 +28,8 @@ def init_driver(request):
     options.add_argument('--incognito')
     options.add_argument('--headless')
     options.add_argument('--start-maximized')
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
     #    web_driver = webdriver.Chrome(executable_path="chromedriver", options=options, desired_capabilities=caps)
         web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options, desired_capabilities=caps) 
