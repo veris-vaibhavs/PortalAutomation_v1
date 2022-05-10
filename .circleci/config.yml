@@ -6,7 +6,7 @@ jobs:
     working_directory: ~/circleci-python
     docker:
       # - image: "circleci/python:jessie-node-browsers"
-      - image: "cimg/python:3.9-browsers"
+      - image: "selenium/standalone-chrome"
     steps:
       - checkout
       - run: sudo chmod u+x install.sh && source install.sh
