@@ -1,3 +1,8 @@
+apt-get install -y python python-dev python3.9 python3.9-dev python3.9-distutils
+curl -sL https://bootstrap.pypa.io/get-pip.py |  python3.9
+pip -V
+apt-get update
+
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 sudo apt-get install -f
