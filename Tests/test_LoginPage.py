@@ -19,4 +19,5 @@ class Test_Login(BaseTest):
     '''Send report'''
     # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
+        print("Sending report mail")
         send_email()
