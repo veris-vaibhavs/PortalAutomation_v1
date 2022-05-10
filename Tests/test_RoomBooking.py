@@ -21,10 +21,7 @@ logger = logging.getLogger(__name__)
 
 class Test_RoomBooking(BaseTest):
 
-    """Room Booking"""
-
-    @pytest.mark.skip(reason="no need of currently testing this")
-    def test_simple_booking(self):
+    def test_login_room_booking(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_rlogin(
                     TestData.USER_NAME, TestData.PASSWORD)
@@ -41,6 +38,12 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_resource_type()
         # Clicking on list view
         bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
+
+    """Room Booking"""
+
+    # @pytest.mark.skip(reason="no need of currently testing this")
+    def test_simple_booking(self):
+        bookinpage = RoomBookingsPage(self.driver)
 
         # Clicking on available room
         bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)
@@ -111,22 +114,22 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         # bookinpage.quit_driver()
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+        bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
         sleep(5)
-        print("Selecting Location")
-        # bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Selecting resource type
-        bookinpage.select_resource_type()
-        # Clicking on list view
-        bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
+        # print("Selecting Location")
+        # # bookinpage.select_location()
+        # print("Selecting Floor")
+        # bookinpage.select_floor()
+        # # Checking available resources
+        # bookinpage.select_available_status()
+        # # Selecting resource type
+        # bookinpage.select_resource_type()
+        # # Clicking on list view
+        # bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
 
         # Clicking on available room
         bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)
@@ -3570,7 +3573,7 @@ class Test_RoomBooking(BaseTest):
 
 
     '''Tags Testing'''
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_tag_booking(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_rlogin(
@@ -3664,4 +3667,5 @@ class Test_RoomBooking(BaseTest):
 
     '''Send report'''
     def test_send_email_report(self):
+        print("Sending report in mail....")
         send_email()

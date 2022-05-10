@@ -38,7 +38,7 @@ class Test_Booking(BaseTest):
 
     """Non-Recurring"""
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_simple_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         
@@ -210,7 +210,7 @@ class Test_Booking(BaseTest):
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # bookinpage.quit_driver()
 
-    #@pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_host_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         # try:
@@ -274,7 +274,7 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking for the desk by changing the default host: Passed")
         
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         bookinpage.select_available_status()
@@ -2712,8 +2712,9 @@ class Test_Booking(BaseTest):
 
 
     '''Send report'''
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
+        print("Sending report in mail....")
         send_email()
 
         

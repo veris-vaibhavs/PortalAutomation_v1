@@ -149,16 +149,20 @@ class RoomBookingsPage(BasePage):
     """selecting location"""
 
     def select_location(self):
-        sleep(3)
-        self.do_click(self.LOCATION_DROPDOWN)
+        sleep(8)
+        try:
+            self.do_click(self.LOCATION_DROPDOWN)
+            sleep(8)
+            self.do_click(self.GENPACT_IT_PARK)
+            sleep(8)
+            self.do_click(self.BUSINESS_TOWER)
+            sleep(5)
+            self.do_click(self.FREE_CLICK)
+            assert "Location selection passed"
+        except Exception as e:
+            print("Select_location_room exception: ", e)
+            self.quit_driver()
         sleep(5)
-        self.do_click(self.GENPACT_IT_PARK)
-        sleep(5)
-        self.do_click(self.BUSINESS_TOWER)
-        sleep(5)
-        self.do_click(self.FREE_CLICK)
-        assert "Location selection passed"
-        sleep(10)
 
     def select_resource_type(self):
         self.do_click(self.RESOURCE_DROPDOWN)

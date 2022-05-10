@@ -429,7 +429,7 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
 }
 </script>
     <h1>report.html</h1>
-    <p>Report generated on 10-May-2022 at 17:39:13 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <p>Report generated on 10-May-2022 at 18:03:26 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
     <h2>Environment</h2>
     <table id="environment">
       <tr>
@@ -445,8 +445,8 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
         <td>Python</td>
         <td>3.9.1</td></tr></table>
     <h2>Summary</h2>
-    <p>2 tests ran in 30.47 seconds. </p>
-    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">2 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <p>4 tests ran in 375.56 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">1 passed</span>, <input checked="true" class="filter" data-test-result="skipped" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">26 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">3 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
     <h2>Results</h2>
     <table id="results-table">
       <thead id="results-table-head">
@@ -457,15 +457,15 @@ function filterTable(elem) { // eslint-disable-line no-unused-vars
           <th class="sortable links" col="links">Links</th></tr>
         <tr hidden="true" id="not-found-message">
           <th colspan="4">No results found. Try to check the filters</th></tr></thead>
-      <tbody class="passed results-table-row">
+      <tbody class="failed results-table-row">
         <tr>
-          <td class="col-result">Passed</td>
-          <td class="col-name">test_LoginPage.py::Test_Login::test_login_page[chrome]</td>
-          <td class="col-duration">26.64</td>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_login_room_booking[chrome]</td>
+          <td class="col-duration">154.12</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
-            <div class="log"> -----------------------------Captured stderr setup------------------------------ <br/>
+            <div class="log">self = &lt;Tests.test_RoomBooking.Test_RoomBooking object at 0x0000018DD2AC3370&gt;<br/><br/>    def test_login_room_booking(self):<br/>        self.loginPage = LoginPage(self.driver)<br/>        bookinpage = self.loginPage.do_rlogin(<br/>                    TestData.USER_NAME, TestData.PASSWORD)<br/>        sleep(10)<br/>        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)<br/>        sleep(5)<br/>        print(&quot;Selecting Location&quot;)<br/>&gt;       bookinpage.select_location()<br/><br/>Tests\test_RoomBooking.py:32: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>Pages\RoomBookingPage.py:155: in select_location<br/>    sleep(8)<br/>Pages\BasePage.py:24: in do_click<br/>    WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator)).click()<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait (session=&quot;be33cbdd6fc93018eae5e28012463fac&quot;)&gt;, method = &lt;function element_to_be_clickable.&lt;locals&gt;._predicate at 0x0000018DD2D59C10&gt;, message = &#x27;&#x27;<br/><br/>    def until(self, method, message=&#x27;&#x27;):<br/>        &quot;&quot;&quot;Calls the method provided with the driver as an argument until the \<br/>        return value does not evaluate to ``False``.<br/>    <br/>        :param method: callable(WebDriver)<br/>        :param message: optional message for :exc:`TimeoutException`<br/>        :returns: the result of the last call to `method`<br/>        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/>        &quot;&quot;&quot;<br/>        screen = None<br/>        stacktrace = None<br/>    <br/>        end_time = time.time() + self._timeout<br/>        while True:<br/>            try:<br/>                value = method(self._driver)<br/>                if value:<br/>                    return value<br/>            except InvalidSelectorException as e:<br/>                raise e<br/>            except self._ignored_exceptions as exc:<br/>                screen = getattr(exc, &#x27;screen&#x27;, None)<br/>                stacktrace = getattr(exc, &#x27;stacktrace&#x27;, None)<br/>            time.sleep(self._poll)<br/>            if time.time() &gt; end_time:<br/>                break<br/>&gt;       raise TimeoutException(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       Backtrace:</span><br/><span class="error">E       	Ordinal0 [0x002BB8F3+2406643]</span><br/><span class="error">E       	Ordinal0 [0x0024AF31+1945393]</span><br/><span class="error">E       	Ordinal0 [0x0013C748+837448]</span><br/><span class="error">E       	Ordinal0 [0x001692E0+1020640]</span><br/><span class="error">E       	Ordinal0 [0x0016957B+1021307]</span><br/><span class="error">E       	Ordinal0 [0x00196372+1205106]</span><br/><span class="error">E       	Ordinal0 [0x001842C4+1131204]</span><br/><span class="error">E       	Ordinal0 [0x00194682+1197698]</span><br/><span class="error">E       	Ordinal0 [0x00184096+1130646]</span><br/><span class="error">E       	Ordinal0 [0x0015E636+976438]</span><br/><span class="error">E       	Ordinal0 [0x0015F546+980294]</span><br/><span class="error">E       	GetHandleVerifier [0x00529612+2498066]</span><br/><span class="error">E       	GetHandleVerifier [0x0051C920+2445600]</span><br/><span class="error">E       	GetHandleVerifier [0x00354F2A+579370]</span><br/><span class="error">E       	GetHandleVerifier [0x00353D36+574774]</span><br/><span class="error">E       	Ordinal0 [0x00251C0B+1973259]</span><br/><span class="error">E       	Ordinal0 [0x00256688+1992328]</span><br/><span class="error">E       	Ordinal0 [0x00256775+1992565]</span><br/><span class="error">E       	Ordinal0 [0x0025F8D1+2029777]</span><br/><span class="error">E       	BaseThreadInitThunk [0x75B4FA29+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A7E+286]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A4E+238]</span><br/><span class="error">E       	(No symbol) [0x00000000]</span><br/><br/>..\..\Experiments\Page-object-model\venv\lib\site-packages\selenium\webdriver\support\wait.py:89: TimeoutException<br/> -----------------------------Captured stderr setup------------------------------ <br/>
 
 ====== WebDriver manager ======
 Current chromium version is 101.0.4951
@@ -476,15 +476,267 @@ Driver [C:\Users\Vivek\.wdm\drivers\chromedriver\win32\101.0.4951.41\chromedrive
 INFO     WDM:logger.py:26 ====== WebDriver manager ======
 INFO     WDM:logger.py:26 Current chromium version is 101.0.4951
 INFO     WDM:logger.py:26 Get LATEST chromedriver version for 101.0.4951 chromium
-INFO     WDM:logger.py:26 Driver [C:\Users\Vivek\.wdm\drivers\chromedriver\win32\101.0.4951.41\chromedriver.exe] found in cache<br/> ------------------------------Captured stdout call------------------------------ <br/>Login done successfully
+INFO     WDM:logger.py:26 Driver [C:\Users\Vivek\.wdm\drivers\chromedriver\win32\101.0.4951.41\chromedriver.exe] found in cache<br/> ------------------------------Captured stdout call------------------------------ <br/>Selecting Location
 <br/></div></td></tr></tbody>
-      <tbody class="passed results-table-row">
+      <tbody class="failed results-table-row">
         <tr>
-          <td class="col-result">Passed</td>
-          <td class="col-name">test_LoginPage.py::Test_Login::test_send_email_report[chrome]</td>
-          <td class="col-duration">3.75</td>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_booking[chrome]</td>
+          <td class="col-duration">100.52</td>
           <td class="col-links"></td></tr>
         <tr>
           <td class="extra" colspan="4">
-            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Sending report mail
+            <div class="log">self = &lt;Tests.test_RoomBooking.Test_RoomBooking object at 0x0000018DD2B84190&gt;<br/><br/>    def test_simple_booking(self):<br/>        bookinpage = RoomBookingsPage(self.driver)<br/>    <br/>        # Clicking on available room<br/>&gt;       bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)<br/><br/>Tests\test_RoomBooking.py:49: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>Pages\BasePage.py:24: in do_click<br/>    WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator)).click()<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait (session=&quot;be33cbdd6fc93018eae5e28012463fac&quot;)&gt;, method = &lt;function element_to_be_clickable.&lt;locals&gt;._predicate at 0x0000018DD2B58AF0&gt;, message = &#x27;&#x27;<br/><br/>    def until(self, method, message=&#x27;&#x27;):<br/>        &quot;&quot;&quot;Calls the method provided with the driver as an argument until the \<br/>        return value does not evaluate to ``False``.<br/>    <br/>        :param method: callable(WebDriver)<br/>        :param message: optional message for :exc:`TimeoutException`<br/>        :returns: the result of the last call to `method`<br/>        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/>        &quot;&quot;&quot;<br/>        screen = None<br/>        stacktrace = None<br/>    <br/>        end_time = time.time() + self._timeout<br/>        while True:<br/>            try:<br/>                value = method(self._driver)<br/>                if value:<br/>                    return value<br/>            except InvalidSelectorException as e:<br/>                raise e<br/>            except self._ignored_exceptions as exc:<br/>                screen = getattr(exc, &#x27;screen&#x27;, None)<br/>                stacktrace = getattr(exc, &#x27;stacktrace&#x27;, None)<br/>            time.sleep(self._poll)<br/>            if time.time() &gt; end_time:<br/>                break<br/>&gt;       raise TimeoutException(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       Backtrace:</span><br/><span class="error">E       	Ordinal0 [0x002BB8F3+2406643]</span><br/><span class="error">E       	Ordinal0 [0x0024AF31+1945393]</span><br/><span class="error">E       	Ordinal0 [0x0013C748+837448]</span><br/><span class="error">E       	Ordinal0 [0x001692E0+1020640]</span><br/><span class="error">E       	Ordinal0 [0x0016957B+1021307]</span><br/><span class="error">E       	Ordinal0 [0x00196372+1205106]</span><br/><span class="error">E       	Ordinal0 [0x001842C4+1131204]</span><br/><span class="error">E       	Ordinal0 [0x00194682+1197698]</span><br/><span class="error">E       	Ordinal0 [0x00184096+1130646]</span><br/><span class="error">E       	Ordinal0 [0x0015E636+976438]</span><br/><span class="error">E       	Ordinal0 [0x0015F546+980294]</span><br/><span class="error">E       	GetHandleVerifier [0x00529612+2498066]</span><br/><span class="error">E       	GetHandleVerifier [0x0051C920+2445600]</span><br/><span class="error">E       	GetHandleVerifier [0x00354F2A+579370]</span><br/><span class="error">E       	GetHandleVerifier [0x00353D36+574774]</span><br/><span class="error">E       	Ordinal0 [0x00251C0B+1973259]</span><br/><span class="error">E       	Ordinal0 [0x00256688+1992328]</span><br/><span class="error">E       	Ordinal0 [0x00256775+1992565]</span><br/><span class="error">E       	Ordinal0 [0x0025F8D1+2029777]</span><br/><span class="error">E       	BaseThreadInitThunk [0x75B4FA29+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A7E+286]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A4E+238]</span><br/><span class="error">E       	(No symbol) [0x00000000]</span><br/><br/>..\..\Experiments\Page-object-model\venv\lib\site-packages\selenium\webdriver\support\wait.py:89: TimeoutException<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_datetime_change_booking[chrome]</td>
+          <td class="col-duration">115.90</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;Tests.test_RoomBooking.Test_RoomBooking object at 0x0000018DD2AC3730&gt;<br/><br/>    def test_datetime_change_booking(self):<br/>        bookinpage = RoomBookingsPage(self.driver)<br/>        sleep(10)<br/>        bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)<br/>        sleep(5)<br/>        # print(&quot;Selecting Location&quot;)<br/>        # # bookinpage.select_location()<br/>        # print(&quot;Selecting Floor&quot;)<br/>        # bookinpage.select_floor()<br/>        # # Checking available resources<br/>        # bookinpage.select_available_status()<br/>        # # Selecting resource type<br/>        # bookinpage.select_resource_type()<br/>        # # Clicking on list view<br/>        # bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)<br/>    <br/>        # Clicking on available room<br/>&gt;       bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)<br/><br/>Tests\test_RoomBooking.py:135: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>Pages\BasePage.py:24: in do_click<br/>    WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator)).click()<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;selenium.webdriver.support.wait.WebDriverWait (session=&quot;be33cbdd6fc93018eae5e28012463fac&quot;)&gt;, method = &lt;function element_to_be_clickable.&lt;locals&gt;._predicate at 0x0000018DD2AAB280&gt;, message = &#x27;&#x27;<br/><br/>    def until(self, method, message=&#x27;&#x27;):<br/>        &quot;&quot;&quot;Calls the method provided with the driver as an argument until the \<br/>        return value does not evaluate to ``False``.<br/>    <br/>        :param method: callable(WebDriver)<br/>        :param message: optional message for :exc:`TimeoutException`<br/>        :returns: the result of the last call to `method`<br/>        :raises: :exc:`selenium.common.exceptions.TimeoutException` if timeout occurs<br/>        &quot;&quot;&quot;<br/>        screen = None<br/>        stacktrace = None<br/>    <br/>        end_time = time.time() + self._timeout<br/>        while True:<br/>            try:<br/>                value = method(self._driver)<br/>                if value:<br/>                    return value<br/>            except InvalidSelectorException as e:<br/>                raise e<br/>            except self._ignored_exceptions as exc:<br/>                screen = getattr(exc, &#x27;screen&#x27;, None)<br/>                stacktrace = getattr(exc, &#x27;stacktrace&#x27;, None)<br/>            time.sleep(self._poll)<br/>            if time.time() &gt; end_time:<br/>                break<br/>&gt;       raise TimeoutException(message, screen, stacktrace)<br/><span class="error">E       selenium.common.exceptions.TimeoutException: Message: </span><br/><span class="error">E       Stacktrace:</span><br/><span class="error">E       Backtrace:</span><br/><span class="error">E       	Ordinal0 [0x002BB8F3+2406643]</span><br/><span class="error">E       	Ordinal0 [0x0024AF31+1945393]</span><br/><span class="error">E       	Ordinal0 [0x0013C748+837448]</span><br/><span class="error">E       	Ordinal0 [0x001692E0+1020640]</span><br/><span class="error">E       	Ordinal0 [0x0016957B+1021307]</span><br/><span class="error">E       	Ordinal0 [0x00196372+1205106]</span><br/><span class="error">E       	Ordinal0 [0x001842C4+1131204]</span><br/><span class="error">E       	Ordinal0 [0x00194682+1197698]</span><br/><span class="error">E       	Ordinal0 [0x00184096+1130646]</span><br/><span class="error">E       	Ordinal0 [0x0015E636+976438]</span><br/><span class="error">E       	Ordinal0 [0x0015F546+980294]</span><br/><span class="error">E       	GetHandleVerifier [0x00529612+2498066]</span><br/><span class="error">E       	GetHandleVerifier [0x0051C920+2445600]</span><br/><span class="error">E       	GetHandleVerifier [0x00354F2A+579370]</span><br/><span class="error">E       	GetHandleVerifier [0x00353D36+574774]</span><br/><span class="error">E       	Ordinal0 [0x00251C0B+1973259]</span><br/><span class="error">E       	Ordinal0 [0x00256688+1992328]</span><br/><span class="error">E       	Ordinal0 [0x00256775+1992565]</span><br/><span class="error">E       	Ordinal0 [0x0025F8D1+2029777]</span><br/><span class="error">E       	BaseThreadInitThunk [0x75B4FA29+25]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A7E+286]</span><br/><span class="error">E       	RtlGetAppContainerNamedObjectPath [0x77A57A4E+238]</span><br/><span class="error">E       	(No symbol) [0x00000000]</span><br/><br/>..\..\Experiments\Page-object-model\venv\lib\site-packages\selenium\webdriver\support\wait.py:89: TimeoutException<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_change_host_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 203, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 291, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_already_cancelled_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 413, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_only_host_can_cancel_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 522, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1143, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_datetime_change_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1225, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_change_host_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1311, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_already_cancelled_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1524, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_single_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1640, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 1764, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_future_cancelled_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2007, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_single_future_daily_recurring_booking_5_cancelled[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2133, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_overlapping_daily_future_daily_recurring_booking_5_cancelled[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2249, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_cancelling_first_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2365, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_cancelling_last_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2451, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_extend_single_daily_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2543, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_extend_single_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2634, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_extend_single_overlapping_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2722, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_extend_single_cancelled_recurring_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 2876, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_till_next_date_extended_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3030, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_daily_recurring_cancel_single_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3128, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_daily_recurring_cancel_all_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3217, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_weekly_recurring_cancel_single_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3308, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_weekly_recurring_cancel_all_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3398, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_simple_cancel_single_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3489, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="skipped results-table-row">
+        <tr>
+          <td class="col-result">Skipped</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_tag_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">(&#x27;E:\\Testing\\Bookings\\v0.1.0\\Tests\\test_RoomBooking.py&#x27;, 3576, &#x27;Skipped: no need of currently testing this&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test_RoomBooking.py::Test_RoomBooking::test_send_email_report[chrome]</td>
+          <td class="col-duration">4.22</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Sending report in mail....
 <br/></div></td></tr></tbody></table></body></html>
