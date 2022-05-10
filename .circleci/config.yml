@@ -1,10 +1,12 @@
 version: 2.1
-
+orbs:
+  browser-tools: circleci/browser-tools@1.1
 jobs:
    test:
     working_directory: ~/circleci-python
     docker:
-      - image: "circleci/python:jessie-node-browsers"
+      # - image: "circleci/python:jessie-node-browsers"
+      - image: "cimg/python:3.9-browsers"
     steps:
       - checkout
       - run: pip install -r requirements.txt && pytest -v -s --html=report.html Tests/test_deskBookingPage.py --self-contained-html --capture=sys -rP -rF
