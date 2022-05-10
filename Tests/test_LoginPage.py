@@ -14,7 +14,6 @@ class Test_Login(BaseTest):
                     TestData.USER_NAME, TestData.PASSWORD)
         sleep(5)
         print("Login done successfully")
-        bookinpage.quit_driver()
 
     '''Send report'''
     # @pytest.mark.skip(reason="no need of currently testing this")
