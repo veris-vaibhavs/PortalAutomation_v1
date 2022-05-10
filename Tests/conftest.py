@@ -20,8 +20,8 @@ def init_driver(request):
     options.add_argument('--headless')
     options.add_argument('--start-maximized')
     if request.param == "chrome":
-       web_driver = webdriver.Chrome(executable_path="/home/circleci/circleci-python/chromedriver", options=options, desired_capabilities=caps)
-       # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, desired_capabilities=caps)
+       web_driver = webdriver.Chrome(executable_path="./chromedriver", options=options, desired_capabilities=caps)
+    #    web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, desired_capabilities=caps)
     if request.param == "firefox":
         web_driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
     request.cls.driver = web_driver
