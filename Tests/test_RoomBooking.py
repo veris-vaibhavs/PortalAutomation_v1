@@ -200,7 +200,7 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         # bookinpage.quit_driver()
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_change_host_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
@@ -519,7 +519,7 @@ class Test_RoomBooking(BaseTest):
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         # bookinpage.quit_driver()
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_only_host_can_cancel_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)

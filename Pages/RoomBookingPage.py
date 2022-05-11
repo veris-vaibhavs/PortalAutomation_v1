@@ -22,10 +22,12 @@ class RoomBookingsPage(BasePage):
     BOOK_SPACE_NAV = (By.XPATH, f"//*[contains(text(), 'Book space')]")
     LOCATION_DROPDOWN = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
-    GENPACT_IT_PARK = (
-        By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
-    BUSINESS_TOWER = (
-        By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
+    # GENPACT_IT_PARK = (
+    #     By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
+    # BUSINESS_TOWER = (
+    #     By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
+    GENPACT_IT_PARK = (By.XPATH, "//div[contains(text(), 'Genpact IT Park')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span")
+    BUSINESS_TOWER = (By.XPATH, "//*[contains(text(), 'Bussiness Tower')]")
     FREE_CLICK = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     FIRST_FLOOR = (By.XPATH, f"//*[@id='0-floor']/div/div[1]/div[1]")
@@ -149,13 +151,13 @@ class RoomBookingsPage(BasePage):
     """selecting location"""
 
     def select_location(self):
-        sleep(8)
+        sleep(3)
         try:
             self.do_click(self.LOCATION_DROPDOWN)
-            sleep(8)
-            self.do_click(self.GENPACT_IT_PARK)
-            sleep(8)
-            self.do_click(self.BUSINESS_TOWER)
+            sleep(5)
+            self.action_chain_click(self.GENPACT_IT_PARK)
+            sleep(5)
+            self.action_chain_click(self.BUSINESS_TOWER)
             sleep(5)
             self.do_click(self.FREE_CLICK)
             assert "Location selection passed"
@@ -165,51 +167,72 @@ class RoomBookingsPage(BasePage):
         sleep(5)
 
     def select_resource_type(self):
-        self.do_click(self.RESOURCE_DROPDOWN)
-        sleep(2)
-        self.do_click(self.RESOURCE_ROOM)
-        self.do_click(self.FREE_CLICK)
+        try:
+            self.do_click(self.RESOURCE_DROPDOWN)
+            sleep(2)
+            self.do_click(self.RESOURCE_ROOM)
+            self.do_click(self.FREE_CLICK)
+        except Exception as e:
+            print("select_resource_type exception: ", e)
 
     def select_floor(self):
-        self.do_click(self.FIRST_FLOOR)
-        sleep(5)
-        assert "Floor selection done"
+        try:
+            self.do_click(self.FIRST_FLOOR)
+            sleep(5)
+            assert "Floor selection done"
+        except Exception as e:
+            print("select_floor exception: ", e)
 
     def select_available_status(self):
-        self.do_click(self.STATUS_DROPDOWN)
-        sleep(5)
-        self.do_click(self.AVAILABLE_STATUS)
-        sleep(5)
-        assert "Select Available status done"
+        try:
+            self.do_click(self.STATUS_DROPDOWN)
+            sleep(5)
+            self.do_click(self.AVAILABLE_STATUS)
+            sleep(5)
+            assert "Select Available status done"
+        except Exception as e:
+            print("select_available_status exception: ", e)
 
     def select_tag(self):
-        self.do_click(self.TAG_DROPDOWN)
-        sleep(3)
-        self.do_click(self.TAG_SELECT)
-        sleep(3)
-        self.do_click(self.FREE_CLICK)
-        sleep(5)
+        try:
+            self.do_click(self.TAG_DROPDOWN)
+            sleep(3)
+            self.do_click(self.TAG_SELECT)
+            sleep(3)
+            self.do_click(self.FREE_CLICK)
+            sleep(5)
+        except Exception as e:
+            print("select_tag exception: ", e)
 
 
 
     def get_room_name(self):
-        rval = self.get_element_text(self.ROOM_NUMBER)
-        print("dval: ", rval)
-        return rval
+        try:
+            rval = self.get_element_text(self.ROOM_NUMBER)
+            print("dval: ", rval)
+            return rval
+        except Exception as e:
+            print("get_room_name exception: ", e)
 
     def select_booked_status(self):
-        self.do_click(self.STATUS_DROPDOWN)
-        sleep(5)
-        self.do_click(self.BOOKED_STATUS)
-        sleep(5)
-        assert "Select Booked status done"
+        try:
+            self.do_click(self.STATUS_DROPDOWN)
+            sleep(5)
+            self.do_click(self.BOOKED_STATUS)
+            sleep(5)
+            assert "Select Booked status done"
+        except Exception as e:
+            print("select_booked_status exception: ", e)
 
     def select_all_status(self):
-        self.do_click(self.STATUS_DROPDOWN)
-        sleep(5)
-        self.do_click(self.ALL_STATUS)
-        sleep(5)
-        assert "Select Booked status done"
+        try:
+            self.do_click(self.STATUS_DROPDOWN)
+            sleep(5)
+            self.do_click(self.ALL_STATUS)
+            sleep(5)
+            assert "Select Booked status done"
+        except Exception as e:
+            print("select_all_status exception: ", e)
 
     def enter_agenda(self):
         try:
@@ -239,11 +262,14 @@ class RoomBookingsPage(BasePage):
             print("enter_datetime exception: ", e)
 
     def resource_page_booking_check(self):
-        rpage_status = self.get_element_text_by_xpath(
-            self.ROOM_124_RPAGE_STATUS_CHECK)
-        assert rpage_status == "Booked"
-        print("rpage_status passed as: ", rpage_status)
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+        try:
+            rpage_status = self.get_element_text_by_xpath(
+                self.ROOM_124_RPAGE_STATUS_CHECK)
+            assert rpage_status == "Booked"
+            print("rpage_status passed as: ", rpage_status)
+            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+        except Exception as e:
+            print("resource_page_booking_check exception: ", e)
 
     def resource_details_page_check(self):
         self.scroll_to_element(self.SCHEDULE_LISTING)
@@ -260,68 +286,59 @@ class RoomBookingsPage(BasePage):
         self.do_send_keys(self.BODY, Keys.PAGE_UP)
 
     def check_my_booking(self):
-        self.do_click(self.MY_BOOKING_NAV)
-        sleep(5)
-        self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
-        sleep(3)
-        # Meeting Options
-        meeting_options = self.get_element_text_by_xpath(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
-        std_meeting_options = ['Check in', '', 'Cancel Booking']
-        assert meeting_options == std_meeting_options
-        print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
-        self.do_click_by_xpath(self.ROOM_124_CHECK_DIV)
-        sleep(5)
+        try:
+            self.do_click(self.MY_BOOKING_NAV)
+            sleep(5)
+            self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
+            sleep(3)
+            # Meeting Options
+            meeting_options = self.get_element_text_by_xpath(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+            std_meeting_options = ['Check in', '', 'Cancel Booking']
+            assert meeting_options == std_meeting_options
+            print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+            self.do_click_by_xpath(self.ROOM_124_CHECK_DIV)
+            sleep(5)
+        except Exception as e:
+            print("check_my_booking exception: ", e)
 
     def daily_repeat(self):
-        self.do_click(self.REPEAT_DROPDOWN)
-        sleep(3)
-        self.do_click(self.REPEAT_DAILY)
-        sleep(2)
-        # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
-        sleep(2)
-        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
+        try:
+            self.do_click(self.REPEAT_DROPDOWN)
+            sleep(3)
+            self.do_click(self.REPEAT_DAILY)
+            sleep(2)
+            # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+            sleep(2)
+            self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
+        except Exception as e:
+            print("daily_repeat exception: ", e)
 
     def daily_repeat2(self):
-        self.do_click(self.REPEAT_DROPDOWN)
-        sleep(3)
-        self.do_click(self.REPEAT_DAILY)
-        sleep(2)
-        # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
-        sleep(2)
-        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE2, 2)
+        try:
+            self.do_click(self.REPEAT_DROPDOWN)
+            sleep(3)
+            self.do_click(self.REPEAT_DAILY)
+            sleep(2)
+            # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+            sleep(2)
+            self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE2, 2)
+        except Exception as e:
+            print("daily_repeat2 exception: ", e)
 
     def weekly_repeat(self):
-        self.do_click(self.REPEAT_DROPDOWN)
-        sleep(3)
-        self.do_click(self.REPEAT_WEEKLY)
-        sleep(2)
-        self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE, 2)
-        sleep(2)
-        self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+        try:
+            self.do_click(self.REPEAT_DROPDOWN)
+            sleep(3)
+            self.do_click(self.REPEAT_WEEKLY)
+            sleep(2)
+            self.date_selection_chain(self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE, 2)
+            sleep(2)
+            self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
+        except Exception as e:
+            print("weekly_repeat exception: ", e)
 
     def cancel_booking(self):
-        self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
-        sleep(3)
-        # Meeting Options
-        meeting_options = self.get_element_text_by_xpath(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
-        std_meeting_options = ['Check in', '', 'Cancel Booking']
-        # assert meeting_options == std_meeting_options
-        print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
-        self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-
-    def cancel_last_booking(self):
-        self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV_LAST)
-        sleep(3)
-        # Meeting Options
-        # meeting_options = self.get_element_text(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
-        # std_meeting_options = ['Check in', '', 'Cancel Booking']
-        # assert meeting_options == std_meeting_options
-        print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
-        self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST)
-
-    def cancel_some_bookings(self, crange):
-        for i in range(crange):
-            print("i: ", i)
+        try:
             self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
             sleep(3)
             # Meeting Options
@@ -329,29 +346,65 @@ class RoomBookingsPage(BasePage):
             std_meeting_options = ['Check in', '', 'Cancel Booking']
             # assert meeting_options == std_meeting_options
             print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
-            if i == 0:
-                self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-            else:
-                self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON)
-            sleep(8)
+            self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+        except Exception as e:
+            print("cancel_booking exception: ", e)
+
+    def cancel_last_booking(self):
+        try:
+            self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV_LAST)
+            sleep(3)
+            # Meeting Options
+            # meeting_options = self.get_element_text(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+            # std_meeting_options = ['Check in', '', 'Cancel Booking']
+            # assert meeting_options == std_meeting_options
+            print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+            self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST)
+        except Exception as e:
+            print("cancel_last_booking exception: ", e)
+
+    def cancel_some_bookings(self, crange):
+        try:
+            for i in range(crange):
+                print("i: ", i)
+                self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
+                sleep(3)
+                # Meeting Options
+                meeting_options = self.get_element_text_by_xpath(self.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
+                std_meeting_options = ['Check in', '', 'Cancel Booking']
+                # assert meeting_options == std_meeting_options
+                print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
+                if i == 0:
+                    self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+                else:
+                    self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON)
+                sleep(8)
+        except Exception as e:
+            print("cancel_some_bookings exception: ", e)
 
     def extend_booking(self, etime):
-        pre_extend_time = self.get_element_text_by_xpath(self.PRE_EXTEND_TIME)
-        print("pre_extend_time: ", pre_extend_time)
-        self.do_click_by_xpath(self.CHECKIN_BOOKING)
-        sleep(12)
-        self.do_click_by_xpath(self.EXTEND_BOOKING)
-        sleep(5)
-        self.do_click(etime)
-        sleep(12)
-        textend_confirm = self.get_element_text_by_xpath(self.EXTEND_BOOKING_TEXT_CONFIRM)
-        print("text: ", textend_confirm)
-        assert textend_confirm == "In Use, Booking Extended"
-        post_extend_time = self.get_element_text_by_xpath(self.PRE_EXTEND_TIME)
-        print("post_extend_time: ", post_extend_time)
-        assert pre_extend_time != post_extend_time
+        try:
+            pre_extend_time = self.get_element_text_by_xpath(self.PRE_EXTEND_TIME)
+            print("pre_extend_time: ", pre_extend_time)
+            self.do_click_by_xpath(self.CHECKIN_BOOKING)
+            sleep(12)
+            self.do_click_by_xpath(self.EXTEND_BOOKING)
+            sleep(5)
+            self.do_click(etime)
+            sleep(12)
+            textend_confirm = self.get_element_text_by_xpath(self.EXTEND_BOOKING_TEXT_CONFIRM)
+            print("text: ", textend_confirm)
+            assert textend_confirm == "In Use, Booking Extended"
+            post_extend_time = self.get_element_text_by_xpath(self.PRE_EXTEND_TIME)
+            print("post_extend_time: ", post_extend_time)
+            assert pre_extend_time != post_extend_time
+        except Exception as e:
+            print("extend_booking exception: ", e)
 
     def do_logout(self):
-        self.do_click(self.LOGOUT_DROPDOWN)
-        sleep(2)
-        self.do_click(self.LOGOUT_BUTTON)
+        try:
+            self.do_click(self.LOGOUT_DROPDOWN)
+            sleep(2)
+            self.do_click(self.LOGOUT_BUTTON)
+        except Exception as e:
+            print("do_logout exception: ", e)
