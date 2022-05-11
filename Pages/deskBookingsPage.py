@@ -13,11 +13,13 @@ class deskBookingsPage(BasePage):
     # 
     DESK_NO = None
     # ------
-    BOOKING_NAV = (By.XPATH, f"//*[@id='navigation']/div/div/div/div[2]/div[3]")
-    BOOK_SPACE_NAV = (By.XPATH, f"//*[@id='sub-nav']/div[1]")
-    LOCATION_DROPDOWN = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
-    GENPACT_IT_PARK = (By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
-    BUSINESS_TOWER = (By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
+    BOOKING_NAV = (By.XPATH, "//*[@id='navigation']/div/div/div/div[2]/div[3]")
+    BOOK_SPACE_NAV = (By.XPATH, "//*[@id='sub-nav']/div[1]")
+    LOCATION_DROPDOWN = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
+    # GENPACT_IT_PARK = (By.XPATH, "/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
+    GENPACT_IT_PARK = (By.XPATH, "//div[contains(text(), 'Genpact IT Park')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span")
+    # BUSINESS_TOWER = (By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
+    BUSINESS_TOWER = (By.XPATH, "//*[contains(text(), 'Bussiness Tower')]")
     FREE_CLICK = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     SECOND_FLOOR = (By.XPATH, f"//*[@id='1-floor']/div/div[1]/div[1]")
     STATUS_DROPDOWN = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
