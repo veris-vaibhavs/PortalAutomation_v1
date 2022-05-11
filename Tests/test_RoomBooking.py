@@ -90,12 +90,14 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(5)
         print("Booking should be created successfully: Passed")
+        print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
+        print("Xpath: ", RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
         sleep(3)
 
         # Resource details page
@@ -114,7 +116,7 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         # bookinpage.quit_driver()
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
@@ -3666,6 +3668,7 @@ class Test_RoomBooking(BaseTest):
 
 
     '''Send report'''
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
         print("Sending report in mail....")
         send_email()

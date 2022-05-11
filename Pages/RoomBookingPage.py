@@ -14,30 +14,30 @@ class RoomBookingsPage(BasePage):
 
     # Room No -------
     ROOM_NO = 124
-    ROOM_NUMBER = (By.XPATH, f"//*[@class='desk-title']")
-    ROOM_AVAIL = (By.XPATH, f"//*[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button")
+    ROOM_NUMBER = (By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[5]/div[3]")
+    ROOM_AVAIL = (By.XPATH, "//div[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button")
 
     # ---------------
-    BOOKING_NAV = (By.XPATH, f"//h3[text()='Booking']")
-    BOOK_SPACE_NAV = (By.XPATH, f"//*[contains(text(), 'Book space')]")
+    BOOKING_NAV = (By.XPATH, "//h3[text()='Booking']")
+    BOOK_SPACE_NAV = (By.XPATH, "//*[contains(text(), 'Book space')]")
     LOCATION_DROPDOWN = (
-        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
+        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
     # GENPACT_IT_PARK = (
     #     By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[4]/span[2]/span")
     # BUSINESS_TOWER = (
     #     By.XPATH, f"/html/body/div[5]/div/div/div/div/div/div[3]/div[1]/div/div/div[5]")
-    GENPACT_IT_PARK = (By.XPATH, "//div[contains(text(), 'Genpact IT Park')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span")
-    BUSINESS_TOWER = (By.XPATH, "//*[contains(text(), 'Bussiness Tower')]")
+    GENPACT_IT_PARK = (By.XPATH, "//div[contains(text(), 'Genpact IT Park')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span/child::*")
+    BUSINESS_TOWER = (By.XPATH, "//div[contains(text(), 'Bussiness Tower')]")
     FREE_CLICK = (
-        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
-    FIRST_FLOOR = (By.XPATH, f"//*[@id='0-floor']/div/div[1]/div[1]")
+        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
+    FIRST_FLOOR = (By.XPATH, "//*[@id='0-floor']/div/div[1]/div[1]")
     STATUS_DROPDOWN = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
-    AVAILABLE_STATUS = (By.XPATH, f"//span[text()='Available']")
-    BOOKED_STATUS = (By.XPATH, f"//span[text()='Booked']")
-    ASSIGNED_STATUS = (By.XPATH, f"//span[text()='Assigned']")
-    INACTIVE_STATUS = (By.XPATH, f"//span[text()='Inactive']")
-    ALL_STATUS = (By.XPATH, f"//span[text()='All Status']")
+    AVAILABLE_STATUS = (By.XPATH, "//span[@title='Available']")
+    BOOKED_STATUS = (By.XPATH, "//span[text()='Booked']")
+    ASSIGNED_STATUS = (By.XPATH, "//span[text()='Assigned']")
+    INACTIVE_STATUS = (By.XPATH, "//span[text()='Inactive']")
+    ALL_STATUS = (By.XPATH, "//span[text()='All Status']")
     LIST_VIEW_BUTTON = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[2]/div/div[2]")
 
@@ -209,7 +209,7 @@ class RoomBookingsPage(BasePage):
     def get_room_name(self):
         try:
             rval = self.get_element_text(self.ROOM_NUMBER)
-            print("dval: ", rval)
+            print("rval: ", rval)
             return rval
         except Exception as e:
             print("get_room_name exception: ", e)
