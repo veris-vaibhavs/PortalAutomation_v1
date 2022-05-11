@@ -206,18 +206,7 @@ class Test_RoomBooking(BaseTest):
     def test_change_host_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        sleep(5)
-        print("Selecting Location")
-        # bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Selecting resource type
-        bookinpage.select_resource_type()
-        # Clicking on list view
-        bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
+        bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
 
         # Clicking on available room
         bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)
