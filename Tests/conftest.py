@@ -28,6 +28,7 @@ def init_driver(request):
     options.add_argument('--incognito')
     options.add_argument('--headless')
     options.add_argument('--start-maximized')
+    options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
@@ -40,6 +41,7 @@ def init_driver(request):
     request.cls.driver = web_driver
     web_driver.implicitly_wait(100)
     yield 
+    print("teardown")
     web_driver.close()
 
 

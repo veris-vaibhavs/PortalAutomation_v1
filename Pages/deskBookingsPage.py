@@ -191,9 +191,9 @@ class deskBookingsPage(BasePage):
         sleep(3)
         self.do_click(self.LOCATION_DROPDOWN)
         sleep(5)
-        self.do_click(self.GENPACT_IT_PARK)
+        self.action_chain_click(self.GENPACT_IT_PARK)
         sleep(5)
-        self.do_click(self.BUSINESS_TOWER)
+        self.action_chain_click(self.BUSINESS_TOWER)
         sleep(5)
         self.do_click(self.FREE_CLICK)
         assert "Location selection passed"
