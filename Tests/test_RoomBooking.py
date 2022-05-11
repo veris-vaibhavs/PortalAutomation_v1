@@ -116,7 +116,7 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         # bookinpage.quit_driver()
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
