@@ -34,10 +34,10 @@ class RoomBookingsPage(BasePage):
     STATUS_DROPDOWN = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
     AVAILABLE_STATUS = (By.XPATH, "//span[@title='Available']")
-    BOOKED_STATUS = (By.XPATH, "//span[text()='Booked']")
-    ASSIGNED_STATUS = (By.XPATH, "//span[text()='Assigned']")
-    INACTIVE_STATUS = (By.XPATH, "//span[text()='Inactive']")
-    ALL_STATUS = (By.XPATH, "//span[text()='All Status']")
+    BOOKED_STATUS = (By.XPATH, "//span[@title='Booked']")
+    ASSIGNED_STATUS = (By.XPATH, "//span[@title='Assigned']")
+    INACTIVE_STATUS = (By.XPATH, "//span[@title='Inactive']")
+    ALL_STATUS = (By.XPATH, "//span[@title='All']")
     LIST_VIEW_BUTTON = (
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[2]/div/div[2]")
 
@@ -138,6 +138,17 @@ class RoomBookingsPage(BasePage):
     TAG_DROPDOWN = (By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[2]/div/div")
     TAG_SELECT = (By.XPATH, f"//*[@title='{TestData.TAG}']/preceding-sibling::*[1]")
 
+    # Pagination Check
+    ROOOMS_CLOSE = (By.XPATH, "//span[@title='Rooms']/child::*[2]/child::*/child::*")
+    TOTAL_ITEMS = (By.XPATH, "//*[@class='ant-pagination-total-text'][last()]")
+    PAGE_PREV = (By.XPATH, "//*[@class='ant-pagination-total-text']/following-sibling::*[1]")
+    PAGES_NUMBERING = "//*[@class='ant-pagination-total-text']/following-sibling::*[{}]"
+    FIRST_PAGE_LI = (By.XPATH, "//*[@class='ant-pagination-total-text']/following-sibling::*[2]")
+    NEXT_PREV = (By.XPATH, "//*[@class='ant-pagination-total-text']/following-sibling::*[last()]/*/parent::*/preceding-sibling::*[1]")
+    LAST_PAGE_LI = (By.XPATH, "//*[@class='ant-pagination-total-text']/following-sibling::*[last()]/*/parent::*/preceding-sibling::*[2]")
+
+    NUM_OF_TR = (By.XPATH, "//tbody/tr")
+
 
     # <===================================== Functions =======================================>
 
@@ -154,11 +165,11 @@ class RoomBookingsPage(BasePage):
         sleep(3)
         try:
             self.do_click(self.LOCATION_DROPDOWN)
-            sleep(5)
+            sleep(2)
             self.action_chain_click(self.GENPACT_IT_PARK)
-            sleep(5)
+            sleep(2)
             self.action_chain_click(self.BUSINESS_TOWER)
-            sleep(5)
+            sleep(2)
             self.do_click(self.FREE_CLICK)
             assert "Location selection passed"
         except Exception as e:
@@ -172,13 +183,14 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             self.do_click(self.RESOURCE_ROOM)
             self.do_click(self.FREE_CLICK)
+            sleep(3)
         except Exception as e:
             print("select_resource_type exception: ", e)
 
     def select_floor(self):
         try:
             self.do_click(self.FIRST_FLOOR)
-            sleep(5)
+            sleep(3)
             assert "Floor selection done"
         except Exception as e:
             print("select_floor exception: ", e)
@@ -186,9 +198,9 @@ class RoomBookingsPage(BasePage):
     def select_available_status(self):
         try:
             self.do_click(self.STATUS_DROPDOWN)
-            sleep(5)
+            sleep(2)
             self.do_click(self.AVAILABLE_STATUS)
-            sleep(5)
+            sleep(2)
             assert "Select Available status done"
         except Exception as e:
             print("select_available_status exception: ", e)
@@ -200,7 +212,7 @@ class RoomBookingsPage(BasePage):
             self.do_click(self.TAG_SELECT)
             sleep(3)
             self.do_click(self.FREE_CLICK)
-            sleep(5)
+            sleep(2)
         except Exception as e:
             print("select_tag exception: ", e)
 
@@ -217,9 +229,9 @@ class RoomBookingsPage(BasePage):
     def select_booked_status(self):
         try:
             self.do_click(self.STATUS_DROPDOWN)
-            sleep(5)
+            sleep(2)
             self.do_click(self.BOOKED_STATUS)
-            sleep(5)
+            sleep(2)
             assert "Select Booked status done"
         except Exception as e:
             print("select_booked_status exception: ", e)
@@ -227,10 +239,10 @@ class RoomBookingsPage(BasePage):
     def select_all_status(self):
         try:
             self.do_click(self.STATUS_DROPDOWN)
-            sleep(5)
+            sleep(2)
             self.do_click(self.ALL_STATUS)
-            sleep(5)
-            assert "Select Booked status done"
+            sleep(2)
+            assert "Select All status done"
         except Exception as e:
             print("select_all_status exception: ", e)
 
@@ -279,7 +291,7 @@ class RoomBookingsPage(BasePage):
             sleep(3)
             eltext = self.get_element_text(self.I_INFO).split('\n')
             print("eltext: ", eltext)
-            sleep(5)
+            sleep(3)
             print("At the resource details page, booking should be available: Passed")
         except Exception as e:
             print("I_button exce: ", e)

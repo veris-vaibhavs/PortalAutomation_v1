@@ -15,6 +15,7 @@ class Test_Login(BaseTest):
         sleep(5)
         print("Login done successfully")
 
+
     '''Send report'''
     # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):

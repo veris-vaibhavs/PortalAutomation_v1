@@ -14,9 +14,9 @@ import pytest
 from mail_conf import send_email
 
 
-'''Logger'''
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+# '''Logger'''
+# logging.basicConfig(level=logging.DEBUG)
+# logger = logging.getLogger(__name__)
 
 
 class Test_RoomBooking(BaseTest):
@@ -119,19 +119,9 @@ class Test_RoomBooking(BaseTest):
     # @pytest.mark.skip(reason="no need of currently testing this")
     def test_datetime_change_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
-        sleep(10)
         bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
         sleep(5)
-        # print("Selecting Location")
-        # # bookinpage.select_location()
-        # print("Selecting Floor")
-        # bookinpage.select_floor()
-        # # Checking available resources
-        # bookinpage.select_available_status()
-        # # Selecting resource type
-        # bookinpage.select_resource_type()
-        # # Clicking on list view
-        # bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
+        bookinpage.select_available_status()
 
         # Clicking on available room
         bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)
@@ -202,11 +192,14 @@ class Test_RoomBooking(BaseTest):
         sleep(10)
         # bookinpage.quit_driver()
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_change_host_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
-        sleep(10)
         bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
+        sleep(6)
+
+        # Checking available resources
+        bookinpage.select_available_status()
 
         # Clicking on available room
         bookinpage.do_click(RoomBookingsPage.ROOM_AVAIL)
@@ -510,7 +503,7 @@ class Test_RoomBooking(BaseTest):
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         # bookinpage.quit_driver()
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no need of currently testing this")
     def test_only_host_can_cancel_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(10)
@@ -3566,22 +3559,8 @@ class Test_RoomBooking(BaseTest):
     '''Tags Testing'''
     @pytest.mark.skip(reason="no need of currently testing this")
     def test_tag_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_rlogin(
-                    TestData.USER_NAME, TestData.PASSWORD)
-        sleep(10)
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+        bookinpage = RoomBookingsPage(self.driver)
         sleep(5)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Selecting resource type
-        bookinpage.select_resource_type()
-        # Clicking on list view
-        bookinpage.do_click(RoomBookingsPage.LIST_VIEW_BUTTON)
 
         # Select tag
         bookinpage.select_tag()
@@ -3654,6 +3633,52 @@ class Test_RoomBooking(BaseTest):
 
         sleep(10)
         bookinpage.quit_driver()
+
+    '''Test Pagination'''
+    def test_pagination(self):
+        bookinpage = RoomBookingsPage(self.driver)
+
+        # Checking available resources
+        bookinpage.select_all_status()
+        sleep(5)
+        # Selecting resource type
+        bookinpage.do_click(RoomBookingsPage.ROOOMS_CLOSE)
+        sleep(5)
+
+
+        # Moving to element
+        bookinpage.scroll_to_element(RoomBookingsPage.TOTAL_ITEMS)
+        pages_total = bookinpage.get_element_text(RoomBookingsPage.TOTAL_ITEMS)
+        check_prev = bookinpage.is_clickable(RoomBookingsPage.PAGE_PREV)
+        check_prev_el = bookinpage.get_element(RoomBookingsPage.PAGE_PREV)
+        print("prev check: ", check_prev)
+        print("prev class check: ", check_prev_el.get_attribute("class"))
+
+        check_next = bookinpage.is_clickable(RoomBookingsPage.NEXT_PREV)
+        check_next_el = bookinpage.get_element(RoomBookingsPage.PAGE_PREV)
+        print("next check: ", check_next)
+        print("next class check: ", check_next_el.get_attribute("class"))
+
+        last_page = bookinpage.get_element_text(RoomBookingsPage.LAST_PAGE_LI)
+        print("last-page: ", last_page)
+
+        rows = bookinpage.get_elements(RoomBookingsPage.NUM_OF_TR)
+        print("num of rows: ", len(rows))
+
+        rrange = int(last_page) + 1
+        print("rrange: ", rrange)
+        for i in range(2, rrange, 1):
+            print("i: ", i)
+            PAGES_NUMBERING = f"//*[@class='ant-pagination-total-text']/following-sibling::*[{i}]"
+            print("i xpath: ", PAGES_NUMBERING)
+            bookinpage.scroll_to_element(RoomBookingsPage.TOTAL_ITEMS)
+            bookinpage.do_click_by_xpath(PAGES_NUMBERING)
+            rows = bookinpage.get_elements(RoomBookingsPage.NUM_OF_TR)
+            print("num of rows: ", len(rows))
+            sleep(3)
+
+        sleep(5)
+
 
 
     '''Send report'''

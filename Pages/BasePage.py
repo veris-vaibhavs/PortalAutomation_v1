@@ -45,6 +45,10 @@ class BasePage:
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
         return bool(element)
 
+    def is_clickable(self, by_locator):
+        element = WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator))
+        return bool(element)
+
     def get_title(self, title):
         WebDriverWait(self.driver, self.time_delay).until(EC.title_is(title))
         return self.driver.title
@@ -52,6 +56,10 @@ class BasePage:
     def get_element(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
         return element
+
+    def get_elements(self, by_locator):
+        elements = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_all_elements_located(by_locator))
+        return elements
 
     def get_present_element(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.presence_of_all_elements_located(by_locator))

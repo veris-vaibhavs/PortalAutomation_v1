@@ -25,7 +25,7 @@ def init_driver(request):
     options.add_argument("--dns-prefetch-disable")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument('--start-maximized')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -40,7 +40,7 @@ def init_driver(request):
     request.cls.driver = web_driver
     web_driver.implicitly_wait(100)
     yield 
-    print("teardown")
+    print("\nteardown")
     web_driver.close()
 
 
