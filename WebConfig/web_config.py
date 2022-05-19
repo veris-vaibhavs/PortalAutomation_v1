@@ -19,6 +19,8 @@ class TestData:
 
     LOGIN_PAGE_TITLE = "Veris | Powering Future Workplaces"
 
+    RESOURCE_PAGE_URL = "https://ndl.veris.in/meeting-room/find-resource"
+
     
     def time_select_start_1():
         now = datetime.now()
@@ -76,23 +78,23 @@ class TestData:
         print("booking_date_1: ", bdate)
         return bdate
 
-    def repeat_till_date_1():
+    def repeat_till_date_1(dys):
         now = datetime.now()
-        future_time = now + timedelta(days=30)
+        future_time = now + timedelta(days=dys)
         bdate = future_time.strftime("%d %b %Y")
         print("repeat_till_date_1: ", bdate)
         return bdate
 
-    def room_start_datetime():
+    def room_start_datetime(d,m):
         now = datetime.now()
-        future_time = now + timedelta(days=5, minutes=15)
+        future_time = now + timedelta(days=d, minutes=m)
         rsdate = future_time.strftime("%d %b %Y %H:%M")
         print("rsdate: ", rsdate)
         return rsdate
 
-    def room_end_datetime():
+    def room_end_datetime(d,m):
         now = datetime.now()
-        future_time = now + timedelta(days=5, minutes=30)
+        future_time = now + timedelta(days=d, minutes=m)
         redate = future_time.strftime("%d %b %Y %H:%M")
         print("redate: ", redate)
         return redate
@@ -132,8 +134,9 @@ class TestData:
     TILL_NEXT_DAY_START_TIME = "26 Apr 2022 23:55"
     TILL_NEXT_DAY_START_TIME_1 = "26 Apr 2022 23:55"
     TILL_NEXT_DAY_END_TIME = "27 Apr 2022 01:30"
-    REPEAT_TILL_DATE = f"{repeat_till_date_1()} 01:00"
-    REPEAT_TILL_DATE2 = f"{repeat_till_date_1()} 23:00"
+    REPEAT_TILL_DATE = f"{repeat_till_date_1(30)} 01:00"
+    REPEAT_TILL_DATE2 = f"{repeat_till_date_1(30)} 23:00"
+    REPEAT_TILL_DATE3 = repeat_till_date_1(6)
     DESK_NO_1 = None
 
     '''Room booking'''
@@ -142,8 +145,8 @@ class TestData:
     NEW_CONTACT_1_EMAIL = "rahul1@gmail.com"
     NEW_CONTACT_2 = "Rahul2"
     NEW_CONTACT_2_EMAIL = "rahul2@gmail.com"
-    ROOM_START_DATE = room_start_datetime()
-    ROOM_END_DATE = room_end_datetime()
+    ROOM_START_DATE = room_start_datetime(2,15)
+    ROOM_END_DATE = room_end_datetime(2,35)
     CONTACT_1_IS_DRAFTED_FALSE = "test veris"
     CONTACT_1_IS_MEMBER = "Johnathan Gracer"
     CONTACT_2_IS_MEMBER = "Mark Jacob"
@@ -153,8 +156,12 @@ class TestData:
     ROOM_OVERLAPPING_TIME_END_2 = "27 Apr 2022 01:10"
     ROOM_OVERLAPPING_TIME_START_1 = "27 Apr 2022 01:15"
     ROOM_OVERLAPPING_TIME_END_1 = "27 Apr 2022 01:30"
+
+    '''Weekly'''
+    ROOM_WSTART_DATE = room_start_datetime(7,15)
+    ROOM_WEND_DATE = room_end_datetime(7,35)
     REPEAT_FREQUENCY = "1"
-    WEEKLY_REPEAT_TILL_DATE = "2 May 2022"
+    WEEKLY_REPEAT_TILL_DATE = repeat_till_date_1(21)
     WEEKLY_REPEAT_TILL_DATE2 = "24 Apr 2022"
 
     '''Amenities'''

@@ -23,6 +23,10 @@ class BasePage:
     def do_click(self, by_locator):
         WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator)).click()
 
+    def do_click_by_script(self, by_locator):
+        btn = self.driver.find_element(by_locator)
+        self.driver.execute_script("arguments[0].click();", btn)
+
     def do_click_by_xpath(self, by_locator):
         WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable((By.XPATH, by_locator))).click()
 
@@ -30,8 +34,8 @@ class BasePage:
         elem = WebDriverWait(self.driver, self.time_delay).until(EC.presence_of_all_elements_located((By.XPATH, by_locator)))
         elem[index].click()
 
-    def do_send_keys(self, by_locator, text):
-        WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(text)
+    def do_send_keys(self, by_locator, keys):
+        WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(keys)
 
     def get_element_text(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
@@ -44,6 +48,9 @@ class BasePage:
     def is_enabled(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
         return bool(element)
+
+    def is_invisible(self, by_locator):
+        WebDriverWait(self.driver, 25).until(EC.invisibility_of_element_located(by_locator))
 
     def is_clickable(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.element_to_be_clickable(by_locator))
@@ -74,7 +81,7 @@ class BasePage:
             actions.send_keys(elkeys)
             sleep(2)
             actions.perform()
-            sleep(2)
+            sleep(4)
             select_host = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
             actions.move_to_element(select_host)
             if ex is not None:
@@ -232,7 +239,14 @@ class BasePage:
             for event in events:
                 pprint.pprint(event, stream=out)
 
+    def driver_close(self):
+        self.driver.close()
 
+    def driver_implicitly_wait(self, wtime):
+        self.driver.implicitly_wait(wtime)
+
+    def driver_get_url(self, url):
+        self.driver.get(url)
 
 def process_browser_logs_for_network_events(logs):
     print("in process_browser")
