@@ -31,8 +31,9 @@ class deskBookingsPage(BasePage):
     ALL_STATUS = (By.XPATH, f"//span[text()='All Status']")
     LIST_VIEW_BUTTON = (By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[2]/div/div[2]")
     # DESK_201 = (By.XPATH, f"//*[@id='meeting-room-list']/div/div/div/div/div/div/table/tbody/tr[1]/td[6]/button")
-    DESK_AVAIL = (By.XPATH, f"//*[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button")
+    DESK_AVAIL = "(//*[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button)"
     DESK_AVAIL_2 = (By.XPATH, "//*[text()='Available']/parent::*/parent::*/preceding-sibling::*/div/div")
+    DESK_AVAIL_NAME = "(//div[text()='Available']/parent::*/parent::*/preceding-sibling::*/div/div)"
     DESK_201 = "//*[text()='{}']/parent::*/parent::*/following-sibling::*[5]/button"
     DESK_205 = (By.XPATH, f"//*[@id='meeting-room-list']/div/div/div/div/div/div/table/tbody/tr[6]/td[6]/button")
     DESK_NUMBER = (By.XPATH, f"//*[@class='desk-title']")
@@ -239,8 +240,15 @@ class deskBookingsPage(BasePage):
         print("dval: ", dval)
         return dval
         
-    # def select_available_desk(self):
-    #     self.get_element_text(self.DESK_AVAIL)
+    def select_available_resource(self):
+        # self.do_click(self.ROOM_AVAIL)
+        for i in range(1,6):
+            title = self.get_element_text_by_xpath(self.DESK_AVAIL_NAME+str([i]))
+            if title not in TestData.DESK_W_ISSUE:
+                self.do_click_by_xpath(self.DESK_AVAIL+str([i]))
+                break
+            else:
+                pass
 
     def resource_details_page_check(self):
         self.scroll_to_element(self.SCHEDULE_LISTING)
@@ -270,10 +278,8 @@ class deskBookingsPage(BasePage):
         self.time_selection(self.TIME_SELECT_END, TestData.TIME_END)
 
     def check_my_booking(self):
-        print("chekb xpath1: ", self.DESK_201_CHECK_DIV)
-        print("chekb xpath2: ", self.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK)
         self.do_click(self.MY_BOOKING_NAV)
-        self.scroll_to_element_by_xpath(self.DESK_201_CHECK_DIV)
+        self.scroll_to_element_to_mid_by_xpath(self.DESK_201_CHECK_DIV)
         sleep(3)
         # Meeting Options
         meeting_options = self.get_element_text_by_xpath(self.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK).split('\n')
@@ -281,7 +287,7 @@ class deskBookingsPage(BasePage):
         # assert meeting_options == std_meeting_options
         print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
         self.do_click_by_xpath(self.DESK_201_CHECK_DIV)
-        sleep(5)
+        sleep(2)
 
     def resource_page_booking_check(self):
         rpage_status = self.get_element_text_by_xpath(self.DESK_201_RPAGE_STATUS_CHECK)
@@ -393,6 +399,19 @@ class deskBookingsPage(BasePage):
         sleep(2)
         self.do_click(self.LOGOUT_BUTTON)
 
+    def start_selection(self):
+        sleep(3)
+        print("Selecting Location")
+        self.select_location()
+        print("Selecting Floor")
+        self.select_floor()
+        # Checking available resources
+        self.select_available_status()
+        # Selecting resource type
+        self.select_resource_type_desk()
+        # Clicking on list view
+        self.do_click(self.LIST_VIEW_BUTTON)
+        sleep(2)
 
     def update_health_status(self):
         val = self.is_enabled(self.HEALTH_STATUS_PROMPT)
@@ -420,3 +439,6 @@ class deskBookingsPage(BasePage):
             self.do_click(self.DESK_201)
         else:
             pass
+
+
+    

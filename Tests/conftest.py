@@ -14,9 +14,8 @@ from webdriver_manager.utils import ChromeType
 
 @pytest.fixture(params=["chrome"], scope='class')
 def init_driver(request):
-    caps = DesiredCapabilities.CHROME
-    caps['goog:loggingPrefs'] = {'performance': 'ALL'}
     options = Options()
+    options.set_capability("loggingPrefs", {'performance': 'ALL'})
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-features=VizDisplayCompositor")
     options.add_argument("enable-automation")
@@ -25,7 +24,7 @@ def init_driver(request):
     options.add_argument("--dns-prefetch-disable")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument("--allow-insecure-localhost")
     # options.add_argument('--start-maximized')
     options.add_argument('--window-size=1280,800')
@@ -34,7 +33,7 @@ def init_driver(request):
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
     #    web_driver = webdriver.Chrome(executable_path="chromedriver", options=options, desired_capabilities=caps)
-        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options, desired_capabilities=caps) 
+        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options) 
  
     #    web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, desired_capabilities=caps)
     if request.param == "firefox":

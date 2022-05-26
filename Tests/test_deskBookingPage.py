@@ -21,47 +21,34 @@ logger = logging.getLogger(__name__)
 
 class Test_Booking(BaseTest):
 
+    # Login
+    @pytest.mark.pnr
+    @pytest.mark.prsc
+    @pytest.mark.prs
+    @pytest.mark.pr
+    @pytest.mark.prw
+    @pytest.mark.pcnclb
+    @pytest.mark.extndb
+    @pytest.mark.misc
+    @pytest.mark.hostrltd
     def test_login(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
 
 
     """Non-Recurring"""
 
-    # @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_simple_booking(self):
         bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
         
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Network logs
-        try:
-            bookinpage.print_browser_logs()
-        except Exception as e:
-            print("network exception: ", e)
-
-        # Get total desks value
-        try:
-            total_desks = bookinpage.get_element_text(deskBookingsPage.TOTAL_DESKS_2ND_FLOOR)
-            print("total_desks: ", total_desks)
-            available_desks = bookinpage.get_element_text(deskBookingsPage.AVAILABLE_DESKS_2ND_FLOOR)
-            print("available_desks: ", available_desks)
-        except Exception as e:
-            print("Desk count exception: ", e)
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
-
+        bookinpage.select_available_resource()
 
         dval = bookinpage.get_desk_name()
         # setting desk value
@@ -81,147 +68,46 @@ class Test_Booking(BaseTest):
         
         deskBookingsPage.DESK_201_CHECK_RDIV = deskBookingsPage.DESK_201_CHECK_RDIV.format(deskBookingsPage.DESK_NO)
         deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON = deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
-        val1 = ('xpath', "//p[text()='None']")
-        if deskBookingsPage.DESK_201_CHECK_NAME == val1:
-            bookinpage.quit_driver()
-
-        # COVID_DECLARATION Check
-        # bookinpage.update_health_status()
 
         # Clicking on booking button
-        sleep(5)
+        bookinpage.driver_implicitly_wait(5)
         bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(5)
+        sleep(2)
         print("Booking should be created successfully: Passed")
-
-        print("Desk_no_confirm: ", deskBookingsPage.DESK_NO)
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         # bookinpage.resource_page_booking_check()
-        sleep(3)
+        bookinpage.driver_implicitly_wait(3)
 
-        print("Xpath: ", deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
         # Resource details page
         bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        sleep(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        bookinpage.driver_implicitly_wait(8)
         bookinpage.resource_details_page_check()
-        sleep(5)
+        bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        # bookinpage.check_my_booking()
-        # sleep(5)
+        bookinpage.check_my_booking(deskBookingsPage.BOOKING_NAV)
         print("Create a booking for the desk by selecting a default date and time: Passed")
-        # bookinpage.quit_driver()
+        bookinpage.driver_implicitly_wait(10)
+        # Cancelling Booking
+        bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON)
+        sleep(2)
 
-    @pytest.mark.skip(reason="to be edited once tags are alloted")
-    def test_simple_booking_by_tag(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
-        # Network logs
-        try:
-            bookinpage.print_browser_logs()
-        except Exception as e:
-            print("network exception: ", e)
-
-        # Get total desks value
-        try:
-            total_desks = bookinpage.get_element_text(deskBookingsPage.TOTAL_DESKS_2ND_FLOOR)
-            print("total_desks: ", total_desks)
-            available_desks = bookinpage.get_element_text(deskBookingsPage.AVAILABLE_DESKS_2ND_FLOOR)
-            print("available_desks: ", available_desks)
-        except Exception as e:
-            print("Desk count exception: ", e)
-
-        # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
-
-
-        dval = bookinpage.get_desk_name()
-        # setting desk value
-        deskBookingsPage.DESK_NO = dval
-        deskBookingsPage.DESK_201_CHECK_NAME = deskBookingsPage.DESK_201_CHECK_NAME.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_CHECK_DIV = deskBookingsPage.DESK_201_CHECK_DIV.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK = deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK.format(deskBookingsPage.DESK_NO)
-        
-        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_RPAGE_CHECK_DIV = deskBookingsPage.DESK_201_RPAGE_CHECK_DIV.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON = deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK = deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_SCHEDULE_CHECK = deskBookingsPage.DESK_201_SCHEDULE_CHECK.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(deskBookingsPage.DESK_NO)
-        
-        deskBookingsPage.DESK_201_CHECK_RDIV = deskBookingsPage.DESK_201_CHECK_RDIV.format(deskBookingsPage.DESK_NO)
-        deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON = deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
-        val1 = ('xpath', "//p[text()='None']")
-        if deskBookingsPage.DESK_201_CHECK_NAME == val1:
-            bookinpage.quit_driver()
-
-        # COVID_DECLARATION Check
-        # bookinpage.update_health_status()
-
-        # Clicking on booking button
-        sleep(5)
-        bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(5)
-        print("Booking should be created successfully: Passed")
-
-        print("Desk_no_confirm: ", deskBookingsPage.DESK_NO)
-
-        # Checking Booking
-        # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        # bookinpage.resource_page_booking_check()
-        sleep(3)
-
-        print("Xpath: ", deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        # Resource details page
-        bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        sleep(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        sleep(5)
-
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        # bookinpage.check_my_booking()
-        # sleep(5)
-        print("Create a booking for the desk by selecting a default date and time: Passed")
-        # bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.hostrltd
     def test_host_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
-        # try:
-        #     bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        # except Exception as e:
-        #     print("Exception on Nav: ", e)
-        bookinpage.select_available_status()
-        sleep(5)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
+        
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
         sleep(10)
 
         # Covid-declaration check
@@ -274,17 +160,19 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking for the desk by changing the default host: Passed")
         
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_datetime_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
-        bookinpage.select_available_status()
-
-        sleep(5)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
         print("Clicking on desk 201 modal")
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
-        sleep(10)
+        bookinpage.select_available_resource()
+        bookinpage.driver_implicitly_wait(10)
 
         # Selecting datetime
         bookinpage.selecting_date()
@@ -319,23 +207,21 @@ class Test_Booking(BaseTest):
         print("Clicking on booking button")
         bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
         print("Booking should be created successfully: Passed")
-        sleep(8)
+        sleep(2)
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
+        bookinpage.select_all_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        bookinpage.resource_page_date_select()
-        bookinpage.resource_page_booking_check()
-        sleep(3)
+        bookinpage.driver_implicitly_wait(3)
 
         # Resource details page
         bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        sleep(8)
+        bookinpage.driver_implicitly_wait(8)
         bookinpage.resource_details_date_select()
         checklist = [TestData.HOST1_FULLNAME, TestData.HOST1_EMAIL, start_check, end_check]
         bookinpage.resource_details_page_check()
-        sleep(5)
+        bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
@@ -343,28 +229,17 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking for the desk by changing the default date and time: Passed")
         
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_overlapping_booking(self):
-        # self.loginPage = LoginPage(self.driver)
-        # bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
         bookinpage = deskBookingsPage(self.driver)
-        # sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(5)
-        # print("Selecting Location")
-        # bookinpage.select_location()
-        # print("Selecting Floor")
-        # bookinpage.select_floor()
-
-        # Checking available resources
-        bookinpage.select_available_status()
-
-        # # Clicking on list view
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -406,23 +281,14 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking of desk by selecting the  date & time such a way that booking time is overlapping to the existing booking: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_already_cancelled_booking(self):
-        # self.loginPage = LoginPage(self.driver)
-        # bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        # sleep(15)
-        # bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
         bookinpage = deskBookingsPage(self.driver)
-        # sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(5)
-        # print("Selecting Location")
-        # bookinpage.select_location()
-        # print("Selecting Floor")
-        # bookinpage.select_floor()
-
-        # Checking available resources
-        bookinpage.select_available_status()
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Get total desks value
         try:
@@ -433,12 +299,9 @@ class Test_Booking(BaseTest):
         except Exception as e:
             print("Desk count exception: ", e)
 
-        # Clicking on list view
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -486,7 +349,9 @@ class Test_Booking(BaseTest):
         sleep(3)
 
         # Checking available resources
-        bookinpage.select_available_status()
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Again booking on cancelled time
         bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON)
@@ -512,30 +377,18 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Booking of desk by selecting the time of already cancelled booking: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_till_next_date_booking(self):
-        # self.loginPage = LoginPage(self.driver)
-        # bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        # sleep(15)
-        # bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        # sleep(10)
         bookinpage = deskBookingsPage(self.driver)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(5)
-        # bookinpage.select_location()
-        # bookinpage.select_floor()
-        bookinpage.select_available_status()
-
-
-        # # Clicking on list view
-        # print("Clicking on list view")
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
-        sleep(5)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
         print("Clicking on desk 201 modal")
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
         sleep(10)
 
         # Multiple days
@@ -598,17 +451,18 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking of the desk by selecting a date& time such a way that its overlapping the date : Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pnr
     def test_overlapping_till_next_date_booking(self):
         bookinpage = deskBookingsPage(self.driver)
-        # sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(5)
-        bookinpage.select_available_status()
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
         print("Clicking on desk 201 modal")
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
         sleep(6)
 
         # Selecting host
@@ -697,22 +551,14 @@ class Test_Booking(BaseTest):
     """Recurring"""
 
     '''Daily'''
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pr
     def test_simple_daily_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -730,7 +576,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # COVID_DECLARATION Check
         # bookinpage.update_health_status()
@@ -783,31 +629,20 @@ class Test_Booking(BaseTest):
         bookinpage.check_my_booking()
         sleep(5)
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
-        bookinpage.quit_driver()
+        
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pr
     def test_datetime_change_daily_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        bookinpage.select_location()
-        bookinpage.select_floor()
-        bookinpage.select_available_status()
-
-        # Clicking on list view
-        print("Clicking on list view")
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
-        sleep(5)
-
-        # Selecting multiple date
-        bookinpage.resource_page_multiple_date_select()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
         print("Clicking on desk 201 modal")
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
         sleep(10)
 
 
@@ -871,25 +706,17 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a Daily recurring booking for the desk by changing the default date and time.: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pr
     def test_overlapping_daily_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -934,25 +761,17 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking of desk by selecting the  date & time such a way that booking time is overlapping to the existing booking: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pr
     def test_already_cancelled_daily_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -995,7 +814,9 @@ class Test_Booking(BaseTest):
         sleep(3)
 
         # Checking available resources
-        bookinpage.select_available_status()
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Again booking on cancelled time
         bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON)
@@ -1019,22 +840,14 @@ class Test_Booking(BaseTest):
 
 
     '''Weekly'''
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.prw
     def test_simple_weekly_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1052,7 +865,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1105,27 +918,19 @@ class Test_Booking(BaseTest):
         bookinpage.check_my_booking()
         sleep(5)
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
-        bookinpage.quit_driver()
+        
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.prw
     def test_datetime_change_weekly_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        bookinpage.select_location()
-        bookinpage.select_floor()
-        bookinpage.select_available_status()
-
-        # Clicking on list view
-        print("Clicking on list view")
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
-        sleep(5)
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
         sleep(6)
 
 
@@ -1190,25 +995,17 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a Daily recurring booking for the desk by changing the default date and time.: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.prw
     def test_overlapping_weekly_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -1253,25 +1050,17 @@ class Test_Booking(BaseTest):
         sleep(5)
         print("Create a booking of desk by selecting the  date & time such a way that booking time is overlapping to the existing booking: Passed")
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.prw
     def test_already_cancelled_weekly_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Selecting time
         bookinpage.select_time()
@@ -1314,7 +1103,9 @@ class Test_Booking(BaseTest):
         sleep(3)
 
         # Checking available resources
-        bookinpage.select_available_status()
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Again booking on cancelled time
         bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON)
@@ -1338,23 +1129,15 @@ class Test_Booking(BaseTest):
 
     
     '''Extend Booking'''
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_extend_single_daily_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1372,7 +1155,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1434,24 +1217,16 @@ class Test_Booking(BaseTest):
         sleep(5)
 
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
-        bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+        
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_extend_single_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1469,7 +1244,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1530,24 +1305,16 @@ class Test_Booking(BaseTest):
         sleep(5)
 
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
-        bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+        
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_extend_single_overlapping_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1566,7 +1333,7 @@ class Test_Booking(BaseTest):
 
         # Booking single for extending purpose
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1672,24 +1439,16 @@ class Test_Booking(BaseTest):
         sleep(5)
 
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
-        bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+        
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_extend_single_cancelled_recurring_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1708,7 +1467,7 @@ class Test_Booking(BaseTest):
 
         # Booking single for extending purpose
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1802,24 +1561,16 @@ class Test_Booking(BaseTest):
         sleep(5)
 
         print("Start meeting and then extend the booking for the next 30 minute make sure there is a cancelled recurring  existing booking  is available : Passed")
-        bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+        
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_extend_single_cancelled_single_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -1838,7 +1589,7 @@ class Test_Booking(BaseTest):
 
         # Booking single for extending purpose
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -1927,28 +1678,19 @@ class Test_Booking(BaseTest):
         sleep(5)
 
         print("Start meeting and then extend the booking for the next 30 minute make sure there is a cancelled single  existing booking  is available : Passed")
-        bookinpage.quit_driver()
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+        
+    @pytest.mark.skip(reason="no way of currently testing this")
+    @pytest.mark.extndb
     def test_till_next_date_extended_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        bookinpage.select_location()
-        bookinpage.select_floor()
-        bookinpage.select_available_status()
-
-
-        # Clicking on list view
-        print("Clicking on list view")
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
-        sleep(5)
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2024,22 +1766,14 @@ class Test_Booking(BaseTest):
 
     '''Cancel Booking'''
 
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_single_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -2057,7 +1791,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2109,32 +1843,21 @@ class Test_Booking(BaseTest):
         sleep(5)
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.scroll_to_element_by_index(deskBookingsPage.DESK_201_CHECK_RDIV, 2)
+        bookinpage.scroll_to_element_by_index(deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON, 2)
         sleep(2)
-        bookinpage.do_click_by_index(deskBookingsPage.DESK_201_CHECK_RDIV, 2)
-        sleep(3)
         bookinpage.do_click_by_index(deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON, 2)
-        sleep(8)
+        sleep(3)
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
-        bookinpage.quit_driver()
+        
 
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_all_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -2152,7 +1875,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2215,25 +1938,16 @@ class Test_Booking(BaseTest):
         bookinpage.do_click_by_index(deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_BUTTON, 0)
         sleep(8)
         print("Create a daily recurring booking for a month and delete all instances: Passed")
-        bookinpage.quit_driver()
+        
 
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_single_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -2251,7 +1965,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2312,25 +2026,16 @@ class Test_Booking(BaseTest):
         bookinpage.do_click_by_index(deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON, 2)
         sleep(8)
         print("Create a weekly recurring booking for a month and delete any single instance: Passed")
-        bookinpage.quit_driver()
+        
 
-
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_all_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -2348,7 +2053,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2411,25 +2116,16 @@ class Test_Booking(BaseTest):
         bookinpage.do_click_by_index(deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_BUTTON, 0)
         sleep(8)
         print("Create a weekly recurring booking for a month and delete all booking: Passed")
-        bookinpage.quit_driver()
+        
 
-    
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_single_booking(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
         # Network logs
         try:
@@ -2447,7 +2143,7 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
+        bookinpage.select_available_resource()
 
         # Getting Desk value
         dval = bookinpage.get_desk_name()
@@ -2505,101 +2201,73 @@ class Test_Booking(BaseTest):
         bookinpage.do_click_by_index(deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON, 0)
         sleep(8)
         print("Create a single booking and cancel it: Passed")
-        bookinpage.quit_driver()
+        
 
 
     ''''Find My Colleague'''
-    @pytest.mark.skip(reason="no need of currently testing this")
+    @pytest.mark.misc
     def find_my_colleague(self):
-        self.loginPage = LoginPage(self.driver)
-        # bookinpage = self.loginPage.do_login(TestData.USER_NAME_2, TestData.PASSWORD_2)
-        # sleep(15)
-        # bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        # sleep(10)
-        # print("Selecting Location")
-        # bookinpage.select_location()
-        # print("Selecting Floor")
-        # bookinpage.select_floor()
-        # # Checking available resources
-        # bookinpage.select_available_status()
-        # # Clicking on list view
-        # bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        # bookinpage.select_resource_type_desk()
-        # # Network logs
-        # try:
-        #     bookinpage.print_browser_logs()
-        # except Exception as e:
-        #     print("network exception: ", e)
-
-        # # Get total desks value
-        # try:
-        #     total_desks = bookinpage.get_element_text(deskBookingsPage.TOTAL_DESKS_2ND_FLOOR)
-        #     print("total_desks: ", total_desks)
-        #     available_desks = bookinpage.get_element_text(deskBookingsPage.AVAILABLE_DESKS_2ND_FLOOR)
-        #     print("available_desks: ", available_desks)
-        # except Exception as e:
-        #     print("Desk count exception: ", e)
-
-        # # Clicking on desk 201 modal
-        # bookinpage.do_click(deskBookingsPage.DESK_AVAIL)
-
-
-        # dval = bookinpage.get_desk_name()
-        # # setting desk value
-        # deskBookingsPage.DESK_NO = dval
-        # deskBookingsPage.DESK_201_CHECK_NAME = deskBookingsPage.DESK_201_CHECK_NAME.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_CHECK_DIV = deskBookingsPage.DESK_201_CHECK_DIV.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK = deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK.format(deskBookingsPage.DESK_NO)
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
         
-        # deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_RPAGE_CHECK_DIV = deskBookingsPage.DESK_201_RPAGE_CHECK_DIV.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON = deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK = deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_SCHEDULE_CHECK = deskBookingsPage.DESK_201_SCHEDULE_CHECK.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(deskBookingsPage.DESK_NO)
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
+
+        # Clicking on desk 201 modal
+        bookinpage.select_available_resource()
+
+
+        dval = bookinpage.get_desk_name()
+        # setting desk value
+        deskBookingsPage.DESK_NO = dval
+        deskBookingsPage.DESK_201_CHECK_NAME = deskBookingsPage.DESK_201_CHECK_NAME.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_CHECK_DIV = deskBookingsPage.DESK_201_CHECK_DIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK = deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK.format(deskBookingsPage.DESK_NO)
         
-        # deskBookingsPage.DESK_201_CHECK_RDIV = deskBookingsPage.DESK_201_CHECK_RDIV.format(deskBookingsPage.DESK_NO)
-        # deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON = deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
-        # val1 = ('xpath', "//p[text()='None']")
-        # if deskBookingsPage.DESK_201_CHECK_NAME == val1:
-        #     bookinpage.quit_driver()
+        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_CHECK_DIV = deskBookingsPage.DESK_201_RPAGE_CHECK_DIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON = deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK = deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_SCHEDULE_CHECK = deskBookingsPage.DESK_201_SCHEDULE_CHECK.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(deskBookingsPage.DESK_NO)
+        
+        deskBookingsPage.DESK_201_CHECK_RDIV = deskBookingsPage.DESK_201_CHECK_RDIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON = deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
+        val1 = ('xpath', "//p[text()='None']")
+        # Clicking on booking button
+        sleep(5)
+        bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(5)
+        print("Booking should be created successfully: Passed")
 
-        # # COVID_DECLARATION Check
-        # # bookinpage.update_health_status()
+        print("Desk_no_confirm: ", deskBookingsPage.DESK_NO)
 
-        # # Clicking on booking button
+        # Checking Booking
+        # At the find resource page, status of booking should be changed from available to booked
+        bookinpage.select_booked_status()
+        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+        # bookinpage.resource_page_booking_check()
+        sleep(3)
+
+        print("Xpath: ", deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
+        # Resource details page
+        bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
+        sleep(8)
+        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        bookinpage.resource_details_page_check()
+        sleep(5)
+
+        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
+        sleep(10)
+        bookinpage.check_my_booking()
         # sleep(5)
-        # bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
-        # sleep(5)
-        # print("Booking should be created successfully: Passed")
-
-        # print("Desk_no_confirm: ", deskBookingsPage.DESK_NO)
-
-        # # Checking Booking
-        # # At the find resource page, status of booking should be changed from available to booked
-        # bookinpage.select_booked_status()
-        # print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        # # bookinpage.resource_page_booking_check()
-        # sleep(3)
-
-        # print("Xpath: ", deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        # # Resource details page
-        # bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
-        # sleep(8)
-        # # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        # bookinpage.resource_details_page_check()
-        # sleep(5)
-
-        # # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        # bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        # sleep(10)
-        # bookinpage.check_my_booking()
-        # # sleep(5)
-        # # Logging out
-        # bookinpage.do_logout()
-        # sleep(8)
+        # Logging out
+        bookinpage.do_logout()
+        sleep(8)
 
         # Logging again using attendee details
         bookinpage = self.loginPage.do_rlogin(
@@ -2621,26 +2289,19 @@ class Test_Booking(BaseTest):
         # Network logs
         print("Create a booking for the desk by selecting a default date and time: Passed")
 
-        bookinpage.quit_driver()
+        
 
+    '''Select by tag'''
+    
+    @pytest.mark.misc
+    def test_simple_booking_by_tag(self):
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
 
-    '''Check and edit amenities'''
-    @pytest.mark.skip(reason="no need of currently testing this")
-    def test_amenities(self):
-        self.loginPage = LoginPage(self.driver)
-        bookinpage = self.loginPage.do_login(TestData.USER_NAME, TestData.PASSWORD)
-        sleep(15)
-        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
-        sleep(10)
-        print("Selecting Location")
-        bookinpage.select_location()
-        print("Selecting Floor")
-        bookinpage.select_floor()
-        # Checking available resources
-        bookinpage.select_available_status()
-        # Clicking on list view
-        bookinpage.do_click(deskBookingsPage.LIST_VIEW_BUTTON)
-        bookinpage.select_resource_type_desk()
         # Network logs
         try:
             bookinpage.print_browser_logs()
@@ -2657,7 +2318,88 @@ class Test_Booking(BaseTest):
             print("Desk count exception: ", e)
 
         # Clicking on desk 201 modal
-        bookinpage.do_click(deskBookingsPage.DESK_AVAIL_2)
+        bookinpage.select_available_resource()
+
+
+        dval = bookinpage.get_desk_name()
+        # setting desk value
+        deskBookingsPage.DESK_NO = dval
+        deskBookingsPage.DESK_201_CHECK_NAME = deskBookingsPage.DESK_201_CHECK_NAME.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_CHECK_DIV = deskBookingsPage.DESK_201_CHECK_DIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK = deskBookingsPage.DESK_201_MEETING_OPTIONS_BUTTONS_CHECK.format(deskBookingsPage.DESK_NO)
+        
+        deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE = deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_CHECK_DIV = deskBookingsPage.DESK_201_RPAGE_CHECK_DIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON = deskBookingsPage.DESK_201_RPAGE_CHECK_BOOK_BUTTON.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK = deskBookingsPage.DESK_201_RPAGE_STATUS_CHECK.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_SCHEDULE_CHECK = deskBookingsPage.DESK_201_SCHEDULE_CHECK.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(deskBookingsPage.DESK_NO)
+        
+        deskBookingsPage.DESK_201_CHECK_RDIV = deskBookingsPage.DESK_201_CHECK_RDIV.format(deskBookingsPage.DESK_NO)
+        deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON = deskBookingsPage.DESK_201_RDIV_CANCEL_BUTTON.format(deskBookingsPage.DESK_NO)
+        val1 = ('xpath', "//p[text()='None']")
+        # COVID_DECLARATION Check
+        # bookinpage.update_health_status()
+
+        # Clicking on booking button
+        sleep(5)
+        bookinpage.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(5)
+        print("Booking should be created successfully: Passed")
+
+        print("Desk_no_confirm: ", deskBookingsPage.DESK_NO)
+
+        # Checking Booking
+        # At the find resource page, status of booking should be changed from available to booked
+        bookinpage.select_booked_status()
+        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+        # bookinpage.resource_page_booking_check()
+        sleep(3)
+
+        print("Xpath: ", deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
+        # Resource details page
+        bookinpage.do_click_by_xpath(deskBookingsPage.DESK_201_AFTER_BOOKING_TITLE)
+        sleep(8)
+        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        bookinpage.resource_details_page_check()
+        sleep(5)
+
+        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+        bookinpage.do_click(deskBookingsPage.BOOKING_NAV)
+        sleep(10)
+        # bookinpage.check_my_booking()
+        # sleep(5)
+        print("Create a booking for the desk by selecting a default date and time: Passed")
+
+
+    '''Check and edit amenities'''
+    @pytest.mark.misc
+    def test_amenities(self):
+        bookinpage = deskBookingsPage(self.driver)
+        sleep(3)
+        
+        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        bookinpage.driver_implicitly_wait(6)
+        bookinpage.start_selection()
+        # Network logs
+        try:
+            bookinpage.print_browser_logs()
+        except Exception as e:
+            print("network exception: ", e)
+
+        # Get total desks value
+        try:
+            total_desks = bookinpage.get_element_text(deskBookingsPage.TOTAL_DESKS_2ND_FLOOR)
+            print("total_desks: ", total_desks)
+            available_desks = bookinpage.get_element_text(deskBookingsPage.AVAILABLE_DESKS_2ND_FLOOR)
+            print("available_desks: ", available_desks)
+        except Exception as e:
+            print("Desk count exception: ", e)
+
+        # Clicking on desk 201 modal
+        bookinpage.select_available_resource(1)
         sleep(5)
 
         # Getting prevoius amenities data
@@ -2708,13 +2450,14 @@ class Test_Booking(BaseTest):
         print("Amenity Removed")
 
         sleep(10)
-        bookinpage.quit_driver()
+        
 
 
     '''Send report'''
-    # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
         print("Sending report in mail....")
         send_email()
 
-# unittest.main()
+
+
+sleep(5)

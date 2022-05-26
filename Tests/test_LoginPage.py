@@ -12,7 +12,6 @@ class Test_Login(BaseTest):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(
                     TestData.USER_NAME, TestData.PASSWORD)
-        sleep(5)
         print("Login done successfully")
 
 
@@ -20,4 +19,8 @@ class Test_Login(BaseTest):
     # @pytest.mark.skip(reason="no need of currently testing this")
     def test_send_email_report(self):
         print("Sending report in mail....")
-        send_email()
+        # send_email()
+
+
+
+sleep(5)

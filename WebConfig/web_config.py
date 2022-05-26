@@ -22,82 +22,33 @@ class TestData:
     RESOURCE_PAGE_URL = "https://ndl.veris.in/meeting-room/find-resource"
 
     
-    def time_select_start_1():
+    def time_select(m):
         now = datetime.now()
-        future_time = now + timedelta(minutes=15)
+        future_time = now + timedelta(minutes=m)
         current_time = future_time.strftime("%H:%M")
         print("time_select_start_1: ", current_time)
         return current_time
 
-    def time_select_end_1():
+    def booking_date(d):
         now = datetime.now()
-        future_time = now + timedelta(minutes=30)
-        future_time_1 = future_time.strftime("%H:%M")
-        print("time_select_end_1: ", future_time_1)
-        return future_time_1
-
-    def time_select_end_2():
-        now = datetime.now()
-        future_time = now + timedelta(minutes=20)
-        future_time_1 = future_time.strftime("%H:%M")
-        print("time_select_end_2: ", future_time_1)
-        return future_time_1
-    
-    def time_select_start_3():
-        now = datetime.now()
-        future_time = now + timedelta(minutes=25)
-        current_time = future_time.strftime("%H:%M")
-        print("time_select_start_3: ", current_time)
-        return current_time
-
-    def time_select_end_3():
-        now = datetime.now()
-        future_time = now + timedelta(minutes=45)
-        future_time_1 = future_time.strftime("%H:%M")
-        print("time_select_end_3: ", future_time_1)
-        return future_time_1
-    
-    def time_overlapping_start_1():
-        now = datetime.now()
-        future_time = now + timedelta(minutes=25)
-        current_time = future_time.strftime("%H:%M")
-        print("time_overlapping_start_1: ", current_time)
-        return current_time
-
-    def time_overlapping_end_1():
-        now = datetime.now()
-        future_time = now + timedelta(minutes=45)
-        future_time_1 = future_time.strftime("%H:%M")
-        print("time_overlapping_end_1: ", future_time_1)
-        return future_time_1
-
-    def booking_date_1():
-        now = datetime.now()
-        future_time = now + timedelta(days=5)
+        future_time = now + timedelta(days=d)
         bdate = future_time.strftime("%d %b %Y")
-        print("booking_date_1: ", bdate)
+        print("booking_date: ", bdate)
         return bdate
 
-    def repeat_till_date_1(dys):
+    def repeat_till_date(dys):
         now = datetime.now()
         future_time = now + timedelta(days=dys)
         bdate = future_time.strftime("%d %b %Y")
-        print("repeat_till_date_1: ", bdate)
+        print("repeat_till_date: ", bdate)
         return bdate
 
-    def room_start_datetime(d,m):
+    def room_datetime(d,m):
         now = datetime.now()
         future_time = now + timedelta(days=d, minutes=m)
         rsdate = future_time.strftime("%d %b %Y %H:%M")
         print("rsdate: ", rsdate)
         return rsdate
-
-    def room_end_datetime(d,m):
-        now = datetime.now()
-        future_time = now + timedelta(days=d, minutes=m)
-        redate = future_time.strftime("%d %b %Y %H:%M")
-        print("redate: ", redate)
-        return redate
 
     def room_start_overlapping_datetime():
         now = datetime.now()
@@ -122,31 +73,33 @@ class TestData:
     HOST2_NAME = "Himans"
     HOST2_FULLNAME = "Himanshi Sharma"
     HOST2_EMAIL = "himanshi.sharma@veris.in"
-    BOOKING_DATE = booking_date_1()
-    BOOKING_DATE1 = booking_date_1()
-    TIME_START = time_select_start_1()
-    TIME_END = time_select_end_1()
-    TIME_END2 = time_select_end_2()
-    TIME_START3 = time_select_start_3()
-    TIME_END3 = time_select_end_3()
-    TIME_OVERLAPPING_START = time_overlapping_start_1()
-    TIME_OVERLAPPING_END = time_overlapping_end_1()
+    BOOKING_DATE = booking_date(5)
+    BOOKING_DATE1 = booking_date(5)
+    TIME_START = time_select(15)
+    TIME_END = time_select(30)
+    TIME_END2 = time_select(20)
+    TIME_START3 = time_select(25)
+    TIME_END3 = time_select(45)
+    TIME_OVERLAPPING_START = time_select(25)
+    TIME_OVERLAPPING_END = time_select(45)
     TILL_NEXT_DAY_START_TIME = "26 Apr 2022 23:55"
     TILL_NEXT_DAY_START_TIME_1 = "26 Apr 2022 23:55"
     TILL_NEXT_DAY_END_TIME = "27 Apr 2022 01:30"
-    REPEAT_TILL_DATE = f"{repeat_till_date_1(30)} 01:00"
-    REPEAT_TILL_DATE2 = f"{repeat_till_date_1(30)} 23:00"
-    REPEAT_TILL_DATE3 = repeat_till_date_1(6)
+    REPEAT_TILL_DATE = f"{repeat_till_date(30)} 01:00"
+    REPEAT_TILL_DATE2 = f"{repeat_till_date(30)} 23:00"
+    REPEAT_TILL_DATE3 = repeat_till_date(6)
     DESK_NO_1 = None
+    DESK_W_ISSUE = ['202']
 
     '''Room booking'''
+    ROOM_W_ISSUE = ['Room Booking rule']
     ROOM_AGENDA = "Automation testing"
     NEW_CONTACT_1 = "Rahul1"
     NEW_CONTACT_1_EMAIL = "rahul1@gmail.com"
     NEW_CONTACT_2 = "Rahul2"
     NEW_CONTACT_2_EMAIL = "rahul2@gmail.com"
-    ROOM_START_DATE = room_start_datetime(2,15)
-    ROOM_END_DATE = room_end_datetime(2,35)
+    ROOM_START_DATE = room_datetime(2,15)
+    ROOM_END_DATE = room_datetime(2,35)
     CONTACT_1_IS_DRAFTED_FALSE = "test veris"
     CONTACT_1_IS_MEMBER = "Johnathan Gracer"
     CONTACT_2_IS_MEMBER = "Mark Jacob"
@@ -158,10 +111,10 @@ class TestData:
     ROOM_OVERLAPPING_TIME_END_1 = "27 Apr 2022 01:30"
 
     '''Weekly'''
-    ROOM_WSTART_DATE = room_start_datetime(7,15)
-    ROOM_WEND_DATE = room_end_datetime(7,35)
+    ROOM_WSTART_DATE = room_datetime(7,15)
+    ROOM_WEND_DATE = room_datetime(7,35)
     REPEAT_FREQUENCY = "1"
-    WEEKLY_REPEAT_TILL_DATE = repeat_till_date_1(21)
+    WEEKLY_REPEAT_TILL_DATE = repeat_till_date(21)
     WEEKLY_REPEAT_TILL_DATE2 = "24 Apr 2022"
 
     '''Amenities'''
