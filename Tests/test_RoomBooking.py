@@ -48,6 +48,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -102,40 +103,34 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        print("Xpath: ", RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
         sleep(3)
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
         bookinpage.resource_details_page_check()
         # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # Cancelling Booking
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         sleep(1)
         loader2 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
         print("loader2: ", loader2)
         sleep(2)
 
-    # @pytest.mark.pnr
+    @pytest.mark.pnr
     def test_datetime_change_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -174,38 +169,35 @@ class Test_RoomBooking(BaseTest):
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
-        # bookinpage.driver_implicitly_wait(3)
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        sleep(5)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        sleep(3)
+
         bookinpage.date_selection_chain(
                 RoomBookingsPage.RD_CALENDER_INPUT, TestData.ROOM_START_DATE[:11], 2)
         bookinpage.resource_details_page_check()
-        sleep(5)
+        sleep(3)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         print("Create a booking for the desk by selecting a default date and time: Passed")
         # Cancelling Booking
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         sleep(2)
 
-    # @pytest.mark.pnr
+    @pytest.mark.pnr
     def test_overlapping_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
+        
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -247,18 +239,15 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
+
         # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
         bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         print("Create a booking for the desk by selecting a default date and time: Passed")
 
@@ -300,29 +289,26 @@ class Test_RoomBooking(BaseTest):
             print("error-msg: ", error_msg)
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
         
-        # bookinpage.driver_implicitly_wait(3)
         bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
         sleep(2)
 
         # Cancelling Booking
         bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(3)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_CHECK_DIV)
-        # bookinpage.driver_implicitly_wait(3)
+
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         sleep(2)
 
-    # @pytest.mark.pnr
+    @pytest.mark.pnr
     def test_already_cancelled_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -358,7 +344,7 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(5)
+        sleep(3)
         print("Booking should be created successfully: Passed")
 
         # Checking Booking
@@ -370,27 +356,23 @@ class Test_RoomBooking(BaseTest):
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
         bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         bookinpage.do_click_by_xpath(
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        # bookinpage.driver_implicitly_wait(10)
         print("Create a booking for the desk by selecting a default date and time: Passed")
 
         bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
 
         # Clicking on Book Space for overlapping booking
         bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
+        sleep(3)
+
         # Checking available resources
         bookinpage.select_available_status()
-        # bookinpage.driver_implicitly_wait(3)
 
         # Clicking on room 124 booking modal
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
@@ -409,13 +391,13 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(4)
+        sleep(3)
 
         # Cancelling Booking
         bookinpage.action_chain_click(RoomBookingsPage.MY_BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(3)
+        sleep(2)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_CHECK_DIV)
-        # bookinpage.driver_implicitly_wait(3)
+        sleep(2)
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         sleep(2)
@@ -429,12 +411,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -481,24 +462,19 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+        sleep(2)
         bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
+        sleep(2)
         bookinpage.check_my_booking()
         # Cancelling Booking
-        bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_CHECK_RDIV, 0)
+        bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
         sleep(2)
-        bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_CHECK_RDIV, 0)
-        sleep(3)
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
         sleep(2)
         bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
@@ -510,12 +486,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -568,11 +543,9 @@ class Test_RoomBooking(BaseTest):
         bookinpage.date_selection_chain(
                 RoomBookingsPage.RD_CALENDER_INPUT, TestData.ROOM_START_DATE[:11], 2)
         bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         # Cancelling Booking
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_CHECK_RDIV, 0)
@@ -582,7 +555,6 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
         sleep(2)
         bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-        # bookinpage.driver_implicitly_wait(8)
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
     @pytest.mark.pr
@@ -590,12 +562,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -709,12 +680,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -823,6 +793,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -902,6 +873,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -986,6 +958,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1108,6 +1081,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1223,6 +1197,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1342,6 +1317,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1466,6 +1442,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1530,7 +1507,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click_by_xpath(
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         print("Create a booking for the desk by selecting a default date and time: Passed")
-        sleep(15)
+        sleep(20)
 
         bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
         bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
@@ -1584,6 +1561,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1708,6 +1686,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1820,18 +1799,21 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
         # bookinpage.driver_implicitly_wait(2)
         for i in range(2):
+            bookinpage.action_chain_sendkeys_1(
+            RoomBookingsPage.MAIN_CARDS_CONTAINER, Keys.HOME)
             bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-            # bookinpage.driver_implicitly_wait(2)
+            sleep(2)
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
             sleep(2)
             bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-            sleep(2)
+            sleep(15)
         
     @pytest.mark.prsc
     def test_cancelling_first_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -1920,6 +1902,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -2573,11 +2556,10 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -2624,36 +2606,29 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+        # # Resource details page
+        # bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+        # bookinpage.resource_details_page_check()
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
+        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+        sleep(2)
         bookinpage.check_my_booking()
-        # bookinpage.driver_implicitly_wait(5)
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
-        # bookinpage.driver_implicitly_wait(2)
 
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON, 2)
-        # bookinpage.driver_implicitly_wait(3)
+
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON, 2)
-        sleep(15)
+        sleep(20)
+        bookinpage.action_chain_sendkeys_1(RoomBookingsPage.MAIN_CARDS_CONTAINER, Keys.HOME)
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
 
-        bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_CHECK_DIV, 0)
-        # bookinpage.driver_implicitly_wait(2)
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
         sleep(2)
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
@@ -2666,6 +2641,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -2721,27 +2697,20 @@ class Test_RoomBooking(BaseTest):
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
         bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
+        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
         bookinpage.check_my_booking()
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
-        # bookinpage.driver_implicitly_wait(2)
 
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_CHECK_RDIV, 0)
-        # bookinpage.driver_implicitly_wait(2)
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_CHECK_RDIV, 0)
-        # bookinpage.driver_implicitly_wait(2)
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
         sleep(2)
         bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
@@ -2753,12 +2722,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on room 124 booking modal
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -2804,31 +2772,26 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+        # # Resource details page
+        # bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+        # bookinpage.resource_details_page_check()
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
+        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
         bookinpage.check_my_booking()
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
-        # bookinpage.driver_implicitly_wait(2)
 
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON, 2)
-        # bookinpage.driver_implicitly_wait(3)
+
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON, 2)
-        sleep(15)
+        sleep(20)
+        bookinpage.action_chain_sendkeys_1(RoomBookingsPage.MAIN_CARDS_CONTAINER, Keys.HOME)
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 1)
         sleep(2)
@@ -2842,12 +2805,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on room 124 booking modal
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -2891,22 +2853,18 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
+        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
         bookinpage.check_my_booking()
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
-        # bookinpage.driver_implicitly_wait(2)
 
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 1)
-        # bookinpage.driver_implicitly_wait(3)
         bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 1)
         sleep(2)
         bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
@@ -2918,12 +2876,11 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        # bookinpage.driver_implicitly_wait(6)
+        sleep(3)
         bookinpage.start_selection()
 
         # Clicking on room 124 booking modal
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -2959,11 +2916,9 @@ class Test_RoomBooking(BaseTest):
         bookinpage.select_booked_status()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
 
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
         bookinpage.check_my_booking()
         print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
@@ -2971,7 +2926,6 @@ class Test_RoomBooking(BaseTest):
         # Cancelling Booking
         # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        # bookinpage.driver_implicitly_wait(3)
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         print("Create a single booking and cancel it: Passed")
         sleep(2)
@@ -2985,6 +2939,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         bookinpage.start_selection()
 
         # Select tag
@@ -3058,6 +3013,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+        sleep(3)
         bookinpage.start_selection()
 
         # Checking available resources
@@ -3105,9 +3061,9 @@ class Test_RoomBooking(BaseTest):
     '''Host related'''
 
     @pytest.mark.hostrltd
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_only_host_can_cancel_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
         sleep(3)
 
         # Clicking on available room
@@ -3216,6 +3172,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
 
     @pytest.mark.hostrltd
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_change_host_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -3296,6 +3253,7 @@ class Test_RoomBooking(BaseTest):
         print("Create a booking for the desk by selecting a default date and time: Passed")
 
     @pytest.mark.hostrltd
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_change_host_daily_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -3378,7 +3336,8 @@ class Test_RoomBooking(BaseTest):
         bookinpage.check_my_booking()
         print("Create a booking for the desk by selecting a default date and time: Passed")
 
-    @pytest.mark.hostrltd   
+    @pytest.mark.hostrltd
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_change_host_weekly_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)

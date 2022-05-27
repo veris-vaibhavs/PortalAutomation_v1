@@ -29,10 +29,13 @@ class TestData:
         print("time_select_start_1: ", current_time)
         return current_time
 
-    def booking_date(d):
+    def booking_date(d=None):
         now = datetime.now()
-        future_time = now + timedelta(days=d)
-        bdate = future_time.strftime("%d %b %Y")
+        if d is not None:
+            future_time = now + timedelta(days=d)
+            bdate = future_time.strftime("%d %b %Y")
+        else:
+            bdate = now.strftime("%d %b %Y")
         print("booking_date: ", bdate)
         return bdate
 
@@ -41,6 +44,16 @@ class TestData:
         future_time = now + timedelta(days=dys)
         bdate = future_time.strftime("%d %b %Y")
         print("repeat_till_date: ", bdate)
+        return bdate
+
+    def till_next_day_date(dys=None):
+        now = datetime.now()
+        if dys is not None:
+            future_time = now + timedelta(days=dys)
+            bdate = future_time.strftime("%d %b %y")
+        else:
+            bdate = now.strftime("%d %b %y")
+        print("booking_date: ", bdate)
         return bdate
 
     def room_datetime(d,m):
@@ -82,12 +95,13 @@ class TestData:
     TIME_END3 = time_select(45)
     TIME_OVERLAPPING_START = time_select(25)
     TIME_OVERLAPPING_END = time_select(45)
-    TILL_NEXT_DAY_START_TIME = "26 Apr 2022 23:55"
-    TILL_NEXT_DAY_START_TIME_1 = "26 Apr 2022 23:55"
-    TILL_NEXT_DAY_END_TIME = "27 Apr 2022 01:30"
+    TILL_NEXT_DAY_START_TIME = f"{till_next_day_date()} 23:55"
+    TILL_NEXT_DAY_END_TIME = f"{till_next_day_date(1)} 01:30"
     REPEAT_TILL_DATE = f"{repeat_till_date(30)} 01:00"
     REPEAT_TILL_DATE2 = f"{repeat_till_date(30)} 23:00"
     REPEAT_TILL_DATE3 = repeat_till_date(6)
+    WEEKLY_REPEAT_DATE1 = booking_date(7)
+    WEEKLY_REPEAT_TILL_DATE = f"{repeat_till_date(28)}"
     DESK_NO_1 = None
     DESK_W_ISSUE = ['202']
 

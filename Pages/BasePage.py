@@ -129,7 +129,7 @@ class BasePage:
         except Exception as e:
             print("host_selection: ", e)
 
-    def date_selection_chain(self, by_locator, dkeys, bstrokes):
+    def date_selection_chain(self, by_locator, dkeys, bstrokes=2):
         bdate = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
         actions = ActionChains(self.driver)
         actions.move_to_element(bdate)
@@ -143,12 +143,14 @@ class BasePage:
         actions.perform()
         sleep(5)
         
-    def time_selection(self, bstart, bstart_input):
+    def time_selection(self, bstart, bstart_input, bstrokes=1):
         start_time = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(bstart))
         actions = ActionChains(self.driver)
         actions.move_to_element(start_time)
         actions.click()
-        for i in range(0, 6):
+        sleep(2)
+        actions.key_down(Keys.CONTROL).send_keys('a').key_up(Keys.CONTROL)
+        for i in range(0, bstrokes):
             actions.send_keys(Keys.BACKSPACE)
         actions.send_keys(bstart_input)
         actions.send_keys(Keys.ENTER)
@@ -166,15 +168,15 @@ class BasePage:
         actions.perform()
         sleep(5)
 
-    def action_chain_key_down(self, by_locator):
+    def action_chain_sendkeys_1(self, by_locator, elkeys):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
         print("Element: ", element)
         actions = ActionChains(self.driver)
         actions.move_to_element(element)
-        sleep(3)
-        actions.send_keys(Keys.ARROW_DOWN)
+        sleep(2)
+        actions.send_keys(elkeys)
         actions.perform()
-        sleep(5)
+        sleep(2)
 
     def scroll_to_element(self, by_locator):
         a = None
