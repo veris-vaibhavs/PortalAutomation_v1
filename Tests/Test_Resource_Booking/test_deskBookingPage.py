@@ -2057,6 +2057,7 @@ class Test_Booking(BaseTest):
     '''Cancel Booking'''
 
     @pytest.mark.pcnclb
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_simple_daily_recurring_cancel_single_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         sleep(3)
@@ -2137,6 +2138,7 @@ class Test_Booking(BaseTest):
         print("Create a daily recurring booking for a month and delete any single instance: Passed")
 
     @pytest.mark.pcnclb
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_simple_daily_recurring_cancel_all_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         sleep(3)
@@ -2221,6 +2223,7 @@ class Test_Booking(BaseTest):
             "Create a daily recurring booking for a month and delete all instances: Passed")
         
     @pytest.mark.pcnclb
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_simple_weekly_recurring_cancel_single_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         sleep(3)
@@ -2309,6 +2312,7 @@ class Test_Booking(BaseTest):
         sleep(2)
 
     @pytest.mark.pcnclb
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_simple_weekly_recurring_cancel_all_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         sleep(3)
@@ -2391,6 +2395,7 @@ class Test_Booking(BaseTest):
             "Create a weekly recurring booking for a month and delete all booking: Passed")
 
     @pytest.mark.pcnclb
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_simple_cancel_single_booking(self):
         bookinpage = deskBookingsPage(self.driver)
         sleep(3)
