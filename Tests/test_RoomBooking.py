@@ -1557,6 +1557,7 @@ class Test_RoomBooking(BaseTest):
     '''Recurring+single+Cancelled'''
 
     @pytest.mark.prsc
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_overlapping_single_future_daily_recurring_booking_5_cancelled(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1682,6 +1683,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
         
     @pytest.mark.prsc
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_overlapping_daily_future_daily_recurring_booking_5_cancelled(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1809,6 +1811,7 @@ class Test_RoomBooking(BaseTest):
             sleep(15)
         
     @pytest.mark.prsc
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_cancelling_first_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1898,6 +1901,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
         
     @pytest.mark.prsc
+    @pytest.mark.skip(reason="no way of currently testing this")
     def test_cancelling_last_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
