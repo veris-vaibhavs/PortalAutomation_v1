@@ -249,6 +249,7 @@ class RoomBookingsPage(BasePage):
                 self.ROOM_AVAIL_NAME+str([i]))
             if title not in TestData.ROOM_W_ISSUE:
                 if a is None:
+                    print("Booking: ", self.ROOM_AVAIL+str([i]))
                     self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
                 else:
                     self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([a]))

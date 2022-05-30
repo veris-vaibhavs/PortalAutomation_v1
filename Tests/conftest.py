@@ -26,7 +26,7 @@ def init_driver(request):
     options.add_argument('--incognito')
     # options.add_argument('--headless')
     options.add_argument("--allow-insecure-localhost")
-    # options.add_argument('--start-maximized')
+    options.add_argument('--start-maximized')
     # options.add_argument('--window-size=1280,800')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
