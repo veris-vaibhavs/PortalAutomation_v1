@@ -295,6 +295,7 @@ class RoomBookingsPage(BasePage):
             print("get_room_name exception: ", e)
 
     def select_booked_status(self):
+        sleep(2)
         try:
             self.do_click(self.STATUS_DROPDOWN)
             sleep(2)

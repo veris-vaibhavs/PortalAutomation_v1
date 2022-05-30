@@ -3584,7 +3584,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    @pytest.mark.prsc
+    @pytest.mark.custom
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)
