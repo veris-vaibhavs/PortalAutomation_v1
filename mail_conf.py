@@ -15,6 +15,7 @@ html = '''
     <html>
         <body>
             <h1>Pytest report of test execution</h1>
+            <p><=========This is an automatically generated email – please do not reply. ================><p>
         </body>
     </html>
     '''
@@ -39,6 +40,7 @@ def attach_file_to_email(email_message, filename):
 # Set up the email addresses and password. Please replace below with your email address and password
 email_from = 'code.tester2021@gmail.com'
 app_password = 'awdtrwovjtbfkrgt'
+# email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in']
 email_to = ['vivek.anand@veris.in']
 
 # Generate today's date to be included in the email Subject
@@ -56,6 +58,7 @@ email_message.attach(MIMEText(html, "html"))
 # Attach more (documents)
 ##############################################################
 attach_file_to_email(email_message, 'report.html')
+attach_file_to_email(email_message, 'report.xls')
 ##############################################################
 # Convert it as a string
 email_string = email_message.as_string()
