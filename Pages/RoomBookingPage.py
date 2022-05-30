@@ -18,7 +18,7 @@ class RoomBookingsPage(BasePage):
         By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[5]/div[3]")
     # ROOM_AVAIL = (By.XPATH, "//div[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button")
     ROOM_AVAIL = "(//div[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button)"
-    ROOM_AVAIL_NAME = "(//div[text()='Available']/parent::*/parent::*/preceding-sibling::*/div/div)"
+    ROOM_AVAIL_NAME = "(//div[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button)"
 
     # ---------------
     # BOOKING_NAV = (By.XPATH, "//h3[text()='Booking']")
