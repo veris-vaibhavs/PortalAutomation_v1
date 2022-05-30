@@ -7,7 +7,7 @@ jobs:
     docker:
       # - image: "circleci/python:jessie-node-browsers"
       - image: "cimg/python:3.9-browsers"
-
+    parallelism: 4
     steps:
       - checkout
       - run:
