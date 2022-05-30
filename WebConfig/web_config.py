@@ -21,6 +21,8 @@ class TestData:
 
     RESOURCE_PAGE_URL = "https://ndl.veris.in/meeting-room/find-resource"
 
+    MY_BOOKING_URL = "https://ndl.veris.in/meeting-room/my-bookings"
+
     
     def time_select(m):
         now = datetime.now()
@@ -62,6 +64,13 @@ class TestData:
         rsdate = future_time.strftime("%d %b %Y %H:%M")
         print("rsdate: ", rsdate)
         return rsdate
+
+    def current_datetime():
+        now = datetime.now()
+        loc_time = now.strftime("%Y_%m_%dT%H.%M.%S")
+        # loc_time = now.strftime("%H.%M.%S")
+        print("loc_time: ", loc_time)
+        return loc_time
 
     def room_start_overlapping_datetime():
         now = datetime.now()
@@ -106,7 +115,7 @@ class TestData:
     DESK_W_ISSUE = ['202']
 
     '''Room booking'''
-    ROOM_W_ISSUE = ['Room Booking rule']
+    ROOM_W_ISSUE = ['Room Booking rule', '107', '108', '109', '120', 'Board Room']
     ROOM_AGENDA = "Automation testing"
     NEW_CONTACT_1 = "Rahul1"
     NEW_CONTACT_1_EMAIL = "rahul1@gmail.com"
@@ -139,3 +148,5 @@ class TestData:
 
     '''Tag'''
     TAG = "Engineering Deck"
+
+print(f"{TestData.ROOM_START_DATE} ---------- {TestData.ROOM_END_DATE, 18}")

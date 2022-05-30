@@ -28,17 +28,21 @@ class Test_Booking(BaseTest):
     @pytest.mark.extndb
     @pytest.mark.misc
     @pytest.mark.hostrltd
+    # @pytest.mark.dependency()
     def test_login(self):
         self.loginPage = LoginPage(self.driver)
         bookinpage = self.loginPage.do_login(
             TestData.USER_NAME, TestData.PASSWORD)
         sleep(3)
+        return bookinpage
 
     """Non-Recurring"""
 
     @pytest.mark.pnr
+    # @pytest.mark.dependency(depends=["test_login"])
     def test_simple_booking(self):
         bookinpage = deskBookingsPage(self.driver)
+        # bookinpage = Test_Booking.test_login()
         sleep(3)
 
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
@@ -47,7 +51,7 @@ class Test_Booking(BaseTest):
         bookinpage.start_selection()
 
         # Clicking on available desk
-        bookinpage.select_available_resource()
+        bookinpage.select_available_resource(1)
 
         dval = bookinpage.get_desk_name()
         # setting desk value
@@ -188,8 +192,10 @@ class Test_Booking(BaseTest):
         print("Create a booking for the desk by changing the default host: Passed")
 
     @pytest.mark.pnr
+    # @pytest.mark.dependency(depends=["test_login"])
     def test_datetime_change_booking(self):
         bookinpage = deskBookingsPage(self.driver)
+        # bookinpage = Test_Booking.test_login()
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
         sleep(3)
@@ -197,7 +203,7 @@ class Test_Booking(BaseTest):
 
         # Clicking on available desk
         print("Clicking on available desk")
-        bookinpage.select_available_resource()
+        bookinpage.select_available_resource(2)
 
         # Selecting datetime
         bookinpage.selecting_date()
@@ -242,7 +248,7 @@ class Test_Booking(BaseTest):
         sleep(3)
 
         # Checking Booking
-        bookinpage.select_all_status()
+        bookinpage.select_booked_status()
 
         # Resource details page
         bookinpage.do_click_by_xpath(
@@ -264,8 +270,10 @@ class Test_Booking(BaseTest):
         sleep(2)
 
     @pytest.mark.pnr
+    # @pytest.mark.dependency(depends=["test_login"])
     def test_overlapping_booking(self):
         bookinpage = deskBookingsPage(self.driver)
+        # bookinpage = Test_Booking.test_login()
         sleep(3)
 
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
@@ -274,7 +282,7 @@ class Test_Booking(BaseTest):
         bookinpage.start_selection()
 
         # Clicking on available desk modal
-        bookinpage.select_available_resource()
+        bookinpage.select_available_resource(3)
 
         # Selecting time
         bookinpage.select_time()
@@ -335,8 +343,10 @@ class Test_Booking(BaseTest):
         sleep(2)
 
     @pytest.mark.pnr
+    # @pytest.mark.dependency(depends=["test_login"])
     def test_already_cancelled_booking(self):
         bookinpage = deskBookingsPage(self.driver)
+        # bookinpage = Test_Booking.test_login()
         sleep(3)
 
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
@@ -344,7 +354,7 @@ class Test_Booking(BaseTest):
         bookinpage.start_selection()
 
         # Clicking on available desk
-        bookinpage.select_available_resource()
+        bookinpage.select_available_resource(4)
 
         # Selecting time
         bookinpage.select_time()
@@ -1238,7 +1248,6 @@ class Test_Booking(BaseTest):
         bookinpage.overlapping_error_check()
         sleep(2)
         # Cancelling Booking
-        bookinpage.do_click(deskBookingsPage.MY_BOOKING_NAV)
         bookinpage.scroll_to_element_by_xpath(
             deskBookingsPage.DESK_201_MEETING_OPTIONS_CANCEL_BUTTON)
         bookinpage.do_click_by_xpath(

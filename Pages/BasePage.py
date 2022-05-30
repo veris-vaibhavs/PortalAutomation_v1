@@ -2,6 +2,7 @@ import json
 import pprint
 import requests
 import urllib3
+import os
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -289,6 +290,15 @@ class BasePage:
 
     def driver_get_url(self, url):
         self.driver.get(url)
+
+    def take_screenshot(self, name):
+        sleep(2)
+        try:
+            os.makedirs(os.path.join("screenshot", os.path.dirname(name)), exist_ok=True)
+            # self.driver.get_screenshot_as_file(os.path.join("screenshot", name))
+            self.driver.save_screenshot(os.path.join("screenshot", name))
+        except Exception as e:
+            print("Screenshot exception: ", e)
 
 def process_browser_logs_for_network_events(logs):
     print("in process_browser")

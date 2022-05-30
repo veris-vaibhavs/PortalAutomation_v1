@@ -2,6 +2,7 @@ from time import sleep
 from time import time
 import logging
 import sys
+import os
 
 from selenium.webdriver.common.keys import Keys
 
@@ -12,6 +13,7 @@ from Pages.RoomBookingPage import RoomBookingsPage
 from WebConfig.web_config import TestData
 from Tests.test_base import BaseTest
 import pytest
+from datetime import datetime
 
 from mail_conf import send_email
 
@@ -19,6 +21,8 @@ from mail_conf import send_email
 # '''Logger'''
 # logging.basicConfig(level=logging.DEBUG)
 # logger = logging.getLogger(__name__)
+
+# Note: Sending only pnr
 
 
 class Test_RoomBooking(BaseTest):
@@ -35,20 +39,32 @@ class Test_RoomBooking(BaseTest):
     @pytest.mark.extndb
     @pytest.mark.misc
     @pytest.mark.hostrltd
+    # @pytest.mark.custom
     def test_login_room_booking(self):
         print("Start time: ", self.start_time)
         self.loginPage = LoginPage(self.driver)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        string1 = f"test_simple_booking/{cdate[:9]}/{cdate[1:]}.png"
+        # string1 = os.path.join(f"test_simple_booking/{cdate[:9]}",f"{cdate[10:]}.png")
+        self.loginPage.take_screenshot(string1)
         bookinpage = self.loginPage.do_rlogin(
                     TestData.USER_NAME, TestData.PASSWORD)
+        print("cdate: ", cdate)
+        loc = f"./screenshot/test_simple_booking/confirm_booking_{cdate}.png"
+        print("loc: ", loc)
+        
 
     """Room Booking"""
 
     @pytest.mark.pnr
+    # @pytest.mark.custom
     def test_simple_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
         bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
         sleep(3)
+        
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
@@ -90,13 +106,16 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        # bookinpage.take_screenshot("test_simple_booking/confirm_booking_"+cdate+".png")
+        # bookinpage.take_screenshot("screenshot/test_simple_booking/confirm_booking_.png")
         print("Booking should be created successfully: Passed")
         print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
-        sleep(1)
         # loader visibilty check
-        loader1 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
-        print("loader1: ", loader1)
-        sleep(1)
+        # loader1 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
+        # print("loader1: ", loader1)
+        sleep(2)
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -165,7 +184,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(3)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_datetime_change_booking/confirm_booking_{cdate}.png")
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
@@ -231,6 +252,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -278,6 +302,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(1)
 
         enabled_check = bookinpage.is_visible(
@@ -289,11 +316,11 @@ class Test_RoomBooking(BaseTest):
             print("error-msg: ", error_msg)
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
         
-        bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
-        sleep(2)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+        sleep(3)
 
         # Cancelling Booking
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+        # bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_CHECK_DIV)
 
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
@@ -344,6 +371,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_already_cancelled_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -364,7 +394,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click_by_xpath(
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         print("Create a booking for the desk by selecting a default date and time: Passed")
-
+        sleep(5)
         bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
 
         # Clicking on Book Space for overlapping booking
@@ -391,6 +421,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(3)
 
         # Cancelling Booking
@@ -454,6 +487,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -533,6 +569,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_datetime_change_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -598,6 +637,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -652,6 +694,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
+        sleep(2)
 
         enabled_check = bookinpage.is_visible(
             RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -663,10 +708,10 @@ class Test_RoomBooking(BaseTest):
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
         
         # bookinpage.driver_implicitly_wait(3)
-        bookinpage.do_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
         sleep(2)
         # Cancelling Booking
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+        # bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
         # bookinpage.driver_implicitly_wait(3)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         # bookinpage.driver_implicitly_wait(2)
@@ -720,6 +765,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(3)
         print("Booking should be created successfully: Passed")
 
@@ -774,6 +822,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
 
         sleep(2)
@@ -838,6 +889,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_weekly_recurring_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -923,6 +977,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_datetime_change_weekly_recurring_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         # Checking available resources
@@ -1001,6 +1058,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         # Checking Booking
@@ -1053,6 +1113,9 @@ class Test_RoomBooking(BaseTest):
         # bookinpage.driver_implicitly_wait(2)
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
 
         enabled_check = bookinpage.is_enabled(
             RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -1064,7 +1127,7 @@ class Test_RoomBooking(BaseTest):
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
 
         # bookinpage.driver_implicitly_wait(2)
-        bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
         sleep(2)
 
         # Cancelling Booking
@@ -1124,6 +1187,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         # Checking Booking
@@ -1177,6 +1243,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
         print("Create a booking of room by selecting the time of already cancelled booking: Passed")
         sleep(2)
 
@@ -1241,6 +1310,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        # sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_single_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -1292,6 +1364,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_single_daily_recurring_booking/confirm_booking_{cdate}.png")
 
         enabled_check = bookinpage.is_enabled(
             RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -1302,11 +1377,8 @@ class Test_RoomBooking(BaseTest):
             print("error-msg: ", error_msg)
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
 
-        # bookinpage.driver_implicitly_wait(3)
-        bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
-        # bookinpage.driver_implicitly_wait(2)
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(3)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+        sleep(3)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         sleep(2)
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
@@ -1365,6 +1437,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_recurring_single_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
@@ -1415,6 +1490,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_recurring_single_booking/confirm_booking_{cdate}.png")
 
         enabled_check = bookinpage.is_enabled(
             RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -1425,11 +1503,8 @@ class Test_RoomBooking(BaseTest):
             print("error-msg: ", error_msg)
             print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
 
-        # bookinpage.driver_implicitly_wait(5)
-        bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
-        # bookinpage.driver_implicitly_wait(2)
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(3)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+        sleep(3)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
         sleep(2)
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
@@ -1487,6 +1562,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_future_cancelled_daily_recurring_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
 
@@ -1539,6 +1617,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_future_cancelled_daily_recurring_booking/confirm_booking_{cdate}.png")
         print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
         sleep(2)
 
@@ -1557,7 +1638,7 @@ class Test_RoomBooking(BaseTest):
     '''Recurring+single+Cancelled'''
 
     @pytest.mark.prsc
-    @pytest.mark.skip(reason="no way of currently testing this")
+    # @pytest.mark.skip(reason="no way of currently testing this")
     def test_overlapping_single_future_daily_recurring_booking_5_cancelled(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1615,6 +1696,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_single_future_daily_recurring_booking_5_cancelled/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
@@ -1666,6 +1750,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_single_future_daily_recurring_booking_5_cancelled/confirm_booking_{cdate}.png")
         print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
         sleep(5)
 
@@ -1683,7 +1770,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
         
     @pytest.mark.prsc
-    @pytest.mark.skip(reason="no way of currently testing this")
+    # @pytest.mark.skip(reason="no way of currently testing this")
     def test_overlapping_daily_future_daily_recurring_booking_5_cancelled(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1740,6 +1827,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_future_daily_recurring_booking_5_cancelled/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
@@ -1792,6 +1882,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_overlapping_daily_future_daily_recurring_booking_5_cancelled/confirm_booking_{cdate}.png")
         print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
         sleep(2)
 
@@ -1811,7 +1904,7 @@ class Test_RoomBooking(BaseTest):
             sleep(15)
         
     @pytest.mark.prsc
-    @pytest.mark.skip(reason="no way of currently testing this")
+    # @pytest.mark.skip(reason="no way of currently testing this")
     def test_cancelling_first_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1867,6 +1960,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_cancelling_first_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -1901,7 +1997,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
         
     @pytest.mark.prsc
-    @pytest.mark.skip(reason="no way of currently testing this")
+    # @pytest.mark.skip(reason="no way of currently testing this")
     def test_cancelling_last_recurring_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -1959,6 +2055,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_cancelling_last_recurring_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -2052,6 +2151,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_daily_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -2134,6 +2236,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -2219,6 +2324,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_overlapping_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -2272,6 +2380,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_overlapping_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
 
         # Checking Booking
@@ -2305,12 +2416,11 @@ class Test_RoomBooking(BaseTest):
                 print("error-msg: ", error_msg)
                 print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
                 sleep(2)
-                bookinpage.action_chain_click(RoomBookingsPage.BOOKING_MODAL_GO_BACK)
-                sleep(2)
         except Exception as e:
             print("Error 2")
         # "Booking cannot be extended because"
-        sleep(5)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+        sleep(3)
 
         print("Create a Daily recurring booking by selecting  default date and time and the end day of booking.: Passed")
         sleep(2)
@@ -2371,6 +2481,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_cancelled_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -2424,6 +2537,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_extend_single_cancelled_recurring_booking/confirm_booking_{cdate}.png")
         sleep(5)
 
         # Checking Booking
@@ -2522,6 +2638,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_till_next_date_extended_booking/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -2602,6 +2721,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -2690,6 +2812,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_all_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         # Checking Booking
@@ -2768,6 +2893,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_weekly_recurring_cancel_single_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -2850,6 +2978,9 @@ class Test_RoomBooking(BaseTest):
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_weekly_recurring_cancel_all_booking/confirm_booking_{cdate}.png")
+        sleep(2)
         print("Booking should be created successfully: Passed")
 
         # Checking Booking
@@ -2912,6 +3043,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"test_simple_cancel_single_booking/confirm_booking_{cdate}.png")
         sleep(2)
         print("Booking should be created successfully: Passed")
 
@@ -2987,6 +3121,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -3117,6 +3254,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -3233,6 +3373,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -3317,6 +3460,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -3402,6 +3548,9 @@ class Test_RoomBooking(BaseTest):
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        sleep(2)
+        cdate = TestData.current_datetime()
+        bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
         sleep(5)
         print("Booking should be created successfully: Passed")
 
@@ -3433,7 +3582,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    # 
+    @pytest.mark.prs
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)

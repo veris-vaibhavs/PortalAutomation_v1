@@ -37,7 +37,10 @@ jobs:
       # - run: sudo apt-get install -y python python-dev python3.9 python3.9-dev python3.9-distutils && curl -sL https://bootstrap.pypa.io/get-pip.py |  python3.9 && pip -V && apt-get update
      
       - run: pip install -r requirements.txt
-      - run: pytest -v -s --html=report.html Tests/Test_Resource_Booking --self-contained-html --capture=sys -rP -rF
+      # - run: pytest -v -s --html=report.html Tests/Test_Resource_Booking --self-contained-html --capture=sys -rP -rF
+
+      # This is not to be used in production
+      - run: pytest -v -s --html=report.html -m pnr Tests/Test_Resource_Booking/test_RoomBooking.py --self-contained-html --capture=sys -rP -rF
 workflows:
   test:
     jobs:

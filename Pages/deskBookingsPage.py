@@ -38,7 +38,7 @@ class deskBookingsPage(BasePage):
     DESK_AVAIL = "(//*[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button)"
     DESK_AVAIL_2 = (
         By.XPATH, "//*[text()='Available']/parent::*/parent::*/preceding-sibling::*/div/div")
-    DESK_AVAIL_NAME = "(//div[text()='Available']/parent::*/parent::*/preceding-sibling::*/div/div)"
+    DESK_AVAIL_NAME = "(//div[text()='Available']/parent::*/parent::*/following-sibling::*[4]/button)"
     DESK_201 = "//*[text()='{}']/parent::*/parent::*/following-sibling::*[5]/button"
     DESK_205 = (
         By.XPATH, f"//*[@id='meeting-room-list']/div/div/div/div/div/div/table/tbody/tr[6]/td[6]/button")
@@ -280,6 +280,7 @@ class deskBookingsPage(BasePage):
     
     def select_available_resource(self, a=None):
         # self.do_click(self.ROOM_AVAIL)
+        print(f"a:{a}")
         for i in range(1, 6):
             title = self.get_element_text_by_xpath(
                 self.DESK_AVAIL_NAME+str([i]))
@@ -287,7 +288,7 @@ class deskBookingsPage(BasePage):
                 if a is None:
                     self.do_click_by_xpath(self.DESK_AVAIL+str([i]))
                 else:
-                    self.do_click_by_xpath(self.DESK_AVAIL_NAME+str([i]))
+                    self.do_click_by_xpath(self.DESK_AVAIL_NAME+str([a]))
                 break
             else:
                 pass
@@ -458,8 +459,8 @@ class deskBookingsPage(BasePage):
                     self.BK_OVERLAPPING_ERROR_MSG)
                 print("error-msg: ", error_msg)
                 print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
-            sleep(2)
-            self.action_chain_click(deskBookingsPage.MODAL_CLOSE)
+            self.driver_get_url(TestData.MY_BOOKING_URL)
+            sleep(3)
         except Exception as e:
             print("Error 2")
 

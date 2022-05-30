@@ -76,8 +76,9 @@ class RoomBookingsPage(BasePage):
         By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div[2]/div/div[2]/div/div/div/input")
 
     # BOOKING_MODAL_GO_BACK = (By.XPATH, "//span[contains(text(),'Go Back')]")
-    BOOKING_MODAL_GO_BACK = (
-        By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[1]/div/child::*")
+    BOOKING_MODAL_GO_BACK = (By.XPATH, "//div/button[1]")
+    # BOOKING_MODAL_GO_BACK = (
+    #     By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[1]/div/child::*")
 
     # After Booking
     ROOM_124_AFTER_BOOKING_TITLE = "//div[@title='{}']"
@@ -250,7 +251,7 @@ class RoomBookingsPage(BasePage):
                 if a is None:
                     self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
                 else:
-                    self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([i]))
+                    self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([a]))
                 break
             else:
                 pass
