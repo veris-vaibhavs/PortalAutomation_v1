@@ -1888,7 +1888,7 @@ class Test_RoomBooking(BaseTest):
         print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
         sleep(2)
 
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
         # bookinpage.driver_implicitly_wait(3)
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
@@ -1967,6 +1967,7 @@ class Test_RoomBooking(BaseTest):
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
+        sleep(2)
 
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
@@ -2062,7 +2063,8 @@ class Test_RoomBooking(BaseTest):
         print("Booking should be created successfully: Passed")
 
         bookinpage.select_all_status()
-
+        sleep(2)
+        
         # Resource details page
         bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
         # bookinpage.driver_implicitly_wait(8)
@@ -3582,7 +3584,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    @pytest.mark.prs
+    @pytest.mark.prsc
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)
