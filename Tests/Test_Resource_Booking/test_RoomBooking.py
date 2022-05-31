@@ -186,6 +186,7 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.take_screenshot(f"test_datetime_change_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"test_datetime_change_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
@@ -258,10 +259,10 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.take_screenshot(f"test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(5)
             
-            bookinpage.take_screenshot(f"test_overlapping_booking/confirm_booking_{cdate}.png")
-            sleep(3)
+            bookinpage.take_screenshot(f"test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Booking should be created successfully: Passed")
 
             # Checking Booking
@@ -308,9 +309,10 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.take_screenshot(f"test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(5)
             
-            bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
+            bookinpage.take_screenshot(f"test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(1)
 
             enabled_check = bookinpage.is_visible(
@@ -381,6 +383,7 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.take_screenshot(f"test_already_cancelled_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")

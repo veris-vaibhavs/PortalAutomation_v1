@@ -220,7 +220,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             self.action_chain_click(self.BUSINESS_TOWER)
             sleep(2)
-            self.do_click(self.FREE_CLICK)
+            self.action_chain_click(self.FREE_CLICK)
             assert "Location selection passed"
         except Exception as e:
             print("Select_location_room exception: ", e)
@@ -228,17 +228,17 @@ class RoomBookingsPage(BasePage):
 
     def select_resource_type(self):
         try:
-            self.do_click(self.RESOURCE_DROPDOWN)
+            self.action_chain_click(self.RESOURCE_DROPDOWN)
             sleep(1)
-            self.do_click(self.RESOURCE_ROOM)
-            self.do_click(self.FREE_CLICK)
+            self.action_chain_click(self.RESOURCE_ROOM)
+            self.action_chain_click(self.FREE_CLICK)
             sleep(1)
         except Exception as e:
             print("select_resource_type exception: ", e)
 
     def select_floor(self):
         try:
-            self.do_click(self.FIRST_FLOOR)
+            self.action_chain_click(self.FIRST_FLOOR)
             sleep(1)
             assert "Floor selection done"
         except Exception as e:
@@ -248,7 +248,7 @@ class RoomBookingsPage(BasePage):
         try:
             self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.AVAILABLE_STATUS)
+            self.action_chain_click(self.AVAILABLE_STATUS)
             sleep(2)
             assert "Select Available status done"
         except Exception as e:
@@ -256,7 +256,7 @@ class RoomBookingsPage(BasePage):
             self.take_screenshot(f"select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_available_resource(self, a=None):
-        # self.do_click(self.ROOM_AVAIL)
+        # self.action_chain_click(self.ROOM_AVAIL)
         for i in range(1, 6):
             title = self.get_element_text_by_xpath(
                 self.ROOM_AVAIL_NAME+str([i]))
@@ -272,7 +272,7 @@ class RoomBookingsPage(BasePage):
 
     def select_days_end(self):
         try:
-            self.do_click(self.BS_DATE_DIV)
+            self.action_chain_click(self.BS_DATE_DIV)
             self.action_chain_click(self.BS_DMULTIPLE_DAYS)
             self.action_chain_click(self.BS_DENDDATE)
             print(f"End date: {self.TDATA_ENDDATE}")
@@ -280,10 +280,10 @@ class RoomBookingsPage(BasePage):
                 d_isvisible = self.is_visible(self.TDATA_ENDDATE)
                 print(f"{i}. visibility: {d_isvisible}")
                 if d_isvisible == True:
-                    self.do_click(self.TDATA_ENDDATE)
+                    self.action_chain_click(self.TDATA_ENDDATE)
                     break
                 else:
-                    self.do_click(self.CAL_NEXT_MONTH)
+                    self.action_chain_click(self.CAL_NEXT_MONTH)
             self.action_chain_click(self.CAL_OK_BUTTON)
             sleep(1)
             self.action_chain_click(self.BS_DONE)
@@ -293,17 +293,17 @@ class RoomBookingsPage(BasePage):
 
     def select_tag(self):
         try:
-            self.do_click(self.TAG_DROPDOWN)
+            self.action_chain_click(self.TAG_DROPDOWN)
             sleep(3)
-            self.do_click(self.TAG_SELECT)
+            self.action_chain_click(self.TAG_SELECT)
             sleep(3)
-            self.do_click(self.FREE_CLICK)
+            self.action_chain_click(self.FREE_CLICK)
             sleep(2)
         except Exception as e:
             print("select_tag exception: ", e)
 
     def confirm_booking(self):
-        self.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+        self.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         enabled_check = self.is_enabled(
             self.GEN_ERROR_MSG)
         print("enabled_check: ", enabled_check)
@@ -315,7 +315,7 @@ class RoomBookingsPage(BasePage):
             enabled_check_1 = self.is_enabled(
                 self.BOOKING_MODAL_GO_BACK)
             print("enabled_check1: ", enabled_check_1)
-            self.do_click(self.BOOKING_MODAL_GO_BACK)
+            self.action_chain_click(self.BOOKING_MODAL_GO_BACK)
             sleep(2)
         else:
             pass
@@ -333,7 +333,7 @@ class RoomBookingsPage(BasePage):
         try:
             self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.BOOKED_STATUS)
+            self.action_chain_click(self.BOOKED_STATUS)
             sleep(2)
             assert "Select Booked status done"
         except Exception as e:
@@ -345,7 +345,7 @@ class RoomBookingsPage(BasePage):
         try:
             self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.ALL_STATUS)
+            self.action_chain_click(self.ALL_STATUS)
             sleep(2)
             assert "Select All status done"
         except Exception as e:
@@ -362,18 +362,18 @@ class RoomBookingsPage(BasePage):
         try:
             self.host_selection(self.ATTENDEE_DETAILS, contact_name)
             self.do_send_keys(self.CONTACT_EMAIL, contact_email)
-            self.do_click(self.CONTACT_RIGHT_TICK)
+            self.action_chain_click(self.CONTACT_RIGHT_TICK)
             sleep(2)
         except Exception as e:
             print("new_contact_guest exception: ", e)
 
     def enter_datetime(self):
         try:
-            # self.do_click(self.START_DATE)
+            # self.action_chain_click(self.START_DATE)
             # self.action_chain_click(self.START_DATE_X)
             self.date_selection_chain(
                 self.START_DATE, TestData.ROOM_START_DATE, 18)
-            # self.do_click(self.END_DATE)
+            # self.action_chain_click(self.END_DATE)
             self.date_selection_chain(
                 self.END_DATE, TestData.ROOM_END_DATE, 18)
         except Exception as e:
@@ -381,11 +381,11 @@ class RoomBookingsPage(BasePage):
 
     def enter_datetime_weekly(self):
         try:
-            self.do_click(self.START_DATE)
+            self.action_chain_click(self.START_DATE)
             self.action_chain_click(self.START_DATE_X)
             self.date_selection_chain(
                 self.START_DATE, TestData.ROOM_WSTART_DATE, 18)
-            self.do_click(self.END_DATE)
+            self.action_chain_click(self.END_DATE)
             self.date_selection_chain(
                 self.END_DATE, TestData.ROOM_WEND_DATE, 18)
         except Exception as e:
@@ -406,7 +406,7 @@ class RoomBookingsPage(BasePage):
         self.scroll_to_element(self.SCHEDULE_LISTING)
         sleep(2)
         try:
-            self.do_click(self.I_BUTTON)
+            self.action_chain_click(self.I_BUTTON)
             sleep(3)
             eltext = self.get_element_text(self.I_INFO).split('\n')
             print("eltext: ", eltext)
@@ -419,7 +419,7 @@ class RoomBookingsPage(BasePage):
 
     def check_my_booking(self):
         try:
-            self.do_click(self.MY_BOOKING_NAV)
+            self.action_chain_click(self.MY_BOOKING_NAV)
             sleep(3)
             self.scroll_to_element_by_xpath(self.ROOM_124_CHECK_DIV)
             sleep(3)
@@ -436,9 +436,9 @@ class RoomBookingsPage(BasePage):
 
     def daily_repeat(self):
         try:
-            self.do_click(self.REPEAT_DROPDOWN)
+            self.action_chain_click(self.REPEAT_DROPDOWN)
             sleep(3)
-            self.do_click(self.REPEAT_DAILY)
+            self.action_chain_click(self.REPEAT_DAILY)
             sleep(2)
             # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
             sleep(2)
@@ -449,9 +449,9 @@ class RoomBookingsPage(BasePage):
 
     def daily_repeat2(self):
         try:
-            self.do_click(self.REPEAT_DROPDOWN)
+            self.action_chain_click(self.REPEAT_DROPDOWN)
             sleep(3)
-            self.do_click(self.REPEAT_DAILY)
+            self.action_chain_click(self.REPEAT_DAILY)
             sleep(2)
             # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
             sleep(2)
@@ -462,9 +462,9 @@ class RoomBookingsPage(BasePage):
 
     def weekly_repeat(self):
         try:
-            self.do_click(self.REPEAT_DROPDOWN)
+            self.action_chain_click(self.REPEAT_DROPDOWN)
             sleep(3)
-            self.do_click(self.REPEAT_WEEKLY)
+            self.action_chain_click(self.REPEAT_WEEKLY)
             sleep(2)
             self.date_selection_chain(
                 self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE, 2)
@@ -485,9 +485,9 @@ class RoomBookingsPage(BasePage):
             print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
             self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(4)
-            self.do_click(self.MY_SHORTCUTS_H3)
+            self.action_chain_click(self.MY_SHORTCUTS_H3)
             self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
-            self.do_click(self.REFRESH_BOOKINGS)
+            self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_booking exception: ", e)
 
@@ -542,9 +542,9 @@ class RoomBookingsPage(BasePage):
                 #         sleep(2)
                 #     else:
                 #         break
-                self.do_click(self.MY_SHORTCUTS_H3)
+                self.action_chain_click(self.MY_SHORTCUTS_H3)
                 self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
-                self.do_click(self.REFRESH_BOOKINGS)
+                self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_some_bookings exception: ", e)
 
@@ -557,7 +557,7 @@ class RoomBookingsPage(BasePage):
             sleep(12)
             self.do_click_by_xpath(self.EXTEND_BOOKING)
             sleep(5)
-            self.do_click(etime)
+            self.action_chain_click(etime)
             sleep(12)
             textend_confirm = self.get_element_text_by_xpath(
                 self.EXTEND_BOOKING_TEXT_CONFIRM)
@@ -572,9 +572,9 @@ class RoomBookingsPage(BasePage):
 
     def do_logout(self):
         try:
-            self.do_click(self.LOGOUT_DROPDOWN)
+            self.action_chain_click(self.LOGOUT_DROPDOWN)
             sleep(2)
-            self.do_click(self.LOGOUT_BUTTON)
+            self.action_chain_click(self.LOGOUT_BUTTON)
         except Exception as e:
             print("do_logout exception: ", e)
 
@@ -590,7 +590,7 @@ class RoomBookingsPage(BasePage):
             # Selecting resource type
             self.select_resource_type()
             # Clicking on list view
-            self.do_click(self.LIST_VIEW_BUTTON)
+            self.action_chain_click(self.LIST_VIEW_BUTTON)
             sleep(3)
         except Exception as e:
             print(f"start_selection exception: e \n{traceback.format_exc()}")
