@@ -49,8 +49,8 @@ class Test_RoomBooking(BaseTest):
 
     """Room Booking"""
 
-    # @pytest.mark.pnr
-    @pytest.mark.custom
+    @pytest.mark.pnr
+    # @pytest.mark.custom
     def test_simple_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -140,6 +140,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"test_simple_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     @pytest.mark.pnr
+    @pytest.mark.custom
     def test_datetime_change_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -3665,13 +3666,13 @@ class Test_RoomBooking(BaseTest):
 
     print("Time taken: ", time_taken)
 
-    '''Send report'''
-    @pytest.mark.email
-    def test_send_email_report(self):
-        print("Time end: ", self.end_time)
-        print("Time taken: ", self.time_taken)
-        print("Sending report in mail....")
-        send_email()
+    # '''Send report'''
+    # @pytest.mark.email
+    # def test_send_email_report(self):
+    #     print("Time end: ", self.end_time)
+    #     print("Time taken: ", self.time_taken)
+    #     print("Sending report in mail....")
+    #     send_email()
 
 
 
