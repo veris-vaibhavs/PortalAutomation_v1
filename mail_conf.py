@@ -44,8 +44,8 @@ def attach_file_to_email(email_message, filename):
 email_from = 'code.tester2021@gmail.com'
 app_password = 'awdtrwovjtbfkrgt'
 # email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in', 'amogh.banta@veris.in']
-# email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in']
-email_to = ['vivek.anand@veris.in']
+email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in']
+# email_to = ['vivek.anand@veris.in']
 
 # Generate today's date to be included in the email Subject
 date_str = datetime.today().strftime('%Y-%m-%d')
@@ -64,11 +64,13 @@ def zip_file():
     except Exception as e:
         print("e: ", e)
 
+
 # Attach the html doc defined earlier, as a MIMEText html content type to the MIME message
 email_message.attach(MIMEText(html, "html"))
 
 # Attach more (documents)
 ##############################################################
+zip_file()
 attach_file_to_email(email_message, 'report.html')
 attach_file_to_email(email_message, 'screenshot_archives/screenshots_zip.zip')
 # attach_file_to_email(email_message, 'report.xls')
