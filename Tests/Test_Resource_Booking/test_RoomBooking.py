@@ -39,26 +39,18 @@ class Test_RoomBooking(BaseTest):
     @pytest.mark.extndb
     @pytest.mark.misc
     @pytest.mark.hostrltd
-    @pytest.mark.custom
+    # @pytest.mark.custom
     def test_login_room_booking(self):
         print("Start time: ", self.start_time)
         self.loginPage = LoginPage(self.driver)
-        sleep(2)
-        # cdate = TestData.current_datetime()
-        # string1 = f"test_simple_booking/{cdate[:9]}/{cdate[1:]}.png"
-        # # string1 = os.path.join(f"test_simple_booking/{cdate[:9]}",f"{cdate[10:]}.png")
-        # self.loginPage.take_screenshot(string1)
         bookinpage = self.loginPage.do_rlogin(
                     TestData.USER_NAME, TestData.PASSWORD)
-        # print("cdate: ", cdate)
-        # loc = f"./screenshot/test_simple_booking/confirm_booking_{cdate}.png"
-        # print("loc: ", loc)
         
 
     """Room Booking"""
 
     @pytest.mark.pnr
-    @pytest.mark.custom
+    # @pytest.mark.custom
     def test_simple_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -122,7 +114,6 @@ class Test_RoomBooking(BaseTest):
             # At the find resource page, status of booking should be changed from available to booked
             bookinpage.select_booked_status()
             bookinpage.take_screenshot(f"test_simple_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
-            send_email()
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
             bookinpage.resource_page_booking_check()
             sleep(3)
@@ -144,8 +135,8 @@ class Test_RoomBooking(BaseTest):
             sleep(2)
         except Exception as e:
             print(f"Exception test_simple_booking: {e}")
-        send_email()
-
+            bookinpage.take_screenshot(f"test_simple_booking/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            
     @pytest.mark.pnr
     def test_datetime_change_booking(self):
         try:
@@ -855,422 +846,438 @@ class Test_RoomBooking(BaseTest):
     '''Recurring bookings Weekly'''
     @pytest.mark.prw
     def test_simple_weekly_recurring_booking(self):
-        bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
-        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        sleep(3)
-        # bookinpage.driver_implicitly_wait(6)
-        bookinpage.start_selection()
+        try:
+            bookinpage = RoomBookingsPage(self.driver)
+            sleep(3)
+            bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+            sleep(3)
+            # bookinpage.driver_implicitly_wait(6)
+            bookinpage.start_selection()
 
-        # Clicking on available room
-        bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
+            # Clicking on available room
+            bookinpage.select_available_resource()
+            # bookinpage.driver_implicitly_wait(4)
 
-        # Getting and assigning room number to selectors
-        rval = bookinpage.get_room_name()
-        RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
-        RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
-        RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
+            # Getting and assigning room number to selectors
+            rval = bookinpage.get_room_name()
+            RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
+            RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
+            RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # New Member
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
-        # Is drafted = False
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
-        # Agenda
-        bookinpage.enter_agenda()
+            # Attendee Details
+            # New Member
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            # Is drafted = False
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Repeating meeting
-        bookinpage.weekly_repeat()
+            # Repeating meeting
+            bookinpage.weekly_repeat()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_simple_weekly_recurring_booking/confirm_booking_{cdate}.png")
-        sleep(2)
-        print("Booking should be created successfully: Passed")
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_simple_weekly_recurring_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            sleep(2)
+            print("Booking should be created successfully: Passed")
 
-        # Checking Booking
-        # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(5)
+            # Checking Booking
+            # At the find resource page, status of booking should be changed from available to booked
+            bookinpage.select_booked_status()
+            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+            bookinpage.resource_page_booking_check()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        sleep(3)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+            # Resource details page
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            sleep(3)
+            # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+            bookinpage.resource_details_page_check()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
-        bookinpage.check_my_booking()
-        print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
+            # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+            bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+            # bookinpage.driver_implicitly_wait(5)
+            bookinpage.check_my_booking()
+            print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
-        # Cancelling Booking
-        bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        sleep(2)
-        bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-        sleep(2)
+            # Cancelling Booking
+            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            sleep(2)
+            bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
+            sleep(2)
+        except Exception as e:
+            print(f"Exception test_simple_weekly_recurring_booking: {e}")
+            bookinpage.take_screenshot(f"test_simple_weekly_recurring_booking/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
 
     @pytest.mark.prw
     def test_datetime_change_weekly_recurring_booking(self):
-        bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
-        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        sleep(3)
-        # bookinpage.driver_implicitly_wait(6)
-        bookinpage.start_selection()
+        try:
+            bookinpage = RoomBookingsPage(self.driver)
+            sleep(3)
+            bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+            sleep(3)
+            # bookinpage.driver_implicitly_wait(6)
+            bookinpage.start_selection()
 
-        # Clicking on available room
-        bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
+            # Clicking on available room
+            bookinpage.select_available_resource()
+            # bookinpage.driver_implicitly_wait(4)
 
-        # Getting and assigning room number to selectors
-        rval = bookinpage.get_room_name()
-        RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
-        RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
-        RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
+            # Getting and assigning room number to selectors
+            rval = bookinpage.get_room_name()
+            RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
+            RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
+            RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # New Member
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
-        # Is drafted = False
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Attendee Details
+            # New Member
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            # Is drafted = False
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
 
-        # Agenda
-        bookinpage.enter_agenda()
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Repeating meeting
-        bookinpage.weekly_repeat()
+            # Repeating meeting
+            bookinpage.weekly_repeat()
 
-        # Selecting datetime
-        bookinpage.enter_datetime_weekly()
+            # Selecting datetime
+            bookinpage.enter_datetime_weekly()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_datetime_change_weekly_recurring_booking/confirm_booking_{cdate}.png")
-        sleep(2)
-        print("Booking should be created successfully: Passed")
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_datetime_change_weekly_recurring_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            sleep(2)
+            print("Booking should be created successfully: Passed")
 
-        # Checking available resources
-        bookinpage.select_all_status()
-        # bookinpage.driver_implicitly_wait(5)
+            # Checking available resources
+            bookinpage.select_all_status()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # Resource details page
-        bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(2)
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(4)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.date_selection_chain(
-                RoomBookingsPage.RD_CALENDER_INPUT, TestData.ROOM_WSTART_DATE[:11], 2)
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+            # Resource details page
+            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            # bookinpage.driver_implicitly_wait(2)
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            # bookinpage.driver_implicitly_wait(4)
+            # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+            bookinpage.date_selection_chain(
+                    RoomBookingsPage.RD_CALENDER_INPUT, TestData.ROOM_WSTART_DATE[:11], 2)
+            bookinpage.resource_details_page_check()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
-        bookinpage.check_my_booking()
-        print("Create a daily recurring booking for the desk by selecting a default date and time: Passed") 
+            # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+            bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+            # bookinpage.driver_implicitly_wait(5)
+            bookinpage.check_my_booking()
+            print("Create a daily recurring booking for the desk by selecting a default date and time: Passed") 
 
-        # Cancelling Booking
-        bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        sleep(2)
-        bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-        sleep(2)
+            # Cancelling Booking
+            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            sleep(2)
+            bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
+            sleep(2)
+        except Exception as e:
+            print(f"Exception test_datetime_change_weekly_recurring_booking: {e}")
+            bookinpage.take_screenshot(f"test_datetime_change_weekly_recurring_booking/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
 
     @pytest.mark.prw
     def test_overlapping_weekly_recurring_booking(self):
-        bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
-        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        sleep(3)
-        # bookinpage.driver_implicitly_wait(6)
-        bookinpage.start_selection()
+        try:
+            bookinpage = RoomBookingsPage(self.driver)
+            sleep(3)
+            bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+            sleep(3)
+            # bookinpage.driver_implicitly_wait(6)
+            bookinpage.start_selection()
 
-        # Clicking on available room
-        bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
+            # Clicking on available room
+            bookinpage.select_available_resource()
+            # bookinpage.driver_implicitly_wait(4)
 
-        # Getting and assigning room number to selectors
-        rval = bookinpage.get_room_name()
-        RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
-        RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
-        RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
+            # Getting and assigning room number to selectors
+            rval = bookinpage.get_room_name()
+            RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
+            RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
+            RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # New Member
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
-        # Is drafted = False
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
-        # Agenda
-        bookinpage.enter_agenda()
+            # Attendee Details
+            # New Member
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            # Is drafted = False
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
-        sleep(2)
-        print("Booking should be created successfully: Passed")
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
+            sleep(2)
+            print("Booking should be created successfully: Passed")
 
-        # Checking Booking
-        # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
+            # Checking Booking
+            # At the find resource page, status of booking should be changed from available to booked
+            bookinpage.select_booked_status()
+            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+            bookinpage.resource_page_booking_check()
+            # bookinpage.driver_implicitly_wait(3)
 
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+            # Resource details page
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            # bookinpage.driver_implicitly_wait(8)
+            # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+            bookinpage.resource_details_page_check()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
-        bookinpage.check_my_booking()
-        print("Create a booking for the desk by selecting a default date and time: Passed")
+            # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+            bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+            # bookinpage.driver_implicitly_wait(5)
+            bookinpage.check_my_booking()
+            print("Create a booking for the desk by selecting a default date and time: Passed")
 
-        # Clicking on Book Space for overlapping booking
-        bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
-        # bookinpage.driver_implicitly_wait(3)
+            # Clicking on Book Space for overlapping booking
+            bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
+            # bookinpage.driver_implicitly_wait(3)
 
-        # Clicking on room 124 booking modal
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
+            # Clicking on room 124 booking modal
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Attendee Details
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
 
-        # Agenda
-        bookinpage.enter_agenda()
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Repeating meeting
-        bookinpage.weekly_repeat()
+            # Repeating meeting
+            bookinpage.weekly_repeat()
 
-        # Selecting datetime
-        bookinpage.date_selection_chain(
-                RoomBookingsPage.START_DATE, TestData.ROOM_OVERLAPPING_TIME_START, 2)
-        bookinpage.date_selection_chain(
-                RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
-        # bookinpage.driver_implicitly_wait(2)
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
+            # Selecting datetime
+            bookinpage.date_selection_chain(
+                    RoomBookingsPage.START_DATE, TestData.ROOM_OVERLAPPING_TIME_START, 2)
+            bookinpage.date_selection_chain(
+                    RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
+            # bookinpage.driver_implicitly_wait(2)
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
 
-        enabled_check = bookinpage.is_enabled(
-            RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
-        print("enabled_check: ", enabled_check)
-        if enabled_check == 1:
-            error_msg = bookinpage.get_element_text(
+            enabled_check = bookinpage.is_enabled(
                 RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
-            print("error-msg: ", error_msg)
-            print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
+            print("enabled_check: ", enabled_check)
+            if enabled_check == 1:
+                error_msg = bookinpage.get_element_text(
+                    RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
+                print("error-msg: ", error_msg)
+                print('An error message should be displayed at the portal that " Booking already exist " also show the validity of booking and booking Id.: Passed')
 
-        # bookinpage.driver_implicitly_wait(2)
-        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
-        sleep(2)
+            # bookinpage.driver_implicitly_wait(2)
+            bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+            sleep(2)
 
-        # Cancelling Booking
-        bookinpage.action_chain_click(RoomBookingsPage.MY_BOOKING_NAV)
-        sleep(3)
-        bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        # bookinpage.driver_implicitly_wait(3)
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        print("Create a booking of room by selecting the time of already cancelled booking: Passed")
-        sleep(2)
+            # Cancelling Booking
+            bookinpage.action_chain_click(RoomBookingsPage.MY_BOOKING_NAV)
+            sleep(3)
+            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            # bookinpage.driver_implicitly_wait(3)
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            print("Create a booking of room by selecting the time of already cancelled booking: Passed")
+            sleep(2)
+        except Exception as e:
+            print(f"Exception test_overlapping_weekly_recurring_booking: {e}")
+            bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
 
     @pytest.mark.prw
     def test_already_cancelled_weekly_recurring_booking(self):
-        bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
-        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        sleep(3)
-        # bookinpage.driver_implicitly_wait(6)
-        bookinpage.start_selection()
+        try:
+            bookinpage = RoomBookingsPage(self.driver)
+            sleep(3)
+            bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+            sleep(3)
+            # bookinpage.driver_implicitly_wait(6)
+            bookinpage.start_selection()
 
-        # Clicking on available room
-        bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
+            # Clicking on available room
+            bookinpage.select_available_resource()
+            # bookinpage.driver_implicitly_wait(4)
 
-        # Getting and assigning room number to selectors
-        rval = bookinpage.get_room_name()
-        RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
-        RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
-        RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
+            # Getting and assigning room number to selectors
+            rval = bookinpage.get_room_name()
+            RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
+            RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_RDIV = RoomBookingsPage.ROOM_124_CHECK_RDIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
+            RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # New Member
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
-        # Is drafted = False
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
-        # Agenda
-        bookinpage.enter_agenda()
+            # Attendee Details
+            # New Member
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            # Is drafted = False
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
-        sleep(2)
-        print("Booking should be created successfully: Passed")
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
+            sleep(2)
+            print("Booking should be created successfully: Passed")
 
-        # Checking Booking
-        # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        bookinpage.resource_page_booking_check()
-        # bookinpage.driver_implicitly_wait(3)
+            # Checking Booking
+            # At the find resource page, status of booking should be changed from available to booked
+            bookinpage.select_booked_status()
+            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+            bookinpage.resource_page_booking_check()
+            # bookinpage.driver_implicitly_wait(3)
 
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        # bookinpage.driver_implicitly_wait(8)
-        # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
+            # Resource details page
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            # bookinpage.driver_implicitly_wait(8)
+            # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
+            bookinpage.resource_details_page_check()
+            # bookinpage.driver_implicitly_wait(5)
 
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(5)
-        bookinpage.check_my_booking()
-        bookinpage.do_click_by_xpath(
-            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        print("Create a booking for the desk by selecting a default date and time: Passed")
-        sleep(5)
+            # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+            bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+            # bookinpage.driver_implicitly_wait(5)
+            bookinpage.check_my_booking()
+            bookinpage.do_click_by_xpath(
+                RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            print("Create a booking for the desk by selecting a default date and time: Passed")
+            sleep(5)
 
 
-        # Clicking on Book Space for overlapping booking
-        bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
-        bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
-        # Checking available resources
-        bookinpage.select_available_status()
-        # bookinpage.driver_implicitly_wait(3)
+            # Clicking on Book Space for overlapping booking
+            bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
+            bookinpage.do_click(RoomBookingsPage.BOOK_SPACE_NAV)
+            # Checking available resources
+            bookinpage.select_available_status()
+            # bookinpage.driver_implicitly_wait(3)
 
-        # Clicking on room 124 booking modal
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
+            # Clicking on room 124 booking modal
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
 
-        '''Booking Modal'''
+            '''Booking Modal'''
 
-        # Attendee Details
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Attendee Details
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
 
-        # Agenda
-        bookinpage.enter_agenda()
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Repeating meeting
-        bookinpage.weekly_repeat()
+            # Repeating meeting
+            bookinpage.weekly_repeat()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        cdate = TestData.current_datetime()
-        bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
-        print("Create a booking of room by selecting the time of already cancelled booking: Passed")
-        sleep(2)
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            cdate = TestData.current_datetime()
+            bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            print("Create a booking of room by selecting the time of already cancelled booking: Passed")
+            sleep(2)
 
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
-        # bookinpage.driver_implicitly_wait(4)
-        # Cancelling Booking
-        bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-        sleep(2)
-        bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-        sleep(2)
+            bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+            # bookinpage.driver_implicitly_wait(4)
+            # Cancelling Booking
+            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            sleep(2)
+            bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
+            sleep(2)
+        except Exception as e:
+            print(f"Exception test_already_cancelled_weekly_recurring_booking: {e}")
+            bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
 
 
     '''Recurring + Single'''
@@ -3615,7 +3622,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    # @pytest.mark.custom
+    @pytest.mark.custom
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)
