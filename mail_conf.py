@@ -44,8 +44,8 @@ def attach_file_to_email(email_message, filename):
 email_from = 'code.tester2021@gmail.com'
 app_password = 'awdtrwovjtbfkrgt'
 # email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in', 'amogh.banta@veris.in']
-email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in']
-# email_to = ['vivek.anand@veris.in']
+# email_to = ['vivek.anand@veris.in', 'shailendra.tiranga@veris.in']
+email_to = ['vivek.anand@veris.in']
 
 # Generate today's date to be included in the email Subject
 date_str = datetime.today().strftime('%Y-%m-%d')
