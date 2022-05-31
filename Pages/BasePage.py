@@ -69,7 +69,7 @@ class BasePage:
 
     def is_visible(self, by_locator):
         try:
-            element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
             return bool(element)
         except Exception as e:
             print(f"is_visible exception: {e}")
@@ -164,10 +164,10 @@ class BasePage:
         print("Element: ", element)
         actions = ActionChains(self.driver)
         actions.move_to_element(element)
-        sleep(3)
+        sleep(1)
         actions.click(element)
         actions.perform()
-        sleep(5)
+        sleep(1)
 
     def action_chain_sendkeys_1(self, by_locator, elkeys):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))

@@ -122,6 +122,8 @@ class RoomBookingsPage(BasePage):
     FREE_CLICK_MB = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div[2]/div[1]/div/div[1]")
     MAIN_CARDS_CONTAINER = (By.XPATH, "//*[@id='mainBookingCardsContainer']")
+    REFRESH_BOOKINGS = (By.XPATH, "//*[@class='ant-tooltip-open']")
+    MY_SHORTCUTS_H3 = (By.XPATH, "//h3[text()='My Shortcut']")
 
     # Overlapping error
     GEN_ERROR_MSG = (By.XPATH, "//*[contains(text(), 'Booking Error:')]")
@@ -187,6 +189,16 @@ class RoomBookingsPage(BasePage):
 
     VRS_LOADER = (By.XPATH, "//*[@class='vrs-loader-logo']/child::*")
 
+
+    # Book Space Date Selectors
+    BS_DATE_DIV = (By.XPATH, "//input[@placeholder='Today']")
+    BS_DMULTIPLE_DAYS = (By.XPATH, "//p[text()='Multiple Days']")
+    BS_DENDDATE = (By.XPATH, "//input[@placeholder='End date']")
+    BS_DONE = (By.XPATH, "//button/span[text()='Done']")
+    TDATA_ENDDATE = (By.XPATH, f"//*[@title='{TestData.BS_CAL_ENDDATE}']")
+    CAL_NEXT_MONTH = (By.CLASS_NAME, "ant-picker-next-icon")
+    CAL_OK_BUTTON = (By.XPATH, "//button/span[text()='Ok']")
+
     # <===================================== Functions =======================================>
 
     """constructor of the page class"""
@@ -199,7 +211,7 @@ class RoomBookingsPage(BasePage):
     """selecting location"""
 
     def select_location(self):
-        sleep(3)
+        sleep(5)
         try:
             self.do_click(self.LOCATION_DROPDOWN)
             sleep(2)
@@ -211,23 +223,22 @@ class RoomBookingsPage(BasePage):
             assert "Location selection passed"
         except Exception as e:
             print("Select_location_room exception: ", e)
-            self.quit_driver()
-        sleep(5)
+        # sleep(5)
 
     def select_resource_type(self):
         try:
             self.do_click(self.RESOURCE_DROPDOWN)
-            sleep(2)
+            sleep(1)
             self.do_click(self.RESOURCE_ROOM)
             self.do_click(self.FREE_CLICK)
-            sleep(3)
+            sleep(1)
         except Exception as e:
             print("select_resource_type exception: ", e)
 
     def select_floor(self):
         try:
             self.do_click(self.FIRST_FLOOR)
-            sleep(3)
+            sleep(1)
             assert "Floor selection done"
         except Exception as e:
             print("select_floor exception: ", e)
@@ -256,6 +267,27 @@ class RoomBookingsPage(BasePage):
                 break
             else:
                 pass
+
+    def select_days_end(self):
+        try:
+            self.do_click(self.BS_DATE_DIV)
+            self.action_chain_click(self.BS_DMULTIPLE_DAYS)
+            self.action_chain_click(self.BS_DENDDATE)
+            print(f"End date: {self.TDATA_ENDDATE}")
+            for i in range(2):
+                d_isvisible = self.is_visible(self.TDATA_ENDDATE)
+                print(f"{i}. visibility: {d_isvisible}")
+                if d_isvisible == True:
+                    self.do_click(self.TDATA_ENDDATE)
+                    break
+                else:
+                    self.do_click(self.CAL_NEXT_MONTH)
+            self.action_chain_click(self.CAL_OK_BUTTON)
+            sleep(1)
+            self.action_chain_click(self.BS_DONE)
+            sleep(4)
+        except Exception as e:
+            print(f"select_days_end exception: {e}")
 
     def select_tag(self):
         try:
@@ -295,7 +327,7 @@ class RoomBookingsPage(BasePage):
             print("get_room_name exception: ", e)
 
     def select_booked_status(self):
-        sleep(2)
+        sleep(3)
         try:
             self.do_click(self.STATUS_DROPDOWN)
             sleep(2)
@@ -306,6 +338,7 @@ class RoomBookingsPage(BasePage):
             print("select_booked_status exception: ", e)
 
     def select_all_status(self):
+        sleep(5)
         try:
             self.do_click(self.STATUS_DROPDOWN)
             sleep(2)
@@ -445,7 +478,10 @@ class RoomBookingsPage(BasePage):
             # assert meeting_options == std_meeting_options
             print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
             self.do_click_by_xpath(self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-            sleep(20)
+            sleep(4)
+            self.do_click(self.MY_SHORTCUTS_H3)
+            self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
+            self.do_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_booking exception: ", e)
 
@@ -467,7 +503,7 @@ class RoomBookingsPage(BasePage):
     def cancel_some_bookings(self, crange):
         try:
             for i in range(1, crange):
-                sleep(3)
+                sleep(2)
                 a = 1
                 print(
                     f"i: {i} \n xpath: {self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON+str([a])}")
@@ -492,7 +528,7 @@ class RoomBookingsPage(BasePage):
                         f'{self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON+str([a])}')
                     self.do_click_by_xpath(
                         f'{self.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON+str([a])}')
-                sleep(5)
+                sleep(4)
                 ele = self.is_visible(self.VRS_LOADER)
                 print("vrs loadr: ", ele)
                 # while True:
@@ -500,7 +536,9 @@ class RoomBookingsPage(BasePage):
                 #         sleep(2)
                 #     else:
                 #         break
-                sleep(20)
+                self.do_click(self.MY_SHORTCUTS_H3)
+                self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
+                self.do_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_some_bookings exception: ", e)
 
@@ -536,7 +574,7 @@ class RoomBookingsPage(BasePage):
 
     def start_selection(self):
         try:
-            sleep(3)
+            sleep(1)
             print("Selecting Location")
             self.select_location()
             print("Selecting Floor")

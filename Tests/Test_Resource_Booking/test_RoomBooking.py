@@ -44,21 +44,21 @@ class Test_RoomBooking(BaseTest):
         print("Start time: ", self.start_time)
         self.loginPage = LoginPage(self.driver)
         sleep(2)
-        cdate = TestData.current_datetime()
-        string1 = f"test_simple_booking/{cdate[:9]}/{cdate[1:]}.png"
-        # string1 = os.path.join(f"test_simple_booking/{cdate[:9]}",f"{cdate[10:]}.png")
-        self.loginPage.take_screenshot(string1)
+        # cdate = TestData.current_datetime()
+        # string1 = f"test_simple_booking/{cdate[:9]}/{cdate[1:]}.png"
+        # # string1 = os.path.join(f"test_simple_booking/{cdate[:9]}",f"{cdate[10:]}.png")
+        # self.loginPage.take_screenshot(string1)
         bookinpage = self.loginPage.do_rlogin(
                     TestData.USER_NAME, TestData.PASSWORD)
-        print("cdate: ", cdate)
-        loc = f"./screenshot/test_simple_booking/confirm_booking_{cdate}.png"
-        print("loc: ", loc)
+        # print("cdate: ", cdate)
+        # loc = f"./screenshot/test_simple_booking/confirm_booking_{cdate}.png"
+        # print("loc: ", loc)
         
 
     """Room Booking"""
 
     @pytest.mark.pnr
-    # @pytest.mark.custom
+    @pytest.mark.custom
     def test_simple_booking(self):
         bookinpage = RoomBookingsPage(self.driver)
         sleep(3)
@@ -67,7 +67,7 @@ class Test_RoomBooking(BaseTest):
         
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
-
+        bookinpage.select_booked_status()
         # Clicking on available room
         bookinpage.select_available_resource()
         # bookinpage.driver_implicitly_wait(4)
@@ -103,13 +103,14 @@ class Test_RoomBooking(BaseTest):
         # loader invisibilty check
         loader = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
         print("loader: ", loader)
+        cdate = TestData.current_datetime()
+        string1 = f"test_simple_booking/1/{cdate[:9]}/{cdate[1:]}.png"
+        string2 = f"test_simple_booking/2/{cdate[:9]}/{cdate[1:]}.png"
 
         # Clicking on booking button
         bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
         sleep(2)
-        cdate = TestData.current_datetime()
-        # bookinpage.take_screenshot("test_simple_booking/confirm_booking_"+cdate+".png")
-        # bookinpage.take_screenshot("screenshot/test_simple_booking/confirm_booking_.png")
+        bookinpage.take_screenshot(string1)
         print("Booking should be created successfully: Passed")
         print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
         # loader visibilty check
@@ -120,6 +121,8 @@ class Test_RoomBooking(BaseTest):
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
         bookinpage.select_booked_status()
+        bookinpage.take_screenshot(string2)
+        send_email()
         print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         bookinpage.resource_page_booking_check()
         sleep(3)
@@ -1647,6 +1650,8 @@ class Test_RoomBooking(BaseTest):
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
+        bookinpage.select_days_end()
+
         # Clicking on available room
         bookinpage.select_available_resource()
         # bookinpage.driver_implicitly_wait(4)
@@ -1756,7 +1761,8 @@ class Test_RoomBooking(BaseTest):
         print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
         sleep(5)
 
-        bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+        bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
+        sleep(2)
         # bookinpage.driver_implicitly_wait(3)
         bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
         # bookinpage.driver_implicitly_wait(2)
@@ -1779,9 +1785,10 @@ class Test_RoomBooking(BaseTest):
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
 
+        bookinpage.select_days_end()
+
         # Clicking on available room
         bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
 
         # Getting and assigning room number to selectors
         rval = bookinpage.get_room_name()
@@ -1894,14 +1901,22 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
         # bookinpage.driver_implicitly_wait(2)
         for i in range(2):
+            print("i: ", i)
             bookinpage.action_chain_sendkeys_1(
             RoomBookingsPage.MAIN_CARDS_CONTAINER, Keys.HOME)
-            bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-            sleep(2)
-            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
-            sleep(2)
-            bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
-            sleep(15)
+            vcheck = bookinpage.is_visible(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+            if vcheck == True:
+                bookinpage.scroll_to_element_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+                sleep(2)
+                bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS)
+                sleep(2)
+                bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
+                sleep(4)
+            else:
+                break
+            bookinpage.do_click(RoomBookingsPage.MY_SHORTCUTS_H3)
+            bookinpage.action_chain_sendkeys_1(RoomBookingsPage.BODY, Keys.HOME)
+            bookinpage.do_click(RoomBookingsPage.REFRESH_BOOKINGS)
         
     @pytest.mark.prsc
     # @pytest.mark.skip(reason="no way of currently testing this")
@@ -1912,6 +1927,8 @@ class Test_RoomBooking(BaseTest):
         sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
+
+        bookinpage.select_days_end()
 
         # Clicking on available room
         bookinpage.select_available_resource()
@@ -1996,7 +2013,7 @@ class Test_RoomBooking(BaseTest):
         sleep(2)
         bookinpage.do_click(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON)
         sleep(2)
-        
+
     @pytest.mark.prsc
     # @pytest.mark.skip(reason="no way of currently testing this")
     def test_cancelling_last_recurring_booking(self):
@@ -2006,7 +2023,9 @@ class Test_RoomBooking(BaseTest):
         sleep(3)
         # bookinpage.driver_implicitly_wait(6)
         bookinpage.start_selection()
-
+        
+        bookinpage.select_days_end()
+        
         # Clicking on available room
         bookinpage.select_available_resource()
         # bookinpage.driver_implicitly_wait(4)
@@ -2081,6 +2100,7 @@ class Test_RoomBooking(BaseTest):
         bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
 
         bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
+        sleep(3)
         bookinpage.do_click(RoomBookingsPage.FREE_CLICK_MB)
         # bookinpage.driver_implicitly_wait(2)
 
@@ -3584,7 +3604,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    @pytest.mark.custom
+    # @pytest.mark.custom
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)

@@ -48,6 +48,13 @@ class TestData:
         print("repeat_till_date: ", bdate)
         return bdate
 
+    def repeat_till_date2(dys):
+        now = datetime.now()
+        future_time = now + timedelta(days=dys)
+        bdate = future_time.strftime("%Y-%m-%d")
+        print("repeat_till_date2: ", bdate)
+        return bdate
+
     def till_next_day_date(dys=None):
         now = datetime.now()
         if dys is not None:
@@ -144,6 +151,7 @@ class TestData:
     AM_1 = "Dual"
     DUAL_MONITOR = "Dual Monitor"
     AM_QUANTITY = "2"
+    BS_CAL_ENDDATE = repeat_till_date2(30)
 
 
     '''Tag'''
