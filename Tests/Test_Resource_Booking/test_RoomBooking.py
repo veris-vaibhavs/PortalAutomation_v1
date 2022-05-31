@@ -39,7 +39,7 @@ class Test_RoomBooking(BaseTest):
     @pytest.mark.extndb
     @pytest.mark.misc
     @pytest.mark.hostrltd
-    # @pytest.mark.custom
+    @pytest.mark.custom
     def test_login_room_booking(self):
         print("Start time: ", self.start_time)
         self.loginPage = LoginPage(self.driver)
