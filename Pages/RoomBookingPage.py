@@ -213,7 +213,7 @@ class RoomBookingsPage(BasePage):
     def select_location(self):
         sleep(5)
         try:
-            self.do_click(self.LOCATION_DROPDOWN)
+            self.action_chain_click(self.LOCATION_DROPDOWN)
             sleep(2)
             self.action_chain_click(self.GENPACT_IT_PARK)
             sleep(2)
@@ -245,7 +245,7 @@ class RoomBookingsPage(BasePage):
 
     def select_available_status(self):
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
             self.do_click(self.AVAILABLE_STATUS)
             sleep(2)
@@ -329,7 +329,7 @@ class RoomBookingsPage(BasePage):
     def select_booked_status(self):
         sleep(3)
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
             self.do_click(self.BOOKED_STATUS)
             sleep(2)
@@ -341,7 +341,7 @@ class RoomBookingsPage(BasePage):
     def select_all_status(self):
         sleep(5)
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
             self.do_click(self.ALL_STATUS)
             sleep(2)

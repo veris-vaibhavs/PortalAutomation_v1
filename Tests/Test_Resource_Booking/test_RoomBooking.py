@@ -210,6 +210,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(2)
         except Exception as e:
+            bookinpage.take_screenshot(f"test_datetime_change_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_datetime_change_booking: {e}\n{traceback.format_exc()}")
 
     @pytest.mark.pnr
@@ -331,6 +332,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(2)
         except Exception as e:
+            bookinpage.take_screenshot(f"test_overlapping_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_overlapping_booking: {e}\n{traceback.format_exc()}")
 
     @pytest.mark.pnr
@@ -443,6 +445,7 @@ class Test_RoomBooking(BaseTest):
             print("Create a booking of room by selecting the time of already cancelled booking: Passed")
             sleep(2)
         except Exception as e:
+            bookinpage.take_screenshot(f"test_already_cancelled_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_simple_booking: {e}\n{traceback.format_exc()}")
 
 
