@@ -336,7 +336,7 @@ class RoomBookingsPage(BasePage):
             assert "Select Booked status done"
         except Exception as e:
             print("select_booked_status exception: ", e)
-            self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_all_status(self):
         sleep(5)
@@ -348,7 +348,7 @@ class RoomBookingsPage(BasePage):
             assert "Select All status done"
         except Exception as e:
             print("select_all_status exception: ", e)
-            self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_agenda(self):
         try:
@@ -398,7 +398,7 @@ class RoomBookingsPage(BasePage):
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         except Exception as e:
             print("resource_page_booking_check exception: ", e)
-            self.take_screenshot(f"resource_page_booking_check/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_details_page_check(self):
         self.scroll_to_element(self.SCHEDULE_LISTING)
@@ -412,7 +412,7 @@ class RoomBookingsPage(BasePage):
             print("At the resource details page, booking should be available: Passed")
         except Exception as e:
             print("I_button exce: ", e)
-            self.take_screenshot(f"resource_details_page_check/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
         self.do_send_keys(self.BODY, Keys.PAGE_UP)
 
     def check_my_booking(self):
@@ -592,6 +592,6 @@ class RoomBookingsPage(BasePage):
             sleep(3)
         except Exception as e:
             print("start_selection exception: ", e)
-            self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     #

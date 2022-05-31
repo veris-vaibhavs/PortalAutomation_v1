@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 from datetime import timedelta
-# import pytz
+from pytz import timezone
 
 class TestData:
     
@@ -73,11 +73,12 @@ class TestData:
         return rsdate
 
     def current_datetime():
-        now = datetime.now()
-        loc_time = now.strftime("%Y_%m_%dT%H.%M.%S")
-        # loc_time = now.strftime("%H.%M.%S")
-        print("loc_time: ", loc_time)
-        return loc_time
+        format = "%Y_%m_%dT%H.%M.%S"
+        now_utc = datetime.now()
+        # Convert to Asia/Kolkata time zone
+        now_asia = now_utc.astimezone(timezone('Asia/Kolkata'))
+        print("now_asia: ", now_asia.strftime(format))
+        return now_asia
 
     def room_start_overlapping_datetime():
         now = datetime.now()
