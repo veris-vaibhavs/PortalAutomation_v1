@@ -60,88 +60,92 @@ class Test_RoomBooking(BaseTest):
     @pytest.mark.pnr
     @pytest.mark.custom
     def test_simple_booking(self):
-        bookinpage = RoomBookingsPage(self.driver)
-        sleep(3)
-        bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
-        sleep(3)
-        
-        # bookinpage.driver_implicitly_wait(6)
-        bookinpage.start_selection()
-        bookinpage.select_booked_status()
-        # Clicking on available room
-        bookinpage.select_available_resource()
-        # bookinpage.driver_implicitly_wait(4)
+        try:
+            bookinpage = RoomBookingsPage(self.driver)
+            sleep(3)
+            bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
+            sleep(3)
+            
+            # bookinpage.driver_implicitly_wait(6)
+            bookinpage.start_selection()
+            bookinpage.select_booked_status()
+            # Clicking on available room
 
-        # Getting and assigning room number to selectors
-        rval = bookinpage.get_room_name()
-        RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
-        RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
-        RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
-        RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
+            bookinpage.take_screenshot(f"test_simple_booking/3/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            bookinpage.select_available_resource()
+            bookinpage.take_screenshot(f"test_simple_booking/4/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            # bookinpage.driver_implicitly_wait(4)
 
-        '''Booking Modal'''
+            # Getting and assigning room number to selectors
+            rval = bookinpage.get_room_name()
+            RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
+            RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
+            RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_BUTTONS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK = RoomBookingsPage.ROOM_124_RPAGE_STATUS_CHECK.format(rval)
+            RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON.format(rval)
 
-        # Attendee Details
-        # New Member
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
-        bookinpage.new_contact_guest(
-            TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
-        # Is drafted = False
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
-        # Is Member = True
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
-        bookinpage.host_selection(
-            RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
-        # Agenda
-        bookinpage.enter_agenda()
+            '''Booking Modal'''
 
-        # loader invisibilty check
-        loader = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
-        print("loader: ", loader)
-        cdate = TestData.current_datetime()
-        string1 = f"test_simple_booking/1/{cdate[:9]}/{cdate[1:]}.png"
-        string2 = f"test_simple_booking/2/{cdate[:9]}/{cdate[1:]}.png"
+            # Attendee Details
+            # New Member
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            bookinpage.new_contact_guest(
+                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            # Is drafted = False
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
+            # Is Member = True
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_MEMBER)
+            bookinpage.host_selection(
+                RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_2_IS_MEMBER)
+            # Agenda
+            bookinpage.enter_agenda()
 
-        # Clicking on booking button
-        bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        sleep(2)
-        bookinpage.take_screenshot(string1)
-        print("Booking should be created successfully: Passed")
-        print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
-        # loader visibilty check
-        # loader1 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
-        # print("loader1: ", loader1)
-        sleep(2)
+            # loader invisibilty check
+            loader = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
+            print("loader: ", loader)
 
-        # Checking Booking
-        # At the find resource page, status of booking should be changed from available to booked
-        bookinpage.select_booked_status()
-        bookinpage.take_screenshot(string2)
+            # Clicking on booking button
+            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(2)
+            bookinpage.take_screenshot(f"test_simple_booking/1/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            print("Booking should be created successfully: Passed")
+            print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
+            # loader visibilty check
+            # loader1 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
+            # print("loader1: ", loader1)
+            sleep(2)
+
+            # Checking Booking
+            # At the find resource page, status of booking should be changed from available to booked
+            bookinpage.select_booked_status()
+            bookinpage.take_screenshot(f"test_simple_booking/2/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
+            send_email()
+            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+            bookinpage.resource_page_booking_check()
+            sleep(3)
+
+            # Resource details page
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
+            bookinpage.resource_details_page_check()
+            # bookinpage.driver_implicitly_wait(5)
+
+            # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
+            bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
+            bookinpage.check_my_booking()
+            print("Create a booking for the desk by selecting a default date and time: Passed")
+            # Cancelling Booking
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
+            sleep(1)
+            loader2 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
+            print("loader2: ", loader2)
+            sleep(2)
+        except Exception as e:
+            print(f"Exception: {e}")
         send_email()
-        print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-        bookinpage.resource_page_booking_check()
-        sleep(3)
-
-        # Resource details page
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
-        bookinpage.resource_details_page_check()
-        # bookinpage.driver_implicitly_wait(5)
-
-        # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-        bookinpage.do_click(RoomBookingsPage.BOOKING_NAV)
-        bookinpage.check_my_booking()
-        print("Create a booking for the desk by selecting a default date and time: Passed")
-        # Cancelling Booking
-        bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-        sleep(1)
-        loader2 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
-        print("loader2: ", loader2)
-        sleep(2)
 
     @pytest.mark.pnr
     def test_datetime_change_booking(self):

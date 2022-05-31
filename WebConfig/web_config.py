@@ -153,6 +153,7 @@ class TestData:
     AM_QUANTITY = "2"
     BS_CAL_ENDDATE = repeat_till_date2(30)
 
+    CDATE = current_datetime()
 
     '''Tag'''
     TAG = "Engineering Deck"
