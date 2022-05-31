@@ -17,6 +17,7 @@ from datetime import datetime
 
 from mail_conf import send_email
 
+import traceback
 
 # '''Logger'''
 # logging.basicConfig(level=logging.DEBUG)
@@ -140,7 +141,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"test_simple_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     @pytest.mark.pnr
-    @pytest.mark.custom
+    # @pytest.mark.custom
     def test_datetime_change_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -180,12 +181,12 @@ class Test_RoomBooking(BaseTest):
             # Agenda
             bookinpage.enter_agenda()
 
-            # Selecting datetime
+            # Selecting datetime0]}
             bookinpage.enter_datetime()
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_datetime_change_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Booking should be created successfully: Passed")
@@ -209,7 +210,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(2)
         except Exception as e:
-            print(f"Exception test_datetime_change_booking: {e}")
+            print(f"Exception test_datetime_change_booking: {e}\n{traceback.format_exc()}")
 
     @pytest.mark.pnr
     def test_overlapping_booking(self):
@@ -255,8 +256,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_booking/confirm_booking_{cdate}.png")
             sleep(3)
@@ -305,8 +306,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"/confirm_booking_{cdate}.png")
             sleep(1)
@@ -330,7 +331,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(2)
         except Exception as e:
-            print(f"Exception test_overlapping_booking: {e}")
+            print(f"Exception test_overlapping_booking: {e}\n{traceback.format_exc()}")
 
     @pytest.mark.pnr
     def test_already_cancelled_booking(self):
@@ -377,8 +378,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -427,8 +428,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -442,7 +443,7 @@ class Test_RoomBooking(BaseTest):
             print("Create a booking of room by selecting the time of already cancelled booking: Passed")
             sleep(2)
         except Exception as e:
-            print(f"Exception test_simple_booking: {e}")
+            print(f"Exception test_simple_booking: {e}\n{traceback.format_exc()}")
 
 
     '''Recurring Bookings Daily'''
@@ -495,8 +496,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.daily_repeat()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_simple_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -581,8 +582,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_datetime()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_datetime_change_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -653,8 +654,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -709,8 +710,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -785,8 +786,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(3)
@@ -842,8 +843,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.daily_repeat()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Create a booking of room by selecting the time of already cancelled booking: Passed")
@@ -913,8 +914,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.weekly_repeat()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_simple_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1004,8 +1005,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_datetime_weekly()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_datetime_change_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1089,8 +1090,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/confirm_booking_{cdate}.png")
             sleep(2)
@@ -1145,8 +1146,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
             # bookinpage.driver_implicitly_wait(2)
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
@@ -1222,8 +1223,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_agenda()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/confirm_booking_{cdate}.png")
             sleep(2)
@@ -1279,8 +1280,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.weekly_repeat()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_already_cancelled_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Create a booking of room by selecting the time of already cancelled booking: Passed")
@@ -1404,8 +1405,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_single_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
@@ -1480,8 +1481,8 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.enter_datetime()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_recurring_single_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1534,8 +1535,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_recurring_single_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
@@ -1609,8 +1610,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_datetime()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_future_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1665,8 +1666,8 @@ class Test_RoomBooking(BaseTest):
                     RoomBookingsPage.END_DATE, TestData.ROOM_OVERLAPPING_TIME_END, 2)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_future_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
@@ -1748,8 +1749,8 @@ class Test_RoomBooking(BaseTest):
             print(f'Last date: {last_date2}')
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_single_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1803,8 +1804,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_datetime()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_single_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
@@ -1885,8 +1886,8 @@ class Test_RoomBooking(BaseTest):
             print(f'Last date: {last_date2}')
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
@@ -1941,8 +1942,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.enter_datetime()
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_overlapping_daily_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
@@ -2033,8 +2034,8 @@ class Test_RoomBooking(BaseTest):
             print(f'Last date: {last_date2}')
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_cancelling_first_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(5)
@@ -2135,8 +2136,8 @@ class Test_RoomBooking(BaseTest):
             print(f'Last date: {last_date2}')
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            sleep(5)
             
             bookinpage.take_screenshot(f"test_cancelling_last_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             sleep(2)
