@@ -292,7 +292,7 @@ class BasePage:
         self.driver.get(url)
 
     def take_screenshot(self, name):
-        sleep(2)
+        # sleep()
         try:
             os.makedirs(os.path.join("screenshot", os.path.dirname(name)), exist_ok=True)
             # self.driver.get_screenshot_as_file(os.path.join("screenshot", name))

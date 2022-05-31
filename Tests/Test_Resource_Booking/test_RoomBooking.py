@@ -100,8 +100,10 @@ class Test_RoomBooking(BaseTest):
             print("loader: ", loader)
 
             # Clicking on booking button
-            bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(15)
+            # bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.take_screenshot(f"test_simple_booking/{TestData.CDATE[:10]}/pre_{TestData.CDATE[1:]}.png")
+            sleep(5)
             bookinpage.take_screenshot(f"test_simple_booking/{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print("Booking should be created successfully: Passed")
             print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
