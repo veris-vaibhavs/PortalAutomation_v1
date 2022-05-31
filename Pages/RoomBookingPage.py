@@ -1,3 +1,4 @@
+import traceback
 from Pages.BasePage import BasePage
 from WebConfig.web_config import TestData
 from selenium.webdriver.common.by import By
@@ -251,7 +252,8 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select Available status done"
         except Exception as e:
-            print("select_available_status exception: ", e)
+            print(f"select_available_status exception: e \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_available_resource(self, a=None):
         # self.do_click(self.ROOM_AVAIL)
@@ -335,7 +337,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select Booked status done"
         except Exception as e:
-            print("select_booked_status exception: ", e)
+            print(f"select_booked_status exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_all_status(self):
@@ -347,7 +349,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select All status done"
         except Exception as e:
-            print("select_all_status exception: ", e)
+            print(f"select_all_status exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_agenda(self):
@@ -591,7 +593,7 @@ class RoomBookingsPage(BasePage):
             self.do_click(self.LIST_VIEW_BUTTON)
             sleep(3)
         except Exception as e:
-            print("start_selection exception: ", e)
+            print(f"start_selection exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     #
