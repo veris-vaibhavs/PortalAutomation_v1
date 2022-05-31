@@ -39,7 +39,7 @@ class Test_RoomBooking(BaseTest):
     @pytest.mark.extndb
     @pytest.mark.misc
     @pytest.mark.hostrltd
-    # @pytest.mark.custom
+    @pytest.mark.custom
     def test_login_room_booking(self):
         print("Start time: ", self.start_time)
         self.loginPage = LoginPage(self.driver)
@@ -49,8 +49,8 @@ class Test_RoomBooking(BaseTest):
 
     """Room Booking"""
 
-    @pytest.mark.pnr
-    # @pytest.mark.custom
+    # @pytest.mark.pnr
+    @pytest.mark.custom
     def test_simple_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -101,7 +101,7 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(2)
+            sleep(15)
             bookinpage.take_screenshot(f"test_simple_booking/{TestData.CDATE[:9]}/{TestData.CDATE[1:]}.png")
             print("Booking should be created successfully: Passed")
             print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
@@ -3664,7 +3664,7 @@ class Test_RoomBooking(BaseTest):
     print("Time taken: ", time_taken)
 
     '''Send report'''
-    @pytest.mark.custom
+    @pytest.mark.email
     def test_send_email_report(self):
         print("Time end: ", self.end_time)
         print("Time taken: ", self.time_taken)

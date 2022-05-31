@@ -43,7 +43,7 @@ jobs:
       - run: pytest -v -s --html=report.html -m pnr Tests/Test_Resource_Booking/test_RoomBooking.py --self-contained-html --capture=sys -rP -rF
       
       # for email
-      - run: pytest -v -s -m custom Tests/Test_Resource_Booking/test_RoomBooking.py
+      - run: pytest -v -s -m email Tests/Test_Resource_Booking/test_RoomBooking.py
 workflows:
   test:
     jobs:
