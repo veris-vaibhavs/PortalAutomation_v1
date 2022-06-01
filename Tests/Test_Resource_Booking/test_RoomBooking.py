@@ -2796,10 +2796,11 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
             print(count+1)
 
-            bookinpage.select_available_resource()
+            # bookinpage.select_available_resource()
 
             # Getting and assigning room number to selectors
-            rval = bookinpage.get_room_name()
+            rval = "124"
+            # rval = bookinpage.get_room_name()
             RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
             RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
             RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
@@ -2810,6 +2811,9 @@ class Test_RoomBooking(BaseTest):
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS.format(rval)
             RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_RDIV_CANCEL_BUTTON.format(rval)
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
+
+            
+            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
 
             '''Booking Modal'''
 

@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 from datetime import timedelta
+from pytz import timezone
 
 class TestData:
     
@@ -46,6 +47,16 @@ class TestData:
         bdate = future_time.strftime("%d %b %Y")
         print("repeat_till_date: ", bdate)
         return bdate
+
+    def timetest():
+        format = "%Y-%m-%d %H:%M:%S %Z%z"
+        # Current time in UTC
+        now_utc = datetime.now(timezone('UTC'))
+        print(now_utc.strftime(format))
+        # Convert to Asia/Kolkata time zone
+        now_asia = now_utc.astimezone(timezone('Asia/Kolkata'))
+        print(now_asia.strftime(format))
+        print(type(now_asia.strftime(format)))
 
     def repeat_till_date2(dys):
         now = datetime.now()
