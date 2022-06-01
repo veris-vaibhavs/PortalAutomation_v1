@@ -120,7 +120,7 @@ class TestData:
     DESK_W_ISSUE = ['202']
 
     '''Room booking'''
-    ROOM_W_ISSUE = ['Room Booking rule', '107', '108', '109', '120', 'Board Room']
+    ROOM_W_ISSUE = ['Room Booking rule', '107', '108', '109', '120', 'Board Room', '105']
     ROOM_AGENDA = "Automation testing"
     NEW_CONTACT_1 = "Rahul1"
     NEW_CONTACT_1_EMAIL = "rahul1@gmail.com"
