@@ -255,7 +255,7 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print(f"select_available_status exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     def select_available_resource(self, a=None):
         # self.action_chain_click(self.ROOM_AVAIL)
@@ -341,7 +341,7 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print(f"select_booked_status exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     def select_all_status(self):
         sleep(5)
@@ -354,7 +354,7 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print(f"select_all_status exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     def enter_agenda(self):
         try:
@@ -405,7 +405,7 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print("resource_page_booking_check exception: ", e)
             self.take_screenshot(f"resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     def resource_details_page_check(self):
         self.scroll_to_element(self.SCHEDULE_LISTING)
@@ -420,7 +420,7 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print("I_button exce: ", e)
             self.take_screenshot(f"resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
         self.do_send_keys(self.BODY, Keys.PAGE_UP)
 
     def check_my_booking(self):
@@ -439,7 +439,7 @@ class RoomBookingsPage(BasePage):
             sleep(3)
         except Exception as e:
             print("check_my_roombooking exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def daily_repeat(self):
         try:
@@ -453,7 +453,7 @@ class RoomBookingsPage(BasePage):
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
         except Exception as e:
             print("daily_repeat exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def daily_repeat2(self):
         try:
@@ -467,7 +467,7 @@ class RoomBookingsPage(BasePage):
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE3, 2)
         except Exception as e:
             print("daily_repeat2 exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def weekly_repeat(self):
         try:
@@ -481,7 +481,7 @@ class RoomBookingsPage(BasePage):
             # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
         except Exception as e:
             print("weekly_repeat exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def cancel_booking(self):
         try:
@@ -500,7 +500,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_booking exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def cancel_last_booking(self):
         try:
@@ -512,7 +512,7 @@ class RoomBookingsPage(BasePage):
             sleep(20)
         except Exception as e:
             print("cancel_last_booking exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def change_date_format(self, string):
         string1 = f'{string[3:6]} {string[:2]} {string[7:11]}'
@@ -559,7 +559,7 @@ class RoomBookingsPage(BasePage):
                 self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print("cancel_some_bookings exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def extend_booking(self, etime):
         try:
@@ -582,7 +582,7 @@ class RoomBookingsPage(BasePage):
             assert pre_extend_time != post_extend_time
         except Exception as e:
             print("extend_booking exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def do_logout(self):
         try:
@@ -591,7 +591,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.LOGOUT_BUTTON)
         except Exception as e:
             print("do_logout exception: ", e)
-            sys.exit(3)
+            # sys.exit(3)
 
     def start_selection(self):
         try:
@@ -610,6 +610,6 @@ class RoomBookingsPage(BasePage):
         except Exception as e:
             print(f"start_selection exception: e \n{traceback.format_exc()}")
             self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     #
