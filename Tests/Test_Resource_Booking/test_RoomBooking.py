@@ -2796,6 +2796,8 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.start_selection()
 
+            bookinpage.select_days_end()
+
             bookinpage.select_available_resource()
 
             # Getting and assigning room number to selectors
@@ -2890,6 +2892,8 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.driver_implicitly_wait(6)
             bookinpage.start_selection()
 
+            bookinpage.select_days_end()
+
             bookinpage.select_available_resource()
             # bookinpage.driver_implicitly_wait(4)
 
@@ -2977,6 +2981,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
             bookinpage.start_selection()
+
+            bookinpage.select_days_end()
 
             # Clicking on room 124 booking modal
             bookinpage.select_available_resource()
@@ -3068,6 +3074,8 @@ class Test_RoomBooking(BaseTest):
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
             bookinpage.start_selection()
+
+            bookinpage.select_days_end()
 
             # Clicking on room 124 booking modal
             bookinpage.select_available_resource()
