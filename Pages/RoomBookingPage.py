@@ -224,7 +224,8 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.FREE_CLICK)
             assert "Location selection passed"
         except Exception as e:
-            print("Select_location_room exception: ", e)
+            print(f"Select_location_room {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_location/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
         # sleep(5)
 
     def select_resource_type(self):
@@ -235,7 +236,8 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.FREE_CLICK)
             sleep(1)
         except Exception as e:
-            print("select_resource_type exception: ", e)
+            print(f"select_resource_type {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_resource_type/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_floor(self):
         try:
@@ -243,7 +245,8 @@ class RoomBookingsPage(BasePage):
             sleep(1)
             assert "Floor selection done"
         except Exception as e:
-            print("select_floor exception: ", e)
+            print(f"select_floor {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_floor/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_available_status(self):
         try:
@@ -253,24 +256,28 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select Available status done"
         except Exception as e:
-            print(f"select_available_status exception: e \n{traceback.format_exc()}")
+            print(f"select_available_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def select_available_resource(self, a=None):
         # self.action_chain_click(self.ROOM_AVAIL)
-        for i in range(1, 6):
-            title = self.get_element_text_by_xpath(
-                self.ROOM_AVAIL_NAME+str([i]))
-            if title not in TestData.ROOM_W_ISSUE:
-                if a is None:
-                    print("Booking: ", self.ROOM_AVAIL+str([i]))
-                    self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
+        try:
+            for i in range(1, 6):
+                title = self.get_element_text_by_xpath(
+                    self.ROOM_AVAIL_NAME+str([i]))
+                if title not in TestData.ROOM_W_ISSUE:
+                    if a is None:
+                        print("Booking: ", self.ROOM_AVAIL+str([i]))
+                        self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
+                    else:
+                        self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([a]))
+                    break
                 else:
-                    self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([a]))
-                break
-            else:
-                pass
+                    pass
+        except Exception as e:
+            print(f"select_available_resource exception: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_available_resource/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_days_end(self):
         try:
@@ -292,6 +299,7 @@ class RoomBookingsPage(BasePage):
             sleep(4)
         except Exception as e:
             print(f"select_days_end exception: {e}")
+            self.take_screenshot(f"select_days_end/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_tag(self):
         try:
@@ -302,25 +310,30 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.FREE_CLICK)
             sleep(2)
         except Exception as e:
-            print("select_tag exception: ", e)
+            print(f"select_tag: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"select_tag/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def confirm_booking(self):
-        self.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-        enabled_check = self.is_enabled(
-            self.GEN_ERROR_MSG)
-        print("enabled_check: ", enabled_check)
-        if enabled_check == 1:
-            error_msg = self.get_element_text(
+        try:
+            self.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            enabled_check = self.is_enabled(
                 self.GEN_ERROR_MSG)
-            print("error-msg: ", error_msg)
-            sleep(6)
-            enabled_check_1 = self.is_enabled(
-                self.BOOKING_MODAL_GO_BACK)
-            print("enabled_check1: ", enabled_check_1)
-            self.action_chain_click(self.BOOKING_MODAL_GO_BACK)
-            sleep(2)
-        else:
-            pass
+            print("enabled_check: ", enabled_check)
+            if enabled_check == 1:
+                error_msg = self.get_element_text(
+                    self.GEN_ERROR_MSG)
+                print("error-msg: ", error_msg)
+                sleep(6)
+                enabled_check_1 = self.is_enabled(
+                    self.BOOKING_MODAL_GO_BACK)
+                print("enabled_check1: ", enabled_check_1)
+                self.action_chain_click(self.BOOKING_MODAL_GO_BACK)
+                sleep(2)
+            else:
+                pass
+        except Exception as e:
+            print(f"confirm_booking exception: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"confirm_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def get_room_name(self):
         try:
@@ -328,7 +341,8 @@ class RoomBookingsPage(BasePage):
             print("rval: ", rval)
             return rval
         except Exception as e:
-            print("get_room_name exception: ", e)
+            print(f"get_room_name: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"get_room_name/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_booked_status(self):
         sleep(3)
@@ -339,7 +353,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select Booked status done"
         except Exception as e:
-            print(f"select_booked_status exception: e \n{traceback.format_exc()}")
+            print(f"select_booked_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
@@ -352,7 +366,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             assert "Select All status done"
         except Exception as e:
-            print(f"select_all_status exception: e \n{traceback.format_exc()}")
+            print(f"select_all_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
@@ -360,7 +374,8 @@ class RoomBookingsPage(BasePage):
         try:
             self.host_selection(self.BOOKING_AGENDA, TestData.ROOM_AGENDA)
         except Exception as e:
-            print("Agenda error exception: ", e)
+            print(f"enter_agenda: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"enter_agenda/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def new_contact_guest(self, contact_name, contact_email):
         try:
@@ -369,7 +384,8 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.CONTACT_RIGHT_TICK)
             sleep(2)
         except Exception as e:
-            print("new_contact_guest exception: ", e)
+            print(f"new_contact_guest: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"new_contact_guest/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_datetime(self):
         try:
@@ -381,7 +397,8 @@ class RoomBookingsPage(BasePage):
             self.date_selection_chain(
                 self.END_DATE, TestData.ROOM_END_DATE, 18)
         except Exception as e:
-            print("enter_datetime exception: ", e)
+            print(f"enter_datetime: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"enter_datetime/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_datetime_weekly(self):
         try:
@@ -393,7 +410,8 @@ class RoomBookingsPage(BasePage):
             self.date_selection_chain(
                 self.END_DATE, TestData.ROOM_WEND_DATE, 18)
         except Exception as e:
-            print("enter_datetime exception: ", e)
+            print(f"enter_datetime: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"enter_datetime_weekly/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_page_booking_check(self):
         try:
@@ -403,7 +421,7 @@ class RoomBookingsPage(BasePage):
             print("rpage_status passed as: ", rpage_status)
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         except Exception as e:
-            print("resource_page_booking_check exception: ", e)
+            print(f"resource_page_booking_check: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
@@ -418,7 +436,7 @@ class RoomBookingsPage(BasePage):
             sleep(3)
             print("At the resource details page, booking should be available: Passed")
         except Exception as e:
-            print("I_button exce: ", e)
+            print(f"resource_details_page_check:{e} \n{traceback.format_exc()}")
             self.take_screenshot(f"resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
         self.do_send_keys(self.BODY, Keys.PAGE_UP)
@@ -438,7 +456,8 @@ class RoomBookingsPage(BasePage):
             self.do_click_by_xpath(self.ROOM_124_CHECK_DIV)
             sleep(3)
         except Exception as e:
-            print("check_my_roombooking exception: ", e)
+            print(f"check_my_roombooking: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"check_my_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def daily_repeat(self):
@@ -452,7 +471,8 @@ class RoomBookingsPage(BasePage):
             self.date_selection_chain(
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
         except Exception as e:
-            print("daily_repeat exception: ", e)
+            print(f"daily_repeat: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"daily_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def daily_repeat2(self):
@@ -466,7 +486,8 @@ class RoomBookingsPage(BasePage):
             self.date_selection_chain(
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE3, 2)
         except Exception as e:
-            print("daily_repeat2 exception: ", e)
+            print(f"daily_repeat2: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"daily_repeat2/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def weekly_repeat(self):
@@ -480,7 +501,8 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
         except Exception as e:
-            print("weekly_repeat exception: ", e)
+            print(f"weekly_repeat: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"weekly_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def cancel_booking(self):
@@ -499,7 +521,8 @@ class RoomBookingsPage(BasePage):
             self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
             self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
-            print("cancel_booking exception: ", e)
+            print(f"cancel_booking: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"cancel_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def cancel_last_booking(self):
@@ -511,7 +534,8 @@ class RoomBookingsPage(BasePage):
                 self.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST)
             sleep(20)
         except Exception as e:
-            print("cancel_last_booking exception: ", e)
+            print(f"cancel_last_booking: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"cancel_last_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def change_date_format(self, string):
@@ -558,7 +582,8 @@ class RoomBookingsPage(BasePage):
                 self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
                 self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
-            print("cancel_some_bookings exception: ", e)
+            print(f"cancel_some_bookings: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"cancel_some_bookings/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def extend_booking(self, etime):
@@ -581,7 +606,8 @@ class RoomBookingsPage(BasePage):
             print("post_extend_time: ", post_extend_time)
             assert pre_extend_time != post_extend_time
         except Exception as e:
-            print("extend_booking exception: ", e)
+            print(f"extend_booking: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"extend_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def do_logout(self):
@@ -590,7 +616,8 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             self.action_chain_click(self.LOGOUT_BUTTON)
         except Exception as e:
-            print("do_logout exception: ", e)
+            print(f"do_logout: {e} \n{traceback.format_exc()}")
+            self.take_screenshot(f"do_logout/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def start_selection(self):
@@ -608,7 +635,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.LIST_VIEW_BUTTON)
             sleep(3)
         except Exception as e:
-            print(f"start_selection exception: e \n{traceback.format_exc()}")
+            print(f"start_selection exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
