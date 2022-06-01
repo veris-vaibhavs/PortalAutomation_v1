@@ -1,21 +1,15 @@
 from time import sleep
 from time import time
-import logging
 import sys
-import os
 
 from selenium.webdriver.common.keys import Keys
 
 
 from Pages.LoginPage import LoginPage
-from Pages.deskBookingsPage import deskBookingsPage
 from Pages.RoomBookingPage import RoomBookingsPage
 from WebConfig.web_config import TestData
 from Tests.test_base import BaseTest
 import pytest
-from datetime import datetime
-
-from mail_conf import send_email
 
 import traceback, sys
 
