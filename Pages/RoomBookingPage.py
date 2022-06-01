@@ -35,8 +35,9 @@ class RoomBookingsPage(BasePage):
     FREE_CLICK = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     FIRST_FLOOR = (By.ID, "0-floor")
-    STATUS_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
+    # STATUS_DROPDOWN = (
+    #     By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
+    STATUS_DROPDOWN = (By.XPATH, "//*[text()='Status']/following-sibling::*/child::*")
     AVAILABLE_STATUS = (By.CSS_SELECTOR, "span[title='Available']")
     BOOKED_STATUS = (By.CSS_SELECTOR, "span[title='Booked']")
     ASSIGNED_STATUS = (By.CSS_SELECTOR, "span[title='Assigned']")

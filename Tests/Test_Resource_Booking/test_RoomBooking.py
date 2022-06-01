@@ -2783,7 +2783,9 @@ class Test_RoomBooking(BaseTest):
     '''Cancel Booking'''
     @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_single_booking(self):
+        count = 0
         try:
+            print("L2788:", count+1)
             bookinpage = RoomBookingsPage(self.driver)
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
@@ -2792,6 +2794,7 @@ class Test_RoomBooking(BaseTest):
 
             bookinpage.select_days_end()
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
+            print(count+1)
 
             bookinpage.select_available_resource()
 
@@ -2832,7 +2835,9 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
+            print("L2838:",count+1)
             bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            print("L2840:",count+1)
             sleep(2)
             
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
@@ -2841,7 +2846,9 @@ class Test_RoomBooking(BaseTest):
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
+            print("L2849:",count+1)
             bookinpage.select_booked_status()
+            print("L2851:",count+1)
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
             bookinpage.resource_page_booking_check()
 
