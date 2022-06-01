@@ -15,7 +15,7 @@ from time import sleep
 """It contains all the generic methods and utilities for all pages"""
 
 class BasePage:
-    time_delay = 40
+    time_delay = 100
     # web_drive_cls = WebDriverWait(self.driver, time_delay)
 
     def __init__(self,driver):
