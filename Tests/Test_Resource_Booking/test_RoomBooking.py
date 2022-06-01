@@ -139,7 +139,7 @@ class Test_RoomBooking(BaseTest):
         except Exception as e:
             print(f"Exception test_simple_booking: {e}")
             bookinpage.take_screenshot(f"test_simple_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
-            sys.exit(3)
+            # sys.exit(3)
 
     @pytest.mark.pnr
     # @pytest.mark.custom
@@ -214,7 +214,7 @@ class Test_RoomBooking(BaseTest):
         except Exception as e:
             bookinpage.take_screenshot(f"test_datetime_change_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_datetime_change_booking: {e}\n{traceback.format_exc()}")
-            sys.exit(3)
+            # sys.exit(3)
 
     @pytest.mark.pnr
     def test_overlapping_booking(self):
@@ -338,7 +338,7 @@ class Test_RoomBooking(BaseTest):
         except Exception as e:
             bookinpage.take_screenshot(f"test_overlapping_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_overlapping_booking: {e}\n{traceback.format_exc()}")
-            sys.exit(3)
+            # sys.exit(3)
 
     @pytest.mark.pnr
     def test_already_cancelled_booking(self):
@@ -453,7 +453,7 @@ class Test_RoomBooking(BaseTest):
         except Exception as e:
             bookinpage.take_screenshot(f"test_already_cancelled_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             print(f"Exception test_simple_booking: {e}\n{traceback.format_exc()}")
-            sys.exit(3)
+            # sys.exit(3)
 
 
     '''Recurring Bookings Daily'''
