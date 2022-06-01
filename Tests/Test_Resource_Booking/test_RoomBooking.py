@@ -2791,6 +2791,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.start_selection()
 
             bookinpage.select_days_end()
+            bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
 
             bookinpage.select_available_resource()
 
@@ -2876,7 +2877,7 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_daily_recurring_cancel_single_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    @pytest.mark.pcnclb
+    # @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_all_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -2967,7 +2968,7 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_daily_recurring_cancel_all_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_all_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    @pytest.mark.pcnclb
+    # @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_single_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -3060,7 +3061,7 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_weekly_recurring_cancel_single_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"test_simple_weekly_recurring_cancel_single_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    @pytest.mark.pcnclb
+    # @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_all_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -3141,7 +3142,7 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_weekly_recurring_cancel_all_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"test_simple_weekly_recurring_cancel_all_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    @pytest.mark.pcnclb
+    # @pytest.mark.pcnclb
     def test_simple_cancel_single_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
