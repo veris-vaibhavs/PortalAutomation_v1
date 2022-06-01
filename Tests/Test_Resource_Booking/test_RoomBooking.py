@@ -2851,19 +2851,21 @@ class Test_RoomBooking(BaseTest):
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
             print("L2849:",count+1)
-            bookinpage.select_booked_status()
+            # bookinpage.select_booked_status()
             print("L2851:",count+1)
-            print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-            bookinpage.resource_page_booking_check()
+            # print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
+            # bookinpage.resource_page_booking_check()
 
             # # Resource details page
             # bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
             # bookinpage.resource_details_page_check()
 
             # In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking
-            bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
+            bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/mb{TestData.CDATE[11:]}.png")
+            bookinpage.action_chain_click(RoomBookingsPage.MY_BOOKING_NAV)
             sleep(2)
             bookinpage.check_my_booking()
+            bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/cmb{TestData.CDATE[11:]}.png")
             print("Create a daily recurring booking for the desk by selecting a default date and time: Passed")
 
             bookinpage.date_selection_chain(RoomBookingsPage.LAST_DATE_INPUT, last_date2, 2)
