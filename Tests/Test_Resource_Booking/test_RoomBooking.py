@@ -2799,8 +2799,8 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.select_available_resource()
 
             # Getting and assigning room number to selectors
-            rval = "124"
-            # rval = bookinpage.get_room_name()
+            # rval = "124"
+            rval = bookinpage.get_room_name()
             RoomBookingsPage.ROOM_124 = RoomBookingsPage.ROOM_124.format(rval)
             RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE = RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE.format(rval)
             RoomBookingsPage.ROOM_124_CHECK_DIV = RoomBookingsPage.ROOM_124_CHECK_DIV.format(rval)
@@ -2813,7 +2813,7 @@ class Test_RoomBooking(BaseTest):
             RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON.format(rval)
 
             
-            bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
+            # bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124)
 
             '''Booking Modal'''
 
@@ -2851,10 +2851,10 @@ class Test_RoomBooking(BaseTest):
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
             print("L2849:",count+1)
-            # bookinpage.select_booked_status()
+            bookinpage.select_booked_status()
             print("L2851:",count+1)
             # print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
-            # bookinpage.resource_page_booking_check()
+            bookinpage.resource_page_booking_check()
 
             # # Resource details page
             # bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
