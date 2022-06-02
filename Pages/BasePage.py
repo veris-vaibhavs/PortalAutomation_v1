@@ -143,6 +143,15 @@ class BasePage:
         actions.send_keys(Keys.ENTER)
         actions.perform()
         sleep(5)
+
+    def action_chain_scroll_to_top(self, by_locator):
+        element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element)
+        actions.click()
+        sleep(2)
+        actions.key_down(Keys.CONTROL).send_keys(Keys.HOME).key_up(Keys.CONTROL)
+        actions.perform()
         
     def time_selection(self, bstart, bstart_input, bstrokes=1):
         start_time = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(bstart))

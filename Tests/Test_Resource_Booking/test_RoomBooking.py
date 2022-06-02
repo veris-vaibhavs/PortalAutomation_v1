@@ -2794,7 +2794,7 @@ class Test_RoomBooking(BaseTest):
 
             bookinpage.select_days_end()
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
-            print(count+1)
+            print("L2797:",count+1)
 
             bookinpage.select_available_resource()
 
@@ -2877,9 +2877,9 @@ class Test_RoomBooking(BaseTest):
 
             bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON, 2)
             sleep(20)
-            bookinpage.action_chain_sendkeys_1(RoomBookingsPage.MAIN_CARDS_CONTAINER, Keys.HOME)
+            bookinpage.action_chain_scroll_to_top(RoomBookingsPage.MAIN_CARDS_CONTAINER)
             print("Create a daily recurring booking for a month and delete any single instance: Passed")
-
+            sleep(3)
             bookinpage.scroll_to_element_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
             sleep(2)
             bookinpage.do_click_by_index(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS, 0)
