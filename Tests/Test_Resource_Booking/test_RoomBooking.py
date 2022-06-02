@@ -2796,7 +2796,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
             print(count+1)
 
-            # bookinpage.select_available_resource()
+            bookinpage.select_available_resource()
 
             # Getting and assigning room number to selectors
             # rval = "124"
