@@ -25,16 +25,22 @@ class RoomBookingsPage(BasePage):
     # ---------------
     # BOOKING_NAV = (By.XPATH, "//h3[text()='Booking']")
     BOOKING_NAV = (
-        By.XPATH, "//*[@id='navigation']/div/div/div/div[2]/child::*[3]")
+        By.XPATH, "//*[@class='navigation-AppName-1_BPN'][text()='Booking']")
     BOOK_SPACE_NAV = (By.XPATH, "//*[contains(text(), 'Book space')]")
+
+    # Location
+    # LOCATION_DROPDOWN = (
+    #     By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
     LOCATION_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
+        By.XPATH, "//p[text()= 'Locations']/following-sibling::*/div")
     GENPACT_IT_PARK = (
-        By.XPATH, "//div[contains(text(), 'Genpact IT Park')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span/child::*")
-    BUSINESS_TOWER = (By.XPATH, "//div[contains(text(), 'Bussiness Tower')]")
+        By.XPATH, f"//div[contains(text(), '{TestData.LOC_1}')]/parent::*/parent::*/parent::*/preceding-sibling::*[2]/span/child::*")
+    BUSINESS_TOWER = (By.XPATH, f"//div[contains(text(), '{TestData.LOC_2}')]")
     FREE_CLICK = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     FIRST_FLOOR = (By.ID, "0-floor")
+
+    # Status
     # STATUS_DROPDOWN = (
     #     By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
     STATUS_DROPDOWN = (By.XPATH, "//*[text()='Status']/following-sibling::*/child::*")
@@ -117,7 +123,7 @@ class RoomBookingsPage(BasePage):
     ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON_LAST = "(//p[text()='{}']/parent::*/following-sibling::*[2]/div/div/button[2])[last()]"
     ROOM_124_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = "(//p[text()='{}']/parent::*/following-sibling::*[2]/div/button)"
     MAIN_CARDS_CONATINER = (By.ID, "mainBookingCardsContainer")
-    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = "//p[text()='{}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/*[@class='MuiSvgIcon-root']"
+    ROOM_124_MEETING_OPTIONS_CANCEL_ALL_DOTS = "(//p[text()='{}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/*[@class='MuiSvgIcon-root'])"
     ROOM_124_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (
         By.XPATH, "//*[text()='Cancel All']")
     LAST_DATE_INPUT = (
@@ -226,7 +232,7 @@ class RoomBookingsPage(BasePage):
             assert "Location selection passed"
         except Exception as e:
             print(f"Select_location_room {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_location/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_location/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
         # sleep(5)
 
     def select_resource_type(self):
@@ -238,7 +244,7 @@ class RoomBookingsPage(BasePage):
             sleep(1)
         except Exception as e:
             print(f"select_resource_type {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_resource_type/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_resource_type/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_floor(self):
         try:
@@ -247,7 +253,7 @@ class RoomBookingsPage(BasePage):
             assert "Floor selection done"
         except Exception as e:
             print(f"select_floor {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_floor/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_floor/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_available_status(self):
         try:
@@ -258,7 +264,7 @@ class RoomBookingsPage(BasePage):
             assert "Select Available status done"
         except Exception as e:
             print(f"select_available_status exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def select_available_resource(self, a=None):
@@ -278,7 +284,7 @@ class RoomBookingsPage(BasePage):
                     pass
         except Exception as e:
             print(f"select_available_resource exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_available_resource/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_available_resource/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_days_end(self):
         try:
@@ -300,7 +306,7 @@ class RoomBookingsPage(BasePage):
             sleep(4)
         except Exception as e:
             print(f"select_days_end exception: {e}")
-            self.take_screenshot(f"select_days_end/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_days_end/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_tag(self):
         try:
@@ -312,7 +318,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
         except Exception as e:
             print(f"select_tag: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_tag/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_tag/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def confirm_booking(self):
         try:
@@ -334,7 +340,7 @@ class RoomBookingsPage(BasePage):
                 pass
         except Exception as e:
             print(f"confirm_booking exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"confirm_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/confirm_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def get_room_name(self):
         try:
@@ -343,7 +349,7 @@ class RoomBookingsPage(BasePage):
             return rval
         except Exception as e:
             print(f"get_room_name: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"get_room_name/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/get_room_name/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_booked_status(self):
         sleep(3)
@@ -355,7 +361,7 @@ class RoomBookingsPage(BasePage):
             assert "Select Booked status done"
         except Exception as e:
             print(f"select_booked_status exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def select_all_status(self):
@@ -368,7 +374,7 @@ class RoomBookingsPage(BasePage):
             assert "Select All status done"
         except Exception as e:
             print(f"select_all_status exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def enter_agenda(self):
@@ -376,7 +382,7 @@ class RoomBookingsPage(BasePage):
             self.host_selection(self.BOOKING_AGENDA, TestData.ROOM_AGENDA)
         except Exception as e:
             print(f"enter_agenda: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"enter_agenda/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/enter_agenda/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def new_contact_guest(self, contact_name, contact_email):
         try:
@@ -386,7 +392,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
         except Exception as e:
             print(f"new_contact_guest: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"new_contact_guest/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/new_contact_guest/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_datetime(self):
         try:
@@ -399,7 +405,7 @@ class RoomBookingsPage(BasePage):
                 self.END_DATE, TestData.ROOM_END_DATE, 18)
         except Exception as e:
             print(f"enter_datetime: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"enter_datetime/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/enter_datetime/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def enter_datetime_weekly(self):
         try:
@@ -412,7 +418,7 @@ class RoomBookingsPage(BasePage):
                 self.END_DATE, TestData.ROOM_WEND_DATE, 18)
         except Exception as e:
             print(f"enter_datetime: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"enter_datetime_weekly/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/enter_datetime_weekly/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_page_booking_check(self):
         try:
@@ -423,7 +429,7 @@ class RoomBookingsPage(BasePage):
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         except Exception as e:
             print(f"resource_page_booking_check: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def resource_details_page_check(self):
@@ -438,7 +444,7 @@ class RoomBookingsPage(BasePage):
             print("At the resource details page, booking should be available: Passed")
         except Exception as e:
             print(f"resource_details_page_check:{e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
         self.do_send_keys(self.BODY, Keys.PAGE_UP)
 
@@ -458,7 +464,7 @@ class RoomBookingsPage(BasePage):
             sleep(3)
         except Exception as e:
             print(f"check_my_roombooking: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"check_my_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/check_my_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def daily_repeat(self):
@@ -473,7 +479,7 @@ class RoomBookingsPage(BasePage):
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:11], 2)
         except Exception as e:
             print(f"daily_repeat: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"daily_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/daily_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def daily_repeat2(self):
@@ -488,7 +494,7 @@ class RoomBookingsPage(BasePage):
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE3, 2)
         except Exception as e:
             print(f"daily_repeat2: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"daily_repeat2/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/daily_repeat2/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def weekly_repeat(self):
@@ -503,7 +509,7 @@ class RoomBookingsPage(BasePage):
             # self.date_selection_chain(self.REPEAT_FREQUENCY, TestData.REPEAT_FREQUENCY, 2)
         except Exception as e:
             print(f"weekly_repeat: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"weekly_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/weekly_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def cancel_booking(self):
@@ -523,7 +529,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print(f"cancel_booking: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"cancel_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/cancel_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def cancel_last_booking(self):
@@ -536,7 +542,7 @@ class RoomBookingsPage(BasePage):
             sleep(20)
         except Exception as e:
             print(f"cancel_last_booking: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"cancel_last_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/cancel_last_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def change_date_format(self, string):
@@ -584,7 +590,7 @@ class RoomBookingsPage(BasePage):
                 self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
             print(f"cancel_some_bookings: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"cancel_some_bookings/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/cancel_some_bookings/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def extend_booking(self, etime):
@@ -608,7 +614,7 @@ class RoomBookingsPage(BasePage):
             assert pre_extend_time != post_extend_time
         except Exception as e:
             print(f"extend_booking: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"extend_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/extend_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def do_logout(self):
@@ -618,7 +624,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.LOGOUT_BUTTON)
         except Exception as e:
             print(f"do_logout: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"do_logout/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/do_logout/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     def start_selection(self):
@@ -637,7 +643,7 @@ class RoomBookingsPage(BasePage):
             sleep(3)
         except Exception as e:
             print(f"start_selection exception: {e} \n{traceback.format_exc()}")
-            self.take_screenshot(f"start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.take_screenshot(f"RoomBooking/start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
     #

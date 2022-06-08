@@ -226,6 +226,25 @@ class BasePage:
             except:
                 print("2nd failed")
 
+    def scroll_to_element_to_mid(self, by_locator):
+        a = None
+        try:
+            element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+            print("element present")
+            self.driver.execute_script("var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);var elementTop = arguments[0].getBoundingClientRect().top;window.scrollBy(0, elementTop-(viewPortHeight/2));", element)
+            print("moved to element")
+            a = 1
+            pass
+        except:
+            print("1st failed")
+        if a == None:
+            try:
+                element = WebDriverWait(self.driver, self.time_delay).until(EC.presence_of_element_located(by_locator))
+                self.driver.execute_script("var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);var elementTop = arguments[0].getBoundingClientRect().top;window.scrollBy(0, elementTop-(viewPortHeight/2));", element)
+                pass
+            except:
+                print("2nd failed")
+
     def scroll_to_element_to_mid_by_xpath(self, by_locator):
         a = None
         try:
@@ -308,6 +327,9 @@ class BasePage:
             self.driver.save_screenshot(os.path.join("screenshot", name))
         except Exception as e:
             print("Screenshot exception: ", e)
+
+    def current_url(self):
+        return self.driver.current_url
 
 def process_browser_logs_for_network_events(logs):
     print("in process_browser")

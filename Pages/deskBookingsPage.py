@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+import traceback
 
 
 class deskBookingsPage(BasePage):
@@ -15,7 +16,7 @@ class deskBookingsPage(BasePage):
     DESK_NO = None
     # ------
     BOOKING_NAV = (
-        By.XPATH, "//*[@id='navigation']/div/div/div/div[2]/child::*[3]")
+        By.XPATH, "//*[@class='navigation-AppName-1_BPN'][text()='Booking']")
     BOOK_SPACE_NAV = (By.XPATH, "//*[contains(text(), 'Book space')]")
     LOCATION_DROPDOWN = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[1]/div/div")
@@ -26,7 +27,7 @@ class deskBookingsPage(BasePage):
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     SECOND_FLOOR = (By.ID, "1-floor")
     STATUS_DROPDOWN = (
-        By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[3]/div[1]/div/div")
+        By.XPATH, f"//*[text()='Status']/following-sibling::*/child::*")
     AVAILABLE_STATUS = (By.CSS_SELECTOR, "span[title='Available']")
     BOOKED_STATUS = (By.CSS_SELECTOR, "span[title='Booked']")
     ASSIGNED_STATUS = (By.CSS_SELECTOR, "span[title='Assigned']")
@@ -49,6 +50,18 @@ class deskBookingsPage(BasePage):
         By.XPATH, f"//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/div/div/div")
     RESOURCE_DESKS = (By.CSS_SELECTOR, "span[title='Desks']")
 
+    # Book Space Date Selectors
+    BS_DATE_DIV_CONTAINER = (By.XPATH, "//*[text()='Date & Time']/parent::*/child::*[4]/child::*/div")
+    BS_DATE_DIV = (By.XPATH, "//input[@placeholder='Today']")
+    BS_DSINGLE_DAY = (By.XPATH, "//*[@placeholder='Select date']")
+    BS_DMULTIPLE_DAYS = (By.XPATH, "//p[text()='Multiple Days']")
+    BS_DENDDATE = (By.XPATH, "//input[@placeholder='End date']")
+    BS_DONE = (By.XPATH, "//button/span[text()='Done']")
+    TDATA_ENDDATE = (By.XPATH, f"//*[@title='{TestData.BS_CAL_ENDDATE}']")
+    TDATA_ENDDATE_1 = "//*[@title='{}']"
+    CAL_NEXT_MONTH = (By.CLASS_NAME, "ant-picker-next-icon")
+    CAL_OK_BUTTON = (By.XPATH, "//button/span[text()='Ok']")
+
     # 2nd Floor total desks
     TOTAL_DESKS_2ND_FLOOR = (
         By.XPATH, f"//*[@id='1-floor']/div/div[3]/div[1]/p")
@@ -56,7 +69,7 @@ class deskBookingsPage(BasePage):
         By.XPATH, f"//*[@id='1-floor']/div/div[3]/div[2]/p")
 
     # Booking Modal
-    MODAL_CLOSE = (By.XPATH, "//*[@title='Close']")
+    MODAL_CLOSE = (By.CSS_SELECTOR, "*[title='Close']")
     BOOKING_CONFIRM_BUTTON = (
         By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[4]/div/button")
     HOST_DROPDOWN = (
@@ -132,9 +145,9 @@ class deskBookingsPage(BasePage):
     DESK_201_SCHEDULE_CHECK = "//p[text()='{}']/parent::*/following-sibling::*[1]"
     DESK_201_MEETING_OPTIONS_BUTTONS_CHECK = "//p[text()='{}']/parent::*/following-sibling::*[2]"
     DESK_201_MEETING_OPTIONS_CANCEL_BUTTON = "//p[text()='{}']/parent::*/following-sibling::*[2]/div/div/button[2]"
-    DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = "//p[text()='{}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/*[@class='MuiSvgIcon-root'"
-    DESK_201_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (
-        By.XPATH, "//*[text()='Cancel All']")
+    # DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = "(//p[text()='{}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/*[@class='MuiSvgIcon-root'])"
+    DESK_201_MEETING_OPTIONS_CANCEL_ALL_DOTS = "//p[text()='{}']/parent::*/parent::*/preceding-sibling::*/child::*[2]/child::*/child::*/*[last()]"
+    DESK_201_MEETING_OPTIONS_CANCEL_ALL_BUTTON = (By.XPATH, "//*[text()='Cancel All']")
     DESK_201_MEETING_OPTIONS_FOLLOWING_CANCEL_BUTTON = "(//p[text()='{}']/parent::*/following-sibling::*[2]/div/button)"
     MAIN_CARDS_CONTAINER = (By.XPATH, f"//*[@id='mainBookingCardsContainer']")
 
@@ -247,82 +260,136 @@ class deskBookingsPage(BasePage):
     def select_location(self):
         sleep(3)
         try:
-            self.do_click(self.LOCATION_DROPDOWN)
+            self.action_chain_click(self.LOCATION_DROPDOWN)
             sleep(2)
             self.action_chain_click(self.GENPACT_IT_PARK)
             sleep(2)
             self.action_chain_click(self.BUSINESS_TOWER)
             sleep(2)
-            self.do_click(self.FREE_CLICK)
+            self.action_chain_click(self.FREE_CLICK)
             assert "Location selection passed"
         except Exception as e:
-            print("Select_location_room exception: ", e)
-            self.quit_driver()
-        sleep(5)
+            print(f"Select_location_room exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_location/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+        sleep(2)
+
+    def select_days_end_1(self):
+        try:
+            self.action_chain_click(self.BS_DATE_DIV)
+            self.action_chain_click(self.BS_DSINGLE_DAY)
+            d1 = TestData.cal_date_format(TestData.BOOKING_DATE)
+            dselect = (By.XPATH, self.TDATA_ENDDATE_1.format(d1))
+            print(f"End date: {dselect}")
+            for i in range(2):
+                d_isvisible = self.is_visible(dselect)
+                print(f"{i}. visibility: {d_isvisible}")
+                if d_isvisible == True:
+                    self.action_chain_click(dselect)
+                    break
+                else:
+                    self.action_chain_click(self.CAL_NEXT_MONTH)
+            self.scroll_to_element_to_mid(self.BS_DONE)
+            sleep(1)
+            self.action_chain_click(self.BS_DONE)
+            sleep(4)
+        except Exception as e:
+            print(f"select_days_end exception: {e} \n {traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_days_end_1/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+
+    def select_days_end(self):
+        try:
+            self.action_chain_click(self.BS_DATE_DIV)
+            self.action_chain_click(self.BS_DMULTIPLE_DAYS)
+            self.action_chain_click(self.BS_DENDDATE)
+            print(f"End date: {self.TDATA_ENDDATE}")
+            for i in range(2):
+                d_isvisible = self.is_visible(self.TDATA_ENDDATE)
+                print(f"{i}. visibility: {d_isvisible}")
+                if d_isvisible == True:
+                    self.action_chain_click(self.TDATA_ENDDATE)
+                    break
+                else:
+                    self.action_chain_click(self.CAL_NEXT_MONTH)
+            self.action_chain_click(self.CAL_OK_BUTTON)
+            sleep(1)
+            self.action_chain_click(self.BS_DONE)
+            sleep(4)
+        except Exception as e:
+            print(f"select_days_end exception: {e}")
+            self.take_screenshot(f"deskBooking/select_days_end/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_floor(self):
         try:
-            self.do_click(self.SECOND_FLOOR)
+            self.action_chain_click(self.SECOND_FLOOR)
             sleep(2)
             assert "Floor selection done"
         except Exception as e:
-            print("select_floor exception: ", e)
+            print(f"select_floor exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_floor/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_available_status(self):
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.AVAILABLE_STATUS)
+            self.action_chain_click(self.AVAILABLE_STATUS)
             sleep(2)
             assert "Select Available status done"
         except Exception as e:
-            print("select_available_status exception: ", e)
+            print(f"select_available_status exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
     
     def select_available_resource(self, a=None):
-        # self.do_click(self.ROOM_AVAIL)
-        print(f"a:{a}")
-        for i in range(1, 6):
-            title = self.get_element_text_by_xpath(
-                self.DESK_AVAIL_NAME+str([i]))
-            if title not in TestData.DESK_W_ISSUE:
-                if a is None:
-                    self.do_click_by_xpath(self.DESK_AVAIL+str([i]))
+        # self.action_chain_click(self.ROOM_AVAIL)
+        try:
+            print(f"a:{a}")
+            for i in range(1, 6):
+                title = self.get_element_text_by_xpath(
+                    self.DESK_AVAIL_NAME+str([i]))
+                if title not in TestData.DESK_W_ISSUE:
+                    if a is None:
+                        self.do_click_by_xpath(self.DESK_AVAIL+str([i]))
+                    else:
+                        self.do_click_by_xpath(self.DESK_AVAIL_NAME+str([a]))
+                    break
                 else:
-                    self.do_click_by_xpath(self.DESK_AVAIL_NAME+str([a]))
-                break
-            else:
-                pass
+                    pass
+        except Exception as e:
+            print(f"select_available_resource exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_available_resource/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
         sleep(2)
 
     def select_booked_status(self):
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.BOOKED_STATUS)
+            self.action_chain_click(self.BOOKED_STATUS)
             sleep(2)
             assert "Select Booked status done"
         except Exception as e:
-            print("select_booked_status exception: ", e)
+            print(f"select_booked_status exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_all_status(self):
         try:
-            self.do_click(self.STATUS_DROPDOWN)
+            self.action_chain_click(self.STATUS_DROPDOWN)
             sleep(2)
-            self.do_click(self.ALL_STATUS)
+            self.action_chain_click(self.ALL_STATUS)
             sleep(2)
             assert "Select All status done"
         except Exception as e:
-            print("select_all_status exception: ", e)
+            print(f"select_all_status exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_resource_type_desk(self):
         try:
-            self.do_click(self.RESOURCE_DROPDOWN)
+            self.action_chain_click(self.RESOURCE_DROPDOWN)
             sleep(2)
-            self.do_click(self.RESOURCE_DESKS)
-            self.do_click(self.FREE_CLICK)
+            self.action_chain_click(self.RESOURCE_DESKS)
+            self.action_chain_click(self.FREE_CLICK)
             sleep(3)
         except Exception as e:
-            print("select_resource_type exception: ", e)
+            print(f"select_resource_type exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_resource_type_desk/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def get_desk_name(self):
         try:
@@ -330,21 +397,27 @@ class deskBookingsPage(BasePage):
             print("dval: ", dval)
             return dval
         except Exception as e:
-            print("get_room_name exception: ", e)
+            print(f"get_room_name exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/get_desk_name/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_details_page_check(self):
-        self.scroll_to_element(self.SCHEDULE_LISTING)
-        sleep(2)
         try:
-            self.do_click(self.I_BUTTON)
-            sleep(3)
-            eltext = self.get_element_text(self.I_INFO).split('\n')
-            print("eltext: ", eltext)
-            sleep(3)
-            print("At the resource details page, booking should be available: Passed")
+            self.scroll_to_element(self.SCHEDULE_LISTING)
+            sleep(2)
+            try:
+                self.action_chain_click(self.I_BUTTON)
+                sleep(3)
+                eltext = self.get_element_text(self.I_INFO).split('\n')
+                print("eltext: ", eltext)
+                sleep(3)
+                print("At the resource details page, booking should be available: Passed")
+            except Exception as e:
+                print(f"I_button exce: {e}\n{traceback.format_exc()}")
+                self.take_screenshot(f"deskBooking/select_days_end_1/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
+            self.do_send_keys(self.BODY, Keys.PAGE_UP)
         except Exception as e:
-            print("I_button exce: ", e)
-        self.do_send_keys(self.BODY, Keys.PAGE_UP)
+            print(f"resource_details_page_check exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/resource_details_page_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def selecting_date(self, btype=None):
         try:
@@ -355,7 +428,8 @@ class deskBookingsPage(BasePage):
             dcheck = self.get_element_text(self.DATE_INPUT)
             print("dcheck: ", dcheck)
         except Exception as e:
-            print("selecting_date exception: ", e)
+            print(f"selecting_date exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/selecting_date/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def select_time(self):
         sleep(2)
@@ -363,11 +437,12 @@ class deskBookingsPage(BasePage):
             self.time_selection(self.TIME_SELECT_START, TestData.TIME_START)
             self.time_selection(self.TIME_SELECT_END, TestData.TIME_END)
         except Exception as e:
-            print("select_time exception: ", e)
+            print(f"select_time exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/select_time/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def check_my_booking(self):
         try:
-            self.do_click(self.MY_BOOKING_NAV)
+            self.action_chain_click(self.MY_BOOKING_NAV)
             sleep(3)
             self.scroll_to_element_to_mid_by_xpath(self.DESK_201_CHECK_DIV)
             sleep(3)
@@ -380,7 +455,8 @@ class deskBookingsPage(BasePage):
             self.do_click_by_xpath(self.DESK_201_CHECK_DIV)
             sleep(3)
         except Exception as e:
-            print("check_my_deskbooking exception: ", e)
+            print(f"check_my_deskbooking exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/check_my_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_page_booking_check(self):
         try:
@@ -390,51 +466,64 @@ class deskBookingsPage(BasePage):
             print("rpage_status passed as: ", rpage_status)
             print("At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed")
         except Exception as e:
-            print("resource_page_booking_check exception: ", e)
+            print(f"resource_page_booking_check exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/resource_page_booking_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_details_date_select(self):
-        self.date_selection_chain(
-                self.RD_CALENDER_INPUT, TestData.BOOKING_DATE, 2)
+        try:
+            self.date_selection_chain(
+                    self.RD_CALENDER_INPUT, TestData.BOOKING_DATE, 2)
+        except Exception as e:
+            print(f"resource_details_date_select exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/resource_details_date_select/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
         sleep(2)
 
     def resource_page_date_select(self):
-        self.do_click(self.DATE_CALENDER_RPAGE)
-        sleep(2)
-        self.date_selection_chain(
-            self.BDATE_RPAGE_INPUT, TestData.BOOKING_DATE, 2)
-        dcheck = self.get_element_text(self.BDATE_RPAGE_INPUT)
-        # assert dcheck == TestData.BOOKING_DATE
-        sleep(2)
-        self.do_click(self.BDATE_CALENDER_DONE)
-        print("dcheck: ", dcheck)
-        sleep(2)
+        try:
+            self.action_chain_click(self.DATE_CALENDER_RPAGE)
+            sleep(2)
+            self.date_selection_chain(
+                self.BDATE_RPAGE_INPUT, TestData.BOOKING_DATE, 2)
+            dcheck = self.get_element_text(self.BDATE_RPAGE_INPUT)
+            # assert dcheck == TestData.BOOKING_DATE
+            sleep(2)
+            self.action_chain_click(self.BDATE_CALENDER_DONE)
+            print("dcheck: ", dcheck)
+            sleep(2)
+        except Exception as e:
+            print(f"resource_page_date_select exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/resource_page_date_select/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def resource_page_multiple_date_select(self):
-        self.do_click(self.DATE_CALENDER_RPAGE)
-        sleep(2)
-        self.do_click(self.MULTIPLE_DAYS)
-        sleep(2)
-        # self.mdate_selection_chain(self.MULTIPLE_DAYS_START_DATE, TestData.BOOKING_DATE1, 8)
-        self.do_click(self.MULTIPLE_DAYS_END_DATE)
-        print("Clicked on multiple days end_date")
-        # dcheck = self.get_element_text(self.MULTIPLE_DAYS_START_DATE)
-        sleep(2)
-        vcheck = self.is_enabled(self.MONTH_SELECTOR)
-        print("vcheck: ", vcheck)
-        self.action_chain_click(self.MONTH_SELECTOR)
-        sleep(2)
-        self.do_click(self.MONTH_SELECT)
-        sleep(2)
-        self.do_click(self.CDATE_SELECT)
-        sleep(2)
-        self.do_click(self.CDATE_OK_BTN)
-        # self.mdate_selection_chain(self.MULTIPLE_DAYS_END_DATE, TestData.REPEAT_TILL_DATE2, 8)
-        # dcheck = self.get_element_text(self.MULTIPLE_DAYS_END_DATE)
-        # assert dcheck == TestData.BOOKING_DATE
-        sleep(2)
-        self.do_click(self.BDATE_CALENDER_DONE)
-        # print("dcheck: ", dcheck)
-        sleep(2)
+        try:
+            self.action_chain_click(self.DATE_CALENDER_RPAGE)
+            sleep(2)
+            self.action_chain_click(self.MULTIPLE_DAYS)
+            sleep(2)
+            # self.mdate_selection_chain(self.MULTIPLE_DAYS_START_DATE, TestData.BOOKING_DATE1, 8)
+            self.action_chain_click(self.MULTIPLE_DAYS_END_DATE)
+            print("Clicked on multiple days end_date")
+            # dcheck = self.get_element_text(self.MULTIPLE_DAYS_START_DATE)
+            sleep(2)
+            vcheck = self.is_enabled(self.MONTH_SELECTOR)
+            print("vcheck: ", vcheck)
+            self.action_chain_click(self.MONTH_SELECTOR)
+            sleep(2)
+            self.action_chain_click(self.MONTH_SELECT)
+            sleep(2)
+            self.action_chain_click(self.CDATE_SELECT)
+            sleep(2)
+            self.action_chain_click(self.CDATE_OK_BTN)
+            # self.mdate_selection_chain(self.MULTIPLE_DAYS_END_DATE, TestData.REPEAT_TILL_DATE2, 8)
+            # dcheck = self.get_element_text(self.MULTIPLE_DAYS_END_DATE)
+            # assert dcheck == TestData.BOOKING_DATE
+            sleep(2)
+            self.action_chain_click(self.BDATE_CALENDER_DONE)
+            # print("dcheck: ", dcheck)
+            sleep(2)
+        except Exception as e:
+            print(f"resource_page_multiple_date_select exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/resource_page_multiple_date_select/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def overlapping_error_check(self):
         # Selecting time
@@ -449,7 +538,7 @@ class deskBookingsPage(BasePage):
             end_check = self.get_element_text(self.TIME_SELECT_END)
             print("endcheck: ", end_check)
             sleep(1)
-            self.do_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
+            self.action_chain_click(deskBookingsPage.BOOKING_CONFIRM_BUTTON)
             sleep(1)
 
             enabled_check = self.is_visible(self.BK_OVERLAPPING_ERROR_MSG)
@@ -462,33 +551,36 @@ class deskBookingsPage(BasePage):
             self.driver_get_url(TestData.MY_BOOKING_URL)
             sleep(3)
         except Exception as e:
-            print("Error 2")
+            print(f"overlapping_error_check: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/overlapping_error_check/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def daily_repeat(self):
         try:
-            self.do_click(self.REPEAT_DIV)
+            self.action_chain_click(self.REPEAT_DIV)
             sleep(2)
-            self.do_click(self.REPEAT_DAILY)
+            self.action_chain_click(self.REPEAT_DAILY)
             sleep(2)
             self.date_selection_chain(
                 self.REPEAT_TILL_DATE, TestData.REPEAT_TILL_DATE[:12], 2)
         except Exception as e:
-            print("daily_repeat exception: ", e)
+            print(f"daily_repeat exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/daily_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def weekly_repeat(self):
         try:
-            self.do_click(self.REPEAT_DIV)
+            self.action_chain_click(self.REPEAT_DIV)
             sleep(2)
-            self.do_click(self.REPEAT_WEEKLY)
+            self.action_chain_click(self.REPEAT_WEEKLY)
             sleep(2)
-            # self.do_click(self.REPEAT_WEEKLY_DEFAULT_DAY)
+            # self.action_chain_click(self.REPEAT_WEEKLY_DEFAULT_DAY)
             # sleep(2)
-            # self.do_click(self.REPEAT_WEEKLY_DAY)
+            # self.action_chain_click(self.REPEAT_WEEKLY_DAY)
             # sleep(2)
             self.date_selection_chain(
                 self.REPEAT_TILL_DATE, TestData.WEEKLY_REPEAT_TILL_DATE, 2)
         except Exception as e:
-            print("weekly_repeat exception: ", e)
+            print(f"weekly_repeat exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/weekly_repeat/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def extend_booking(self, etime):
         try:
@@ -499,7 +591,7 @@ class deskBookingsPage(BasePage):
             sleep(12)
             self.do_click_by_xpath(self.EXTEND_BOOKING)
             sleep(5)
-            self.do_click(etime)
+            self.action_chain_click(etime)
             sleep(12)
             textend_confirm = self.get_element_text_by_xpath(
                 self.EXTEND_BOOKING_TEXT_CONFIRM)
@@ -510,15 +602,17 @@ class deskBookingsPage(BasePage):
             print("post_extend_time: ", post_extend_time)
             assert pre_extend_time != post_extend_time
         except Exception as e:
-            print("extend_booking exception: ", e)
+            print(f"extend_booking exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/extend_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def do_logout(self):
         try:
-            self.do_click(self.LOGOUT_DROPDOWN)
+            self.action_chain_click(self.LOGOUT_DROPDOWN)
             sleep(2)
-            self.do_click(self.LOGOUT_BUTTON)
+            self.action_chain_click(self.LOGOUT_BUTTON)
         except Exception as e:
-            print("do_logout exception: ", e)
+            print(f"do_logout exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/do_logout/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def start_selection(self):
         try:
@@ -532,37 +626,39 @@ class deskBookingsPage(BasePage):
             # Selecting resource type
             self.select_resource_type_desk()
             # Clicking on list view
-            self.do_click(self.LIST_VIEW_BUTTON)
+            self.action_chain_click(self.LIST_VIEW_BUTTON)
             sleep(3)
         except Exception as e:
-            print("start_selection exception: ", e)
+            print(f"start_selection exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/start_selection/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
     def update_health_status(self):
         try:
             val = self.is_enabled(self.HEALTH_STATUS_PROMPT)
             if val == 1:
-                self.do_click(self.HEALTH_STATUS_PROMPT)
+                self.action_chain_click(self.HEALTH_STATUS_PROMPT)
                 sleep(2)
-                self.do_click(self.UPDATE_HEALTH_STATUS_BUTTON)
+                self.action_chain_click(self.UPDATE_HEALTH_STATUS_BUTTON)
                 sleep(2)
-                self.do_click(self.FULLY_VACCINATED)
+                self.action_chain_click(self.FULLY_VACCINATED)
                 sleep(2)
-                self.do_click(self.HEALTH_CONDITION_NONE)
+                self.action_chain_click(self.HEALTH_CONDITION_NONE)
                 sleep(2)
-                self.do_click(self.PROVIDING_CARE_NO)
+                self.action_chain_click(self.PROVIDING_CARE_NO)
                 sleep(2)
-                self.do_click(self.CONTACT_14DAYS_NO)
+                self.action_chain_click(self.CONTACT_14DAYS_NO)
                 sleep(2)
-                self.do_click(self.OFFICE_TO_VISIT_DROPDOWN)
+                self.action_chain_click(self.OFFICE_TO_VISIT_DROPDOWN)
                 sleep(2)
-                self.do_click(self.OFFICE_TO_VISIT_SELECT)
+                self.action_chain_click(self.OFFICE_TO_VISIT_SELECT)
                 sleep(2)
-                self.do_click(self.CONFIRM_DECLARATION)
+                self.action_chain_click(self.CONFIRM_DECLARATION)
                 sleep(2)
-                self.do_click(self.BOOK_SPACE_NAV)
+                self.action_chain_click(self.BOOK_SPACE_NAV)
                 sleep(2)
-                self.do_click(self.DESK_201)
+                self.action_chain_click(self.DESK_201)
             else:
                 pass
         except Exception as e:
-            print("update_health_status exception: ", e)
+            print(f"update_health_status exception: {e}\n{traceback.format_exc()}")
+            self.take_screenshot(f"deskBooking/update_health_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
