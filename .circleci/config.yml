@@ -41,7 +41,10 @@ jobs:
       # This is not to be used in production
       # - run: pytest -v -s --html=report.html -m pcnclb Tests/Positive_Tests/Test_Resource_Booking/test_RoomBooking.py --self-contained-html --capture=sys -rP -rF
       # - run: pytest -v -s -m pcnclb Tests/Test_Resource_Booking/test_RoomBooking.py
-      - run: python3 scratch.py
+      - run: 
+            name: chrome driver
+            no_output_timeout: 90m
+            command: python3 scratch.py
       
       # for email
       - run: pytest -v -s Tests/test_send_email.py
