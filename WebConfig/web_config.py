@@ -69,10 +69,10 @@ class TestData:
     NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
     NEW_CONTACT_2 = (ran_name())[0]
     NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
-    CONTACT_1_IS_DRAFTED_FALSE = LIVE_CONTACT_1_IS_DRAFTED_FALSE
-    CONTACT_1_IS_MEMBER = LIVE_CONTACT_1_IS_MEMBER
-    CONTACT_2_IS_MEMBER = LIVE_CONTACT_2_IS_MEMBER
-    CONTACT_3_IS_MEMBER = LIVE_CONTACT_3_IS_MEMBER
+    CONTACT_1_IS_DRAFTED_FALSE = LOCAL_CONTACT_1_IS_DRAFTED_FALSE
+    CONTACT_1_IS_MEMBER = LOCAL_CONTACT_1_IS_MEMBER
+    CONTACT_2_IS_MEMBER = LOCAL_CONTACT_2_IS_MEMBER
+    CONTACT_3_IS_MEMBER = LOCAL_CONTACT_3_IS_MEMBER
 
     '''Desk Booking details'''
     DEFAULT_HOSTNAME = "Neeraj Dhiman"
@@ -141,6 +141,11 @@ class TestData:
 
     '''Desk Booking'''
     PAST_BOOKING_DATE = Config.booking_date(-5)
+    PAST_TIME_START = Config.time_select(-15)
+    PAST_TIME_END = Config.time_select(-30)
+    NEGATIVE_TIME_START_1 = Config.time_select(15)
+    NEGATIVE_TIME_END_1 = Config.time_select(18)
+    NEGATIVE_TIME_END_2 = Config.time_select(120)
 
 
 print(f"{TestData.ROOM_START_DATE} ---------- {TestData.ROOM_END_DATE, 18}")

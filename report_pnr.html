@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <style>body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  /* do not increase min-width as some may use split screens */
+  min-width: 800px;
+  color: #999;
+}
+
+h1 {
+  font-size: 24px;
+  color: black;
+}
+
+h2 {
+  font-size: 16px;
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+a {
+  color: #999;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/******************************
+ * SUMMARY INFORMATION
+ ******************************/
+#environment td {
+  padding: 5px;
+  border: 1px solid #E6E6E6;
+}
+#environment tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+
+/******************************
+ * TEST RESULT COLORS
+ ******************************/
+span.passed,
+.passed .col-result {
+  color: green;
+}
+
+span.skipped,
+span.xfailed,
+span.rerun,
+.skipped .col-result,
+.xfailed .col-result,
+.rerun .col-result {
+  color: orange;
+}
+
+span.error,
+span.failed,
+span.xpassed,
+.error .col-result,
+.failed .col-result,
+.xpassed .col-result {
+  color: red;
+}
+
+/******************************
+ * RESULTS TABLE
+ *
+ * 1. Table Layout
+ * 2. Extra
+ * 3. Sorting items
+ *
+ ******************************/
+/*------------------
+ * 1. Table Layout
+ *------------------*/
+#results-table {
+  border: 1px solid #e6e6e6;
+  color: #999;
+  font-size: 12px;
+  width: 100%;
+}
+#results-table th,
+#results-table td {
+  padding: 5px;
+  border: 1px solid #E6E6E6;
+  text-align: left;
+}
+#results-table th {
+  font-weight: bold;
+}
+
+/*------------------
+ * 2. Extra
+ *------------------*/
+.log {
+  background-color: #e6e6e6;
+  border: 1px solid #e6e6e6;
+  color: black;
+  display: block;
+  font-family: "Courier New", Courier, monospace;
+  height: 230px;
+  overflow-y: scroll;
+  padding: 5px;
+  white-space: pre-wrap;
+}
+.log:only-child {
+  height: inherit;
+}
+
+div.image {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin-left: 5px;
+  overflow: hidden;
+  width: 320px;
+}
+div.image img {
+  width: 320px;
+}
+
+div.video {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin-left: 5px;
+  overflow: hidden;
+  width: 320px;
+}
+div.video video {
+  overflow: hidden;
+  width: 320px;
+  height: 240px;
+}
+
+.collapsed {
+  display: none;
+}
+
+.expander::after {
+  content: " (show details)";
+  color: #BBB;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.collapser::after {
+  content: " (hide details)";
+  color: #BBB;
+  font-style: italic;
+  cursor: pointer;
+}
+
+/*------------------
+ * 3. Sorting items
+ *------------------*/
+.sortable {
+  cursor: pointer;
+}
+
+.sort-icon {
+  font-size: 0px;
+  float: left;
+  margin-right: 5px;
+  margin-top: 5px;
+  /*triangle*/
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+.inactive .sort-icon {
+  /*finish triangle*/
+  border-top: 8px solid #E6E6E6;
+}
+.asc.active .sort-icon {
+  /*finish triangle*/
+  border-bottom: 8px solid #999;
+}
+.desc.active .sort-icon {
+  /*finish triangle*/
+  border-top: 8px solid #999;
+}
+</style></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++)
+        filterItems[i].hidden = false;
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>report_pnr.html</h1>
+    <p>Report generated on 09-Jun-2022 at 15:23:32 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "1.0.0", "py": "1.11.0", "pytest": "6.2.5"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.19041-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"excel": "1.4.2", "forked": "1.4.0", "html": "3.1.1", "metadata": "1.11.0", "parallel": "0.1.1", "xdist": "2.5.0"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.9.1</td></tr></table>
+    <h2>Summary</h2>
+    <p>5 tests ran in 2067.05 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">5 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Positive_Tests/Test_Resource_Booking/test_RoomBooking.py::Test_RoomBooking::test_login_room_booking[chrome]</td>
+          <td class="col-duration">25.12</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -----------------------------Captured stderr setup------------------------------ <br/>
+
+====== WebDriver manager ======
+Current google-chrome version is 102.0.5005
+Get LATEST chromedriver version for 102.0.5005 google-chrome
+Driver [C:\Users\Vivek\.wdm\drivers\chromedriver\win32\102.0.5005.61\chromedriver.exe] found in cache
+<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     WDM:logger.py:26 
+
+INFO     WDM:logger.py:26 ====== WebDriver manager ======
+INFO     WDM:logger.py:26 Current google-chrome version is 102.0.5005
+INFO     WDM:logger.py:26 Get LATEST chromedriver version for 102.0.5005 google-chrome
+INFO     WDM:logger.py:26 Driver [C:\Users\Vivek\.wdm\drivers\chromedriver\win32\102.0.5005.61\chromedriver.exe] found in cache<br/> ------------------------------Captured stdout call------------------------------ <br/>Start time:  1654766345.2155476
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Positive_Tests/Test_Resource_Booking/test_RoomBooking.py::Test_RoomBooking::test_simple_booking[chrome]</td>
+          <td class="col-duration">199.53</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Selecting Location
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;ec9510e5-a26a-433d-9998-924e9ff8dca6&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;43735202-c557-4fce-9fbf-c9a32507fd99&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;fd936d66-8582-4880-af77-bf66b72fb569&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;66944c2e-08cf-4ff7-89ce-a8d8e6cab78d&quot;)&gt;
+Selecting Floor
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;f03fe23a-abef-41ce-ba9c-1b764c7f24da&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;cb291f65-bbed-4d60-aecf-89cbb6b7cee2&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;1457d342-a474-4887-8a0c-456b010fb5f5&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;31dcd4be-52f2-449c-9b39-108136ec8803&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;f1097993-f7af-4592-96ea-82a4b35ee2ed&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;66944c2e-08cf-4ff7-89ce-a8d8e6cab78d&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;8ebe2dd5-f9cc-4263-b2e9-a3bee41e7f3d&quot;)&gt;
+Booking:  (//div[text()=&#x27;Available&#x27;]/parent::*/parent::*/following-sibling::*[4]/button)[1]
+rval:  105
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;7a8a6ef7-35ca-4774-a6ba-62f2811e7e51&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;669dabaa-7476-47a3-9064-bb75d1b6c7a7&quot;)&gt;
+loader:  True
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;afc2714b-bd57-4b53-a3a2-72c85f9168d7&quot;)&gt;
+Booking should be created successfully: Passed
+Room_no_confirm:  //*[@title=&#x27;105&#x27;]/parent::*/parent::*/following-sibling::*[5]/button
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;cb291f65-bbed-4d60-aecf-89cbb6b7cee2&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;e82d29cb-477f-4c30-8a13-cbef01653b63&quot;)&gt;
+At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed
+rpage_status passed as:  Booked
+At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed
+element present
+moved to element
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;339a90b7-767a-45b0-8beb-a8623206f113&quot;)&gt;
+eltext:  [&#x27;SCHEDULED&#x27;, &#x27;Booking Id: 199737&#x27;, &#x27;Name: Neeraj Dhiman&#x27;, &#x27;Email: neeraj.dhiman@veris.in&#x27;, &#x27;Orignial Start: Jun 9, 2022 14:55&#x27;, &#x27;Orignial End: Jun 9, 2022 15:10&#x27;, &#x27;Cancel Booking&#x27;]
+At the resource details page, booking should be available: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;dc0a98ab-4e6a-4fe4-834f-85e551dcba07&quot;)&gt;
+element present
+moved to element
+In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed
+Create a booking for the desk by selecting a default date and time: Passed
+loader2:  True
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Positive_Tests/Test_Resource_Booking/test_RoomBooking.py::Test_RoomBooking::test_datetime_change_booking[chrome]</td>
+          <td class="col-duration">416.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Selecting Location
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;0f4f9f85-05e6-463e-b7f3-c02ab409fc90&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;ebb46255-de4e-47af-a743-e1e78edb6cdf&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;c082e221-faf2-4a5a-8313-1c3426377664&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;5c49d18e-4cca-4692-93f2-519dd156cbf3&quot;)&gt;
+Selecting Floor
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;bb7e2edd-8d0e-4ebf-bfa0-dfef21b72e9a&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;573c8056-21ab-4030-a02e-c123066fb515&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;fd52025d-fbe4-44a3-94cb-4936e3ea1b77&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;d5739540-9811-48d2-84b8-35d525174239&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;5548be04-70ad-478f-b196-e60bb8eab3cd&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;5c49d18e-4cca-4692-93f2-519dd156cbf3&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;18ef2809-1361-4a19-96fe-241c1fcaa4f5&quot;)&gt;
+Booking:  (//div[text()=&#x27;Available&#x27;]/parent::*/parent::*/following-sibling::*[4]/button)[1]
+rval:  105
+new_contact_guest: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+ 
+Traceback (most recent call last):
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\RoomBookingPage.py&quot;, line 389, in new_contact_guest
+    self.do_send_keys(self.CONTACT_EMAIL, contact_email)
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\BasePage.py&quot;, line 45, in do_send_keys
+    WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(keys)
+  File &quot;E:\Testing\Bookings\v0.1.0\bvenv\lib\site-packages\selenium\webdriver\support\wait.py&quot;, line 89, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+
+
+new_contact_guest: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+ 
+Traceback (most recent call last):
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\RoomBookingPage.py&quot;, line 389, in new_contact_guest
+    self.do_send_keys(self.CONTACT_EMAIL, contact_email)
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\BasePage.py&quot;, line 45, in do_send_keys
+    WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(keys)
+  File &quot;E:\Testing\Bookings\v0.1.0\bvenv\lib\site-packages\selenium\webdriver\support\wait.py&quot;, line 89, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+
+
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;50ec00f6-98e7-4c10-b28a-61175ff6c72e&quot;)&gt;
+Booking should be created successfully: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;573c8056-21ab-4030-a02e-c123066fb515&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;cd37913a-b4ac-4b20-a2be-6054ad52cf9e&quot;)&gt;
+element present
+moved to element
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;7e6933b3-9c6d-4681-a528-190c620b0cde&quot;)&gt;
+eltext:  [&#x27;SCHEDULED&#x27;, &#x27;Booking Id: 199747&#x27;, &#x27;Name: Neeraj Dhiman&#x27;, &#x27;Email: neeraj.dhiman@veris.in&#x27;, &#x27;Orignial Start: Jun 11, 2022 15:04&#x27;, &#x27;Orignial End: Jun 11, 2022 15:24&#x27;, &#x27;Cancel Booking&#x27;]
+At the resource details page, booking should be available: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;af56618d-642e-4bd1-8906-4e2d4d7cdca6&quot;)&gt;
+element present
+moved to element
+In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed
+Create a booking for the desk by selecting a default date and time: Passed
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Positive_Tests/Test_Resource_Booking/test_RoomBooking.py::Test_RoomBooking::test_overlapping_booking[chrome]</td>
+          <td class="col-duration">575.08</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>Selecting Location
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;70daadf4-ecb6-474c-9d97-e4c1e0a327e5&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;d22a3680-dc20-4d00-9674-21af15a4fe30&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;1517c303-912e-49cc-a9ee-7b9a581ec215&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;98c8c373-b265-4928-8fa1-17a32cae86d6&quot;)&gt;
+Selecting Floor
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;c370332e-5353-44f0-a3fa-aa061a92b58a&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;9cf4f9be-96a5-47c6-8b7e-5c47f99c2bf8&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;7dd39827-f174-4566-975b-85017f39868f&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;a56a4a33-0505-4866-a97f-117ccde3314f&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;f8e23fcd-77e7-403d-8203-5a9c93040155&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;98c8c373-b265-4928-8fa1-17a32cae86d6&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;d66fd0bc-ddca-4352-bd7a-75a765e11a74&quot;)&gt;
+Booking:  (//div[text()=&#x27;Available&#x27;]/parent::*/parent::*/following-sibling::*[4]/button)[1]
+rval:  105
+new_contact_guest: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+ 
+Traceback (most recent call last):
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\RoomBookingPage.py&quot;, line 389, in new_contact_guest
+    self.do_send_keys(self.CONTACT_EMAIL, contact_email)
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\BasePage.py&quot;, line 45, in do_send_keys
+    WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(keys)
+  File &quot;E:\Testing\Bookings\v0.1.0\bvenv\lib\site-packages\selenium\webdriver\support\wait.py&quot;, line 89, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+
+
+new_contact_guest: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+ 
+Traceback (most recent call last):
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\RoomBookingPage.py&quot;, line 389, in new_contact_guest
+    self.do_send_keys(self.CONTACT_EMAIL, contact_email)
+  File &quot;E:\Testing\Bookings\v0.1.0\Pages\BasePage.py&quot;, line 45, in do_send_keys
+    WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator)).send_keys(keys)
+  File &quot;E:\Testing\Bookings\v0.1.0\bvenv\lib\site-packages\selenium\webdriver\support\wait.py&quot;, line 89, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+
+
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;b78bdd11-7d08-4708-97a9-ac22d8536c1d&quot;)&gt;
+Booking should be created successfully: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;9cf4f9be-96a5-47c6-8b7e-5c47f99c2bf8&quot;)&gt;
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;59ae8015-61da-4127-9e9a-40e51bd38c6e&quot;)&gt;
+At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed
+rpage_status passed as:  Booked
+At the find resource page, status of booking should be changed from available to booked for the booked time frame: Passed
+element present
+moved to element
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;fe26ee66-4b78-4d8a-a382-c10081bc2fcd&quot;)&gt;
+eltext:  [&#x27;SCHEDULED&#x27;, &#x27;Booking Id: 199757&#x27;, &#x27;Name: Neeraj Dhiman&#x27;, &#x27;Email: neeraj.dhiman@veris.in&#x27;, &#x27;Orignial Start: Jun 9, 2022 15:05&#x27;, &#x27;Orignial End: Jun 9, 2022 15:20&#x27;, &#x27;Cancel Booking&#x27;]
+At the resource details page, booking should be available: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;f969f300-9e70-48db-93b1-ceb5f041ae8c&quot;)&gt;
+element present
+moved to element
+In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed
+Create a booking for the desk by selecting a default date and time: Passed
+Element:  &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;4dbaab3a25c2b4c6476c76c91ce6080b&quot;, element=&quot;050f831e-4f2d-46f3-9c6d-a8f182a941aa&quot;)&gt;
+is_visible exception: Message: 
+Stacktrace:
+Backtrace:
+	Ordinal0 [0x00CCD953+2414931]
+	Ordinal0 [0x00C5F5E1+1963489]
+	Ordinal0 [0x00B4C6B8+837304]
+	Ordinal0 [0x00B79500+1021184]
+	Ordinal0 [0x00B7979B+1021851]
+	Ordinal0 [0x00BA6502+1205506]
+	Ordinal0 [0x00B944E4+1131748]
+	Ordinal0 [0x00BA4812+1198098]
+	Ordinal0 [0x00B942B6+1131190]
+	Ordinal0 [0x00B6E860+976992]
+	Ordinal0 [0x00B6F756+980822]
+	GetHandleVerifier [0x00F3CC62+2510274]
+	GetHandleVerifier [0x00F2F760+2455744]
+	GetHandleVerifier [0x00D5EABA+551962]
+	GetHandleVerifier [0x00D5D916+547446]
+	Ordinal0 [0x00C65F3B+1990459]
+	Ordinal0 [0x00C6A898+2009240]
+	Ordinal0 [0x00C6A985+2009477]
+	Ordinal0 [0x00C73AD1+2046673]
+	BaseThreadInitThunk [0x75BAFA29+25]
+	RtlGetAppContainerNamedObjectPath [0x774F7A7E+286]
+	RtlGetAppContainerNamedObjectPath [0x774F7A4E+238]
+
+enabled_check:  None
+element present
+moved to element
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">Positive_Tests/Test_Resource_Booking/test_RoomBooking.py::Test_RoomBooking::test_already_cancelled_booking[chrome]</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody></table></body></html>

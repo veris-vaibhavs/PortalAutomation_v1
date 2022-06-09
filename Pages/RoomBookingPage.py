@@ -39,6 +39,7 @@ class RoomBookingsPage(BasePage):
     FREE_CLICK = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     FIRST_FLOOR = (By.ID, "0-floor")
+    SECOND_FLOOR = (By.ID, "1-floor")
 
     # Status
     # STATUS_DROPDOWN = (
@@ -246,9 +247,12 @@ class RoomBookingsPage(BasePage):
             print(f"select_resource_type {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/select_resource_type/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
-    def select_floor(self):
+    def select_floor(self, fl=None):
         try:
-            self.action_chain_click(self.FIRST_FLOOR)
+            if fl:
+                self.action_chain_click(self.SECOND_FLOOR)
+            else:
+                self.action_chain_click(self.FIRST_FLOOR)
             sleep(1)
             assert "Floor selection done"
         except Exception as e:
@@ -270,15 +274,14 @@ class RoomBookingsPage(BasePage):
     def select_available_resource(self, a=None):
         # self.action_chain_click(self.ROOM_AVAIL)
         try:
-            for i in range(1, 6):
+            if a is None:
+                a = 1
+            for i in range(a, 15):
                 title = self.get_element_text_by_xpath(
                     self.ROOM_AVAIL_NAME+str([i]))
                 if title not in TestData.ROOM_W_ISSUE:
-                    if a is None:
-                        print("Booking: ", self.ROOM_AVAIL+str([i]))
-                        self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
-                    else:
-                        self.do_click_by_xpath(self.ROOM_AVAIL_NAME+str([a]))
+                    print("Booking: ", self.ROOM_AVAIL+str([i]))
+                    self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
                     break
                 else:
                     pass
@@ -627,13 +630,16 @@ class RoomBookingsPage(BasePage):
             self.take_screenshot(f"RoomBooking/do_logout/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
 
-    def start_selection(self):
+    def start_selection(self, fl=None):
         try:
             sleep(1)
             print("Selecting Location")
             self.select_location()
             print("Selecting Floor")
-            self.select_floor()
+            if fl:
+                self.select_floor(fl)
+            else:
+                self.select_floor()
             # Checking available resources
             self.select_available_status()
             # Selecting resource type

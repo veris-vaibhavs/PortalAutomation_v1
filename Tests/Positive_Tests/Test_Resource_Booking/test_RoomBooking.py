@@ -464,7 +464,7 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
             bookinpage.select_available_resource()
@@ -548,7 +548,7 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
             bookinpage.select_available_resource()
@@ -633,7 +633,7 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
             bookinpage.select_available_resource()
@@ -765,7 +765,7 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
             bookinpage.select_available_resource()
@@ -896,7 +896,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.start_selection()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -983,7 +983,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.start_selection()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1075,7 +1075,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.start_selection()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1208,7 +1208,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.start_selection()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1330,12 +1330,10 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            # bookinpage.driver_implicitly_wait(6)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
-            bookinpage.select_available_resource()
-            # bookinpage.driver_implicitly_wait(4)
+            bookinpage.select_available_resource(4)
 
             # Getting and assigning room number to selectors
             rval = bookinpage.get_room_name()
@@ -1458,10 +1456,10 @@ class Test_RoomBooking(BaseTest):
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
             # bookinpage.driver_implicitly_wait(6)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(4)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1590,10 +1588,10 @@ class Test_RoomBooking(BaseTest):
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
             # bookinpage.driver_implicitly_wait(6)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1724,7 +1722,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.select_days_end()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(4)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -1863,7 +1861,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.select_days_end()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(4)
 
             # Getting and assigning room number to selectors
             rval = bookinpage.get_room_name()
@@ -2010,7 +2008,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.select_days_end()
 
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(4)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -2110,7 +2108,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.select_days_end()
             
             # Clicking on available room
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(4)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -2790,13 +2788,13 @@ class Test_RoomBooking(BaseTest):
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             bookinpage.select_days_end()
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/ad{TestData.CDATE[11:]}.png")
             print("L2797:",count+1)
 
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(6)
 
             # Getting and assigning room number to selectors
             # rval = "124"
@@ -2890,7 +2888,7 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_daily_recurring_cancel_single_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_cancel_single_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    # @pytest.mark.pcnclb
+    @pytest.mark.pcnclb
     def test_simple_daily_recurring_cancel_all_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -2898,11 +2896,11 @@ class Test_RoomBooking(BaseTest):
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
             # bookinpage.driver_implicitly_wait(6)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             bookinpage.select_days_end()
 
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(6)
             # bookinpage.driver_implicitly_wait(4)
 
             # Getting and assigning room number to selectors
@@ -2981,19 +2979,19 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_daily_recurring_cancel_all_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_cancel_all_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    # @pytest.mark.pcnclb
+    @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_single_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             bookinpage.select_days_end()
 
             # Clicking on room 124 booking modal
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(6)
 
             # Getting and assigning room number to selectors
             rval = bookinpage.get_room_name()
@@ -3074,19 +3072,19 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_weekly_recurring_cancel_single_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"RoomBooking/test_simple_weekly_recurring_cancel_single_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    # @pytest.mark.pcnclb
+    @pytest.mark.pcnclb
     def test_simple_weekly_recurring_cancel_all_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             bookinpage.select_days_end()
 
             # Clicking on room 124 booking modal
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(6)
 
             # Getting and assigning room number to selectors
             rval = bookinpage.get_room_name()
@@ -3155,17 +3153,17 @@ class Test_RoomBooking(BaseTest):
             print(f"Exception test_simple_weekly_recurring_cancel_all_booking: {e}\n{traceback.format_exc()}")
             bookinpage.take_screenshot(f"RoomBooking/test_simple_weekly_recurring_cancel_all_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
-    # @pytest.mark.pcnclb
+    @pytest.mark.pcnclb
     def test_simple_cancel_single_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
             sleep(3)
             bookinpage.driver_get_url(TestData.RESOURCE_PAGE_URL)
             sleep(3)
-            bookinpage.start_selection()
+            bookinpage.start_selection(1)
 
             # Clicking on room 124 booking modal
-            bookinpage.select_available_resource()
+            bookinpage.select_available_resource(6)
 
             # Getting and assigning room number to selectors
             rval = bookinpage.get_room_name()

@@ -71,16 +71,14 @@ class deskBookingsPage(BasePage):
     # Booking Modal
     MODAL_CLOSE = (By.CSS_SELECTOR, "*[title='Close']")
     BOOKING_CONFIRM_BUTTON = (
-        By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[4]/div/button")
+        By.XPATH, "//span[text()='Confirm Booking']/..")
     HOST_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[1]/div[1]/div/div[4]/div/div/div[3]/img")
+        By.CSS_SELECTOR, "*[title='Edit Details']")
     HOST_INPUT = (
         By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[1]/div[1]/div/div[4]/div/div/div")
     HOST_SELECT = (
         By.XPATH, f"//*[contains(text(), '{TestData.HOST2_FULLNAME}')]")
 
-    DATE_DROPDOWN = (
-        By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/div[1]/div/div")
     DATE_INPUT = (
         By.XPATH, "//input[@placeholder='Select date']")
     DATE_CALENDER_BODY = (
@@ -88,16 +86,16 @@ class deskBookingsPage(BasePage):
     DATE_SELECT_2nd = (
         By.XPATH, "/html/body/div[6]/div/div/div/div/div[1]/div[2]/table/tbody/tr[1]/td[7]/div")
     TIME_SELECT_START = (
-        By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div/div")
+        By.XPATH, "(//*[@placeholder='Select time'])[1]")
     TIME_SELECT_END = (
-        By.XPATH, "//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div/div")
+        By.XPATH, "(//*[@placeholder='Select time'])[2]")
     MULTIPLE_DAYS_SINGLE_BOOKING = (
         By.XPATH, "//*[contains(text(), 'Multiple Days')]")
     MULTIPLE_DAYS_SB_START = (
         By.XPATH, "//input[@placeholder='Start date']")
     MULTIPLE_DAYS_SB_END = (
         By.XPATH, "//input[@placeholder='End date']")
-
+    TIME_SELECT_ERROR = (By.XPATH, "//p[@class='text-xs text-red-400']")
     # Booking confirmation
     DESK_201_AFTER_BOOKING_DIV = (
         By.XPATH, f"//*[@id='meeting-room-list']/div/div/div/div/div/div/table/tbody/tr/td[1]/div")
@@ -183,7 +181,7 @@ class deskBookingsPage(BasePage):
     DESK_201_CHECK_RDIV = "//p[text()='{}']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]"
     DESK_201_RDIV_CANCEL_BUTTON = "//p[text()='{}']/parent::*/following-sibling::*/div[2]/div/p/span[contains(text(),'every day')]/parent::*/parent::*/parent::*/parent::*/following-sibling::*/div/div/button[2]"
     REPEAT_DIV = (
-        By.XPATH, f"//*[@id='meeting-room-desk-booking-modal']/div/div/div/div/div[2]/div[2]/div[1]/div/div/div/div[2]/div/div[2]/div/div/div[1]/div/div/div[1]")
+        By.CLASS_NAME, "css-1d8n9bt")
     REPEAT_DAILY = (By.XPATH, f"//*[contains(text(), 'Daily')]")
     REPEAT_WEEKLY = (By.XPATH, f"//*[contains(text(), 'Weekly')]")
     REPEAT_WEEKLY_DEFAULT_DAY = (By.XPATH, f"//*[contains(text(), 'Wed')]")
