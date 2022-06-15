@@ -1,5 +1,4 @@
-from time import sleep
-from time import time
+from time import time, sleep
 import sys
 
 from selenium.webdriver.common.keys import Keys
@@ -12,6 +11,9 @@ from Tests.test_base import BaseTest
 import pytest
 
 import traceback, sys
+
+from random_name_generator import ran_name, ran_name_2
+from WebConfig.time_functions import WebConfigFunctions as Config
 
 # '''Logger'''
 # logging.basicConfig(level=logging.DEBUG)
@@ -45,7 +47,6 @@ class Test_RoomBooking(BaseTest):
     """Room Booking"""
 
     @pytest.mark.pnr
-    @pytest.mark.custom
     def test_simple_booking(self):
         try:
             # obj = self.test_login_room_booking()
@@ -74,10 +75,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -97,10 +102,11 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
             bookinpage.take_screenshot(f"RoomBooking/test_simple_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_simple_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
             bookinpage.take_screenshot(f"RoomBooking/test_simple_booking/{TestData.CDATE[:10]}/ppo{TestData.CDATE[11:]}.png")
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
             print("Room_no_confirm: ", RoomBookingsPage.ROOM_124)
             # loader visibilty check
             # loader1 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
@@ -124,6 +130,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.check_my_booking()
             print("Create a booking for the desk by selecting a default date and time: Passed")
             # Cancelling Booking
+            print("Cancelling booking")
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
             sleep(1)
             loader2 = bookinpage.is_visible(RoomBookingsPage.VRS_LOADER)
@@ -159,10 +166,14 @@ class Test_RoomBooking(BaseTest):
             '''Booking Modal'''
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -181,11 +192,12 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_booking/pr{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_booking/po{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
 
@@ -211,6 +223,7 @@ class Test_RoomBooking(BaseTest):
             # sys.exit(3)
 
     @pytest.mark.pnr
+    @pytest.mark.custom
     def test_overlapping_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
@@ -240,10 +253,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -256,11 +273,12 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/pr{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/po{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -308,10 +326,6 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/pre2_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/post2_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            sleep(5)
-            
-            bookinpage.take_screenshot(f"RoomBooking/test_overlapping_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            sleep(1)
 
             enabled_check = bookinpage.is_visible(
                 RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -365,10 +379,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -383,12 +401,13 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_booking/pr{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_booking/po{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(3)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -486,10 +505,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -507,12 +530,15 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(3)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -570,10 +596,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -595,12 +625,17 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_daily_recurring_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_daily_recurring_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(3)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+            
+            bookinpage.select_days_end()
+
+            bookinpage.select_booked_status()
 
             # Resource details page
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
@@ -655,8 +690,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -669,12 +706,15 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(3)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -728,10 +768,6 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/pre1_{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/post2_{TestData.CDATE[11:]}.png")
-            sleep(5)
-            
-            bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_booking/{TestData.CDATE[:10]}/ppost1_{TestData.CDATE[11:]}.png")
-            sleep(2)
 
             enabled_check = bookinpage.is_visible(
                 RoomBookingsPage.BK_OVERLAPPING_ERROR_MSG)
@@ -787,10 +823,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -805,12 +845,15 @@ class Test_RoomBooking(BaseTest):
             # Clicking on booking button
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/pr{TestData.CDATE[11:]}.png")
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/ppo{TestData.CDATE[11:]}.png")
             sleep(3)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -916,10 +959,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -936,11 +983,14 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -1003,10 +1053,19 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
+            NEW_CONTACT_2 = (ran_name_2())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -1027,14 +1086,17 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_datetime_change_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+            
+            bookinpage.select_days_end()
 
             # Checking available resources
-            bookinpage.select_all_status()
+            bookinpage.select_booked_status()
             # bookinpage.driver_implicitly_wait(5)
 
             # Resource details page
@@ -1095,10 +1157,18 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
+            NEW_CONTACT_2 = (ran_name_2())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -1112,11 +1182,14 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -1168,7 +1241,6 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.driver_implicitly_wait(2)
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
@@ -1228,10 +1300,18 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            # bookinpage.new_contact_guest(
+            #     TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
+            NEW_CONTACT_2 = (ran_name_2())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -1245,11 +1325,14 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_already_cancelled_weekly_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -1352,8 +1435,9 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
-            bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
+            bookinpage.new_contact_guest(NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -1371,11 +1455,12 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.do_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             # sleep(2)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_single_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
             # bookinpage.driver_implicitly_wait(2)
@@ -1425,7 +1510,6 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_single_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
@@ -1449,7 +1533,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_single_daily_recurring_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
   
     @pytest.mark.prs
-    def test_overlapping_daily_recurring_single_booking(self):
+    def test_daily_recurring_overlapping_future_daily_recurring_booking(self):
         try:
             bookinpage = RoomBookingsPage(self.driver)
             sleep(3)
@@ -1479,8 +1563,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -1501,11 +1587,13 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_single_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+
+            bookinpage.select_days_end()
 
             bookinpage.select_all_status()
             # bookinpage.driver_implicitly_wait(3)
@@ -1514,8 +1602,6 @@ class Test_RoomBooking(BaseTest):
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
             # bookinpage.driver_implicitly_wait(8)
             # checklist = ['SCHEDULED', f'Name: {TestData.DEFAULT_HOSTNAME}', f'Email: {TestData.DEFAULT_HOSTEMAIL}',  'Cancel Booking']
-            bookinpage.date_selection_chain(
-                    RoomBookingsPage.RD_CALENDER_INPUT, TestData.ROOM_START_DATE[:11], 2)
             bookinpage.resource_details_page_check()
             # bookinpage.driver_implicitly_wait(5)
 
@@ -1555,7 +1641,6 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
-            sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_recurring_single_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
 
@@ -1590,6 +1675,8 @@ class Test_RoomBooking(BaseTest):
             # bookinpage.driver_implicitly_wait(6)
             bookinpage.start_selection(1)
 
+            bookinpage.select_days_end()
+
             # Clicking on available room
             bookinpage.select_available_resource(2)
             # bookinpage.driver_implicitly_wait(4)
@@ -1611,8 +1698,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -1630,12 +1719,13 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_future_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
 
+            bookinpage.select_all_status()
 
             # Resource details page
             bookinpage.do_click_by_xpath(RoomBookingsPage.ROOM_124_AFTER_BOOKING_TITLE)
@@ -1653,7 +1743,7 @@ class Test_RoomBooking(BaseTest):
             bookinpage.check_my_booking()
             bookinpage.do_click_by_xpath(
                 RoomBookingsPage.ROOM_124_MEETING_OPTIONS_CANCEL_BUTTON)
-            print("Create a booking for the desk by selecting a default date and time: Passed")
+            print("Create a booking for the desk by selecting a default date and time and cancel it: Passed")
             sleep(20)
 
             bookinpage.scroll_to_element(RoomBookingsPage.BOOK_SPACE_NAV)
@@ -1686,10 +1776,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
-            bookinpage.take_screenshot(f"RoomBooking/test_overlapping_future_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
+            # bookinpage.take_screenshot(f"RoomBooking/test_overlapping_future_cancelled_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
+            # print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
             sleep(2)
 
             bookinpage.do_click(RoomBookingsPage.MY_BOOKING_NAV)
@@ -1743,8 +1834,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -1769,11 +1862,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_single_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
             # bookinpage.driver_implicitly_wait(3)
@@ -1824,10 +1917,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_single_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
+            # print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
             sleep(5)
 
             bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
@@ -1880,8 +1974,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -1906,11 +2002,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
 
@@ -1965,7 +2061,7 @@ class Test_RoomBooking(BaseTest):
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_overlapping_daily_future_daily_recurring_booking_5_cancelled/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
-            print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
+            # print("Create a daily recurring booking for a month  by selecting a date and time such a way that Its overlapping from a future cancelled single booking: PASSED")
             sleep(2)
 
             bookinpage.driver_get_url(TestData.MY_BOOKING_URL)
@@ -2028,8 +2124,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -2054,11 +2152,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_cancelling_first_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(5)
-            print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
             sleep(2)
@@ -2130,8 +2228,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # bookinpage.new_contact_guest(TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
@@ -2156,11 +2256,11 @@ class Test_RoomBooking(BaseTest):
 
             # Clicking on booking button
             bookinpage.action_chain_click(RoomBookingsPage.BOOKING_CONFIRM_BUTTON)
+            bookinpage.booking_successfull()
             sleep(5)
             
             bookinpage.take_screenshot(f"RoomBooking/test_cancelling_last_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
 
             bookinpage.select_all_status()
             sleep(2)
@@ -2260,7 +2360,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking/test_extend_single_daily_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -2345,7 +2445,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking/test_extend_single_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -2433,7 +2533,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking/test_extend_single_overlapping_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -2590,7 +2690,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking/test_extend_single_cancelled_recurring_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -2747,7 +2847,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking/test_till_next_date_extended_booking/{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -2817,8 +2917,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -2844,7 +2946,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_cancel_single_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -2920,8 +3022,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -2945,7 +3049,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_daily_recurring_cancel_all_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -3010,8 +3114,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -3034,7 +3140,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_weekly_recurring_cancel_single_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -3101,8 +3207,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -3125,7 +3233,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_weekly_recurring_cancel_all_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -3178,8 +3286,10 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -3196,7 +3306,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_simple_cancel_single_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(2)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -3256,10 +3366,14 @@ class Test_RoomBooking(BaseTest):
 
             # Attendee Details
             # New Member
+            NEW_CONTACT_1 = (ran_name())[0]
+            NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_1, TestData.NEW_CONTACT_1_EMAIL)
+                NEW_CONTACT_1, NEW_CONTACT_1_EMAIL)
+            NEW_CONTACT_2 = (ran_name())[0]
+            NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
             bookinpage.new_contact_guest(
-                TestData.NEW_CONTACT_2, TestData.NEW_CONTACT_2_EMAIL)
+                NEW_CONTACT_2, NEW_CONTACT_2_EMAIL)
             # Is drafted = False
             bookinpage.host_selection(
                 RoomBookingsPage.ATTENDEE_DETAILS, TestData.CONTACT_1_IS_DRAFTED_FALSE)
@@ -3278,7 +3392,7 @@ class Test_RoomBooking(BaseTest):
             
             bookinpage.take_screenshot(f"RoomBooking/test_tag_booking/{TestData.CDATE[:10]}/po{TestData.CDATE[11:]}.png")
             sleep(5)
-            print("Booking should be created successfully: Passed")
+            # print("Booking should be created successfully: Passed")
 
             # Checking Booking
             # At the find resource page, status of booking should be changed from available to booked
@@ -3413,7 +3527,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking//{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -3532,7 +3646,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking//{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -3619,7 +3733,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking//{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked
@@ -3707,7 +3821,7 @@ class Test_RoomBooking(BaseTest):
         
         bookinpage.take_screenshot(f"RoomBooking//{TestData.CDATE[:10]}/{TestData.CDATE[11:]}.png")
         sleep(5)
-        print("Booking should be created successfully: Passed")
+        # print("Booking should be created successfully: Passed")
 
         # Checking Booking
         # At the find resource page, status of booking should be changed from available to booked

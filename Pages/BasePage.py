@@ -142,7 +142,7 @@ class BasePage:
         actions.send_keys(dkeys)
         actions.send_keys(Keys.ENTER)
         actions.perform()
-        sleep(5)
+        sleep(3)
 
     def action_chain_scroll_to_top(self, by_locator):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
@@ -318,6 +318,9 @@ class BasePage:
 
     def driver_get_url(self, url):
         self.driver.get(url)
+
+    def driver_current_url(self):
+       return self.driver.current_url
 
     def take_screenshot(self, name):
         # sleep()

@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from datetime import datetime, timedelta
 from pytz import timezone
-from random_name_generator import ran_name
+from random_name_generator import ran_name, ran_name_2
 from WebConfig.time_functions import WebConfigFunctions as Config
 
 class TestData:
@@ -65,10 +65,6 @@ class TestData:
     '''-----------------------------POSITIVE TESTING-----------------------------'''
 
     '''Guests'''
-    NEW_CONTACT_1 = (ran_name())[0]
-    NEW_CONTACT_1_EMAIL = Config.name_to_mail(NEW_CONTACT_1)
-    NEW_CONTACT_2 = (ran_name())[0]
-    NEW_CONTACT_2_EMAIL = Config.name_to_mail(NEW_CONTACT_2)
     CONTACT_1_IS_DRAFTED_FALSE = LOCAL_CONTACT_1_IS_DRAFTED_FALSE
     CONTACT_1_IS_MEMBER = LOCAL_CONTACT_1_IS_MEMBER
     CONTACT_2_IS_MEMBER = LOCAL_CONTACT_2_IS_MEMBER
@@ -105,7 +101,8 @@ class TestData:
 
     '''Room booking'''
     # ROOM_W_ISSUE = ['Room Booking rule', '107', '108', '109', '120', 'Board Room', '105']
-    ROOM_W_ISSUE = ['WS 5']
+    ROOM_W_ISSUE = 'WS 5'
+    ROOM_W_ISSUE_2 = 'WS 16'
     ROOM_AGENDA = "Automation testing"
     ROOM_START_DATE = Config.room_datetime(2,15)
     ROOM_END_DATE = Config.room_datetime(2,35)

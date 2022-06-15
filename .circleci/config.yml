@@ -42,7 +42,7 @@ jobs:
       # - run: pytest -v -s --html=report.html -m pcnclb Tests/Positive_Tests/Test_Resource_Booking/test_RoomBooking.py --self-contained-html --capture=sys -rP -rF
       # - run: pytest -v -s -m pcnclb Tests/Test_Resource_Booking/test_RoomBooking.py
       - run: 
-            name: chrome driver
+            name: test
             no_output_timeout: 90m
             command: python3 scratch.py
       

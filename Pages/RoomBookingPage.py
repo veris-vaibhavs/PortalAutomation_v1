@@ -85,7 +85,7 @@ class RoomBookingsPage(BasePage):
     LAST_DATE_VALIDITY = (
         By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[2]/div/div/div[1]/div/div[4]/div[2]/div[2]/div/div[2]/div/div/div/input")
 
-    # BOOKING_MODAL_GO_BACK = (By.XPATH, "//span[contains(text(),'Go Back')]")
+    BOOKING_SUCCESSFULL = (By.CSS_SELECTOR, "*[text()='Booking created successfully!']")
     BOOKING_MODAL_GO_BACK = (By.XPATH, "//div/button[1]")
     # BOOKING_MODAL_GO_BACK = (
     #     By.XPATH, "//*[@id='meeting-room-room-modal-dialog-box']/div/div[1]/div/child::*")
@@ -130,9 +130,10 @@ class RoomBookingsPage(BasePage):
     LAST_DATE_INPUT = (
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div[1]/div/div[1]/div/div/div[2]/div[1]/div/div[3]/input")
     FREE_CLICK_MB = (
-        By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div[2]/div[1]/div/div[1]")
+        By.XPATH, "//p[text()='Status']")
     MAIN_CARDS_CONTAINER = (By.XPATH, "//*[@id='mainBookingCardsContainer']")
     REFRESH_BOOKINGS = (By.XPATH, "//*[@class='ant-tooltip-open']")
+    FREE_CLICK_2 = (By.XPATH, "//*[@id='meeting-room']/div[2]")
     MY_SHORTCUTS_H3 = (By.XPATH, "//h3[text()='My Shortcut']")
 
     # Overlapping error
@@ -237,6 +238,7 @@ class RoomBookingsPage(BasePage):
         # sleep(5)
 
     def select_resource_type(self):
+        sleep(2)
         try:
             self.action_chain_click(self.RESOURCE_DROPDOWN)
             sleep(1)
@@ -270,21 +272,27 @@ class RoomBookingsPage(BasePage):
             print(f"select_available_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/select_available_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
             # sys.exit(3)
-
+    
     def select_available_resource(self, a=None):
         # self.action_chain_click(self.ROOM_AVAIL)
         try:
             if a is None:
-                a = 1
+                a = 2
             for i in range(a, 15):
+                elemnt = self.get_element(
+                    (By.XPATH, self.ROOM_AVAIL_NAME+str([i])))
                 title = self.get_element_text_by_xpath(
                     self.ROOM_AVAIL_NAME+str([i]))
-                if title not in TestData.ROOM_W_ISSUE:
+                title1 = elemnt.get_attribute("title")
+                print("title1: ", title1)
+                if title1 == TestData.ROOM_W_ISSUE:
+                    pass
+                elif title1 == TestData.ROOM_W_ISSUE_2:
+                    pass
+                else:
                     print("Booking: ", self.ROOM_AVAIL+str([i]))
                     self.do_click_by_xpath(self.ROOM_AVAIL+str([i]))
                     break
-                else:
-                    pass
         except Exception as e:
             print(f"select_available_resource exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/select_available_resource/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
@@ -296,6 +304,7 @@ class RoomBookingsPage(BasePage):
             self.action_chain_click(self.BS_DENDDATE)
             print(f"End date: {self.TDATA_ENDDATE}")
             for i in range(2):
+                self.action_chain_click(self.CAL_NEXT_MONTH)
                 d_isvisible = self.is_visible(self.TDATA_ENDDATE)
                 print(f"{i}. visibility: {d_isvisible}")
                 if d_isvisible == True:
@@ -345,6 +354,14 @@ class RoomBookingsPage(BasePage):
             print(f"confirm_booking exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/confirm_booking/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
 
+    def booking_successfull(self):
+        check = self.is_visible(self.BOOKING_SUCCESSFULL)
+        if check == True:
+            print("Booking should be created successfully: Passed")
+        else:
+            print("Booking Failed")
+
+
     def get_room_name(self):
         try:
             rval = self.get_element_text(self.ROOM_NUMBER)
@@ -361,7 +378,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             self.action_chain_click(self.BOOKED_STATUS)
             sleep(2)
-            assert "Select Booked status done"
+            print("Select Booked status done")
         except Exception as e:
             print(f"select_booked_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/select_booked_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
@@ -374,7 +391,7 @@ class RoomBookingsPage(BasePage):
             sleep(2)
             self.action_chain_click(self.ALL_STATUS)
             sleep(2)
-            assert "Select All status done"
+            print("Select All status done")
         except Exception as e:
             print(f"select_all_status exception: {e} \n{traceback.format_exc()}")
             self.take_screenshot(f"RoomBooking/select_all_status/Ex_{TestData.CDATE[:10]}/{TestData.CDATE[1:]}.png")
@@ -390,6 +407,7 @@ class RoomBookingsPage(BasePage):
     def new_contact_guest(self, contact_name, contact_email):
         try:
             self.host_selection(self.ATTENDEE_DETAILS, contact_name)
+            # element = self.get_element(self.CONTACT_EMAIL)
             self.do_send_keys(self.CONTACT_EMAIL, contact_email)
             self.action_chain_click(self.CONTACT_RIGHT_TICK)
             sleep(2)
@@ -463,7 +481,7 @@ class RoomBookingsPage(BasePage):
             std_meeting_options = ['Check in', '', 'Cancel Booking']
             assert meeting_options == std_meeting_options
             print("In My booking page, the created booking should be visible with two options i.e Check In and Cancel booking: Passed")
-            self.do_click_by_xpath(self.ROOM_124_CHECK_DIV)
+            # self.do_click_by_xpath(self.ROOM_124_CHECK_DIV)
             sleep(3)
         except Exception as e:
             print(f"check_my_roombooking: {e} \n{traceback.format_exc()}")
@@ -583,12 +601,12 @@ class RoomBookingsPage(BasePage):
                 sleep(4)
                 ele = self.is_visible(self.VRS_LOADER)
                 print("vrs loadr: ", ele)
-                # while True:
-                #     if ele == True:
-                #         sleep(2)
-                #     else:
-                #         break
-                self.action_chain_click(self.MY_SHORTCUTS_H3)
+                url = self.driver_current_url()
+                print("url: ", url)
+                # if "ndl" in url:
+                # self.action_chain_click(self.MY_SHORTCUTS_H3)
+                # else:
+                self.action_chain_click(self.FREE_CLICK_2)
                 self.action_chain_sendkeys_1(self.BODY, Keys.HOME)
                 self.action_chain_click(self.REFRESH_BOOKINGS)
         except Exception as e:
@@ -631,6 +649,7 @@ class RoomBookingsPage(BasePage):
             # sys.exit(3)
 
     def start_selection(self, fl=None):
+        fl = None
         try:
             sleep(1)
             print("Selecting Location")
