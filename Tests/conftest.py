@@ -12,7 +12,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.utils import ChromeType
 
 
-@pytest.fixture(params=["chrome"], scope='class')
+@pytest.fixture(params=["firefox"], scope='class')
 def init_driver(request):
     options = Options()
     options.set_capability("loggingPrefs", {'performance': 'ALL'})
@@ -28,14 +28,13 @@ def init_driver(request):
     options.add_argument("--allow-insecure-localhost")
     options.add_argument('--start-maximized')
     # options.add_argument('--window-size=1280,800')
-    # options.add_argument('--window-size=1920,1080')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
-        # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
+        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
  
-       web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     if request.param == "firefox":
         web_driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
     request.cls.driver = web_driver
