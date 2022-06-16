@@ -35,8 +35,7 @@ def init_driver(request):
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
         # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
-        s = Service('/usr/bin/chromedriver')
-        web_driver = webdriver.Chrome(service=s, options=options)
+        web_driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=options)
  
         # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     if request.param == "firefox":
