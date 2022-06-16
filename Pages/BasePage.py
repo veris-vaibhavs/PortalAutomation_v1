@@ -2,6 +2,7 @@ import json
 import pprint
 import requests
 import urllib3
+import os
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -14,7 +15,7 @@ from time import sleep
 """It contains all the generic methods and utilities for all pages"""
 
 class BasePage:
-    time_delay = 40
+    time_delay = 100
     # web_drive_cls = WebDriverWait(self.driver, time_delay)
 
     def __init__(self,driver):
@@ -68,7 +69,7 @@ class BasePage:
 
     def is_visible(self, by_locator):
         try:
-            element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
             return bool(element)
         except Exception as e:
             print(f"is_visible exception: {e}")
@@ -141,7 +142,16 @@ class BasePage:
         actions.send_keys(dkeys)
         actions.send_keys(Keys.ENTER)
         actions.perform()
-        sleep(5)
+        sleep(3)
+
+    def action_chain_scroll_to_top(self, by_locator):
+        element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+        actions = ActionChains(self.driver)
+        actions.move_to_element(element)
+        actions.click()
+        sleep(2)
+        actions.key_down(Keys.CONTROL).send_keys(Keys.HOME).key_up(Keys.CONTROL)
+        actions.perform()
         
     def time_selection(self, bstart, bstart_input, bstrokes=1):
         start_time = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(bstart))
@@ -163,10 +173,10 @@ class BasePage:
         print("Element: ", element)
         actions = ActionChains(self.driver)
         actions.move_to_element(element)
-        sleep(3)
+        sleep(1)
         actions.click(element)
         actions.perform()
-        sleep(5)
+        sleep(1)
 
     def action_chain_sendkeys_1(self, by_locator, elkeys):
         element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
@@ -212,6 +222,25 @@ class BasePage:
             try:
                 element = WebDriverWait(self.driver, self.time_delay).until(EC.presence_of_element_located((By.XPATH, by_locator)))
                 self.driver.execute_script("coordinates = arguments[0].getBoundingClientRect();scrollTo(coordinates.x,coordinates.y);", element)
+                pass
+            except:
+                print("2nd failed")
+
+    def scroll_to_element_to_mid(self, by_locator):
+        a = None
+        try:
+            element = WebDriverWait(self.driver, self.time_delay).until(EC.visibility_of_element_located(by_locator))
+            print("element present")
+            self.driver.execute_script("var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);var elementTop = arguments[0].getBoundingClientRect().top;window.scrollBy(0, elementTop-(viewPortHeight/2));", element)
+            print("moved to element")
+            a = 1
+            pass
+        except:
+            print("1st failed")
+        if a == None:
+            try:
+                element = WebDriverWait(self.driver, self.time_delay).until(EC.presence_of_element_located(by_locator))
+                self.driver.execute_script("var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);var elementTop = arguments[0].getBoundingClientRect().top;window.scrollBy(0, elementTop-(viewPortHeight/2));", element)
                 pass
             except:
                 print("2nd failed")
@@ -289,6 +318,21 @@ class BasePage:
 
     def driver_get_url(self, url):
         self.driver.get(url)
+
+    def driver_current_url(self):
+       return self.driver.current_url
+
+    def take_screenshot(self, name):
+        # sleep()
+        try:
+            os.makedirs(os.path.join("screenshot", os.path.dirname(name)), exist_ok=True)
+            # self.driver.get_screenshot_as_file(os.path.join("screenshot", name))
+            self.driver.save_screenshot(os.path.join("screenshot", name))
+        except Exception as e:
+            print("Screenshot exception: ", e)
+
+    def current_url(self):
+        return self.driver.current_url
 
 def process_browser_logs_for_network_events(logs):
     print("in process_browser")
