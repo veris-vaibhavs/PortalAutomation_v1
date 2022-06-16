@@ -26,16 +26,16 @@ def init_driver(request):
     options.add_argument("--shm-size=2g") #new
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     options.add_argument("--allow-insecure-localhost")
-    options.add_argument('--start-maximized')
-    # options.add_argument('--window-size=1280,800')
+    # options.add_argument('--start-maximized')
+    options.add_argument('--window-size=1280,800')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
-        # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
-        web_driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=options)
+        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
+        # web_driver = webdriver.Chrome(executable_path='/usr/bin/google-chrome', options=options)
  
         # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     if request.param == "firefox":
