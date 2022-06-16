@@ -24,7 +24,7 @@ def init_driver(request):
     options.add_argument("--dns-prefetch-disable")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument("--allow-insecure-localhost")
     options.add_argument('--start-maximized')
     # options.add_argument('--window-size=1280,800')
