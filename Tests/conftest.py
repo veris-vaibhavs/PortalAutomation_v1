@@ -23,6 +23,7 @@ def init_driver(request):
     options.add_argument("--disable-extensions")
     options.add_argument("--dns-prefetch-disable")
     options.add_argument("--remote-debugging-port=9222") #new
+    options.add_argument("--shm-size=2g") #new
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
     options.add_argument('--headless')
@@ -33,7 +34,9 @@ def init_driver(request):
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     if request.param == "chrome":
-        web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
+        # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=options)
+        s = Service('/usr/bin/chromedriver')
+        web_driver = webdriver.Chrome(service=s, options=options)
  
         # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     if request.param == "firefox":
