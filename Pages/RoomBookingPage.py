@@ -40,6 +40,7 @@ class RoomBookingsPage(BasePage):
         By.XPATH, "//*[@id='meeting-room']/div[2]/div/div[4]/div/div[1]/div/div[1]/div[3]/div/div[1]/p")
     FIRST_FLOOR = (By.ID, "0-floor")
     SECOND_FLOOR = (By.ID, "1-floor")
+    FLOOR_ARROW = (By.XPATH, "//h5[text()='Bussiness Tower']/../child::*[2]")
 
     # Status
     # STATUS_DROPDOWN = (
@@ -252,9 +253,16 @@ class RoomBookingsPage(BasePage):
     def select_floor(self, fl=None):
         try:
             if fl:
+                fl_visibilty = self.is_visible(self.SECOND_FLOOR)
+                if fl_visibilty == False:
+                    self.action_chain_click(self.FLOOR_ARROW)
                 self.action_chain_click(self.SECOND_FLOOR)
             else:
+                fl_visibilty = self.is_visible(self.FIRST_FLOOR)
+                if fl_visibilty == False:
+                    self.action_chain_click(self.FLOOR_ARROW)
                 self.action_chain_click(self.FIRST_FLOOR)
+            
             sleep(1)
             assert "Floor selection done"
         except Exception as e:
