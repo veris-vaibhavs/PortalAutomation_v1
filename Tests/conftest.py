@@ -22,14 +22,14 @@ def init_driver(request):
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-extensions")
     options.add_argument("--dns-prefetch-disable")
-    options.add_argument("--remote-debugging-port=9222") #new
-    options.add_argument("--shm-size=2g") #new
+    # options.add_argument("--remote-debugging-port=9222") #new
+    # options.add_argument("--shm-size=2g") #new
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument('--incognito')
     # options.add_argument('--headless')
     options.add_argument("--allow-insecure-localhost")
-    # options.add_argument('--start-maximized')
-    options.add_argument('--window-size=1280,800')
+    options.add_argument('--start-maximized')
+    # options.add_argument('--window-size=1280,800')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
